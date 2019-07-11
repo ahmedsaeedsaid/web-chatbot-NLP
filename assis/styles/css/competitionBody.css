@@ -1,0 +1,197 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Aug 5, 2017, 10:03:51 PM
+    Author     : thant
+*/
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+body {
+    font-family: 'Lato', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
+
+p{
+    margin: 0px 0px 0px;
+}
+
+body:before {
+    content: "";
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-size: cover;
+    background-repeat: no-repeat;
+    filter: blur(2px);
+    z-index: -1;
+}
+
+.quiz-container {
+    width: 450px;
+    color: white;
+    font-size: 110%;
+    margin: auto;
+    margin-bottom: 50px;
+}
+
+.quiz-container .question {
+    background-color: #4C6473;
+    border-radius: 20px;
+    margin-bottom: 25px;
+    font-size: 115%;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    position: relative;
+}
+
+.quiz-container .box {
+    padding: 10px 15px;
+}
+
+.quiz-container .question:after {
+    content: "";
+    position: absolute;
+    bottom: -15px;
+    left: 35px;
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 15px solid #4C6473;
+}
+
+.quiz-container .answers {
+    padding-left: 0;
+    list-style-type: none;
+}
+
+.quiz-container .answers .answer {
+    border-radius: 20px;
+    color: black;
+    margin-bottom: 10px;
+    position: relative;
+    overflow: hidden;
+}
+/*
+.quiz-container .answers .answer:hover {
+    background-color: #fff;
+}*/
+
+.quiz-container .answers .answer span:not([class^="checkmark"]) {
+    background-color: #285394;
+    z-index: 500;
+    border-radius: 50%;
+    color: white;
+    display: block;
+    float: left;
+    margin-left: -15px;
+    margin-top: -5px;
+    margin-right: 10px;
+    padding: 10px 0;
+    text-align: center;
+    text-transform: uppercase;
+    width: 40px;
+}
+
+.quiz-container button {
+    background-color: white;
+    color: #fff;
+    font-size: 110%;
+    border: 0;
+    margin-left: 170px;
+    position: relative;
+    border-radius: 20px;
+    border: 1px solid black;
+    color: black;
+    font-family: 'Raleway';
+}
+
+.quiz-container h1 {
+    text-align: center;
+    color: black;
+    margin-bottom: 10px;
+    font-family: 'Raleway', sans-serif;
+    word-spacing: -1px;
+}
+
+.quiz-container button span {
+    font-size: 200%;
+    position: absolute;
+    top: -3px;
+    right: 10px;
+}
+
+.quiz-container .answers .answer:hover span{
+    background-color: black;
+}
+
+.quiz-container .answers .answer:hover p{
+    box-shadow: 0 0 5px 0 #333;
+}
+
+.quiz-container .answers .answer:hover{
+    cursor: pointer;
+    color: black;
+
+}
+
+.quiz-container button:hover{
+    box-shadow: 0 0 5px 0 #333;
+}
+
+
+.quiz-container .answers .answer .active span .checkmark {
+    background-color: #fff;
+    position: absolute;
+    top: 8px;
+    right: 20px;
+    font-size: 120%;
+}
+
+#ch1 , #ch2 , #ch3 , #ch4{
+    padding: 10px 10px 10px 20px;
+    width: 385px;
+    overflow-wrap: break-word;
+    float: left;
+    margin-top: -5px;
+    border-radius: 20px;
+    border:1px solid black;
+}
+
+.user{
+    margin-top: 12px;
+    padding: 15px;
+    overflow-wrap: break-word;
+}
+
+#user-img{
+    transition: transform .8s ease-in-out;
+}
+
+#user-img: hover{
+    transform: rotate(360deg);
+}
+
+.userInfo{
+    padding: 10px;
+    float: left;
+    margin-top: 15px;
+    font-family: 'Raleway';
+    font-size: 18px;
+    overflow-wrap: break-word;
+}

@@ -1,0 +1,30 @@
+body{
+	background:#4A4A50;
+}
+
+.reset{
+	background:#fff;
+}
+
+.resethead{
+	background: #2a5baa;
+	color: #fff;
+	padding: 10px;
+	margin-bottom: 10px;
+}
+
+.body{
+	padding: 10px;
+	margin-left: 22.5%;
+}
+
+.req{
+	background: #2a5baa;
+	color: #fff;
+	width:100%;
+	border-radius:2px;
+}
+
+.req:hover{
+	color: #000;
+}

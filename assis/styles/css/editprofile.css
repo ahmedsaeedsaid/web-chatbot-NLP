@@ -1,0 +1,176 @@
+img{
+    text-align: center;
+    font-size: 50px;
+    color: black;
+    font-weight: bold;
+}
+
+h3,h4{
+    color: black;
+}
+
+hr{
+    width: 20%;
+    border-top: 3px solid #732342;
+    margin: 10px 0;
+}
+
+#img_prev , #cimg_prev{
+    opacity: 1;
+    display: block;
+    transition: .5s ease;
+    backface-visibility: hidden;
+}
+
+#img_prev {
+    height: 230px;
+    width: 70%;
+    margin-left: 52px;
+    transition: .5s ease;
+    backface-visibility: hidden;
+    display: block;
+}
+
+#cimg_prev {
+    width: 1137.5px;
+    height: 500px;
+    border: none;
+    padding: 0
+}
+
+
+#save,#cancelPass,#Chpass,#links,#hideLinks{
+    background:none;
+    color: black;
+    border: 1px solid black;
+    padding: 5px 10px;
+    border-radius: 0px;
+}
+
+#save:hover,#cancelPass:hover,#Chpass:hover,#links:hover,#hideLinks:hover{
+    box-shadow: 0 0 5px 0 #333;
+    text-decoration: none;
+
+}
+
+.cimghover{
+    transition: .5s ease;
+    opacity: 0;
+    position: absolute;
+    border-radius: 3px;
+    border: 1px solid white;
+    top: 85%;
+    left: 79%;
+    background-color: black;
+    color: white;
+    font-size: 17px;
+    padding: 10px;
+    text-align: center;
+}
+
+.imghover{
+    position: absolute;
+    bottom: 2.1%;
+    left: 16.8%;
+    right: 20%;
+    color: white;
+    background: black;
+    text-align: center;
+    border-radius: 50%;
+    width: 67.5%;
+    height: 221px;
+    /*border: 1px solid white;*/
+    font-size: 17px;
+    transition: .5s ease;
+    opacity: 0;
+}
+
+#div_img{
+    position: relative;
+    border-radius: 50%;
+}
+
+#img_prev:hover{
+    opacity: 0.7;
+}
+
+#cimg_prev:hover{
+    opacity: 0.7;
+}
+
+#div_cimg:hover .cimghover{
+    opacity: 0.7;
+}
+
+#div_cimg:hover .cimghover:hover {
+    opacity: 0.9;
+}
+
+#div_img:hover .imghover:hover {
+    opacity: 0.9;
+}
+#div_img:hover .imghover{
+    opacity: 0.7;
+}
+
+.imghover:hover , .cimghover:hover , #div_img:hover , #div_cimg:hover , #Chpass:hover , #cancelPass:hover , #links:hover , #hideLinks:hover , .subject1:hover , .subject2:hover , .subject3:hover , #sub1_del:hover , #sub2_del:hover , #sub3_del:hover{
+    cursor: pointer;
+}
+
+
+.form-control {
+    display: inline-block;
+}
+
+.info_list{
+    border-radius: 5px;
+    
+}
+
+
+
+
+.material-switch > input[type="checkbox"] {
+    display: none;   
+}
+
+.material-switch > label {
+    cursor: pointer;
+    height: 0px;
+    position: relative; 
+    width: 40px;  
+}
+
+.material-switch > label::before {
+    background: rgb(0, 0, 0);
+    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    content: '';
+    height: 16px;
+    margin-top: -8px;
+    position:absolute;
+    opacity: 0.3;
+    transition: all 0.4s ease-in-out;
+    width: 40px;
+}
+.material-switch > label::after {
+    background: rgb(255, 255, 255);
+    border-radius: 16px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+    content: '';
+    height: 24px;
+    left: -4px;
+    margin-top: -8px;
+    position: absolute;
+    top: -4px;
+    transition: all 0.3s ease-in-out;
+    width: 24px;
+}
+.material-switch > input[type="checkbox"]:checked + label::before {
+    background: inherit;
+    opacity: 0.5;
+}
+.material-switch > input[type="checkbox"]:checked + label::after {
+    background: inherit;
+    left: 20px;
+}

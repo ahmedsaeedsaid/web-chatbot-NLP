@@ -1,0 +1,39 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Aug 27, 2017, 12:29:04 AM
+    Author     : thant
+*/
+
+.alltem {
+    margin: 10px;
+    padding: 10px;
+}
+.btnleft{
+    float: left;
+    padding: 10px;
+    width:auto;
+    height: auto;
+    margin: 10px;
+}
+.swteams pre{
+    font-size: 20px;
+    font-family:monospace ;
+    height: auto;
+}
+.swteams strong {
+    color: #c7254e;
+}
+.crsfrm{
+    padding: 10px;
+}
+.crsfrm button{
+    margin-left: 20px;
+    position: absolute;
+}
+.teamcont{
+    margin-top: 4%
+}
