@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.9
+-- version 4.8.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 12, 2019 at 04:40 AM
+-- Generation Time: Jul 12, 2019 at 04:28 PM
 -- Server version: 10.1.31-MariaDB
--- PHP Version: 7.2.3
+-- PHP Version: 7.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -33,7 +33,7 @@ CREATE TABLE `client` (
   `name` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
   `phone` varchar(20) NOT NULL,
-  `active` int(11) NOT NULL
+  `active` int(11) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -41,8 +41,10 @@ CREATE TABLE `client` (
 --
 
 INSERT INTO `client` (`id`, `name`, `email`, `phone`, `active`) VALUES
-(1, 'Ali Kheidr', 'ali@gmail.com', '01145545454', 1),
-(2, 'Mohamed Samy', 'samy@gmail.com', '01212544515', 1);
+(1, 'test', 'ahmedsaeedmedo6@gmail.com', '01141673522', 1),
+(2, 'test', 'ahmedsaeedmedo6@gmail.com', '01141673522', 1),
+(3, 'test', 'ahmedsaeedmedo6@gmail.com', '01141673522', 1),
+(4, 'test', 'ahmedsaeedmedo6@gmail.com', '01141673522', 1);
 
 -- --------------------------------------------------------
 
@@ -63,7 +65,7 @@ CREATE TABLE `company` (
   `domain` varchar(100) NOT NULL,
   `type_id` int(11) NOT NULL,
   `status` varchar(20) NOT NULL,
-  `active` int(11) NOT NULL
+  `active` int(11) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -71,7 +73,10 @@ CREATE TABLE `company` (
 --
 
 INSERT INTO `company` (`id`, `client_id`, `name`, `description`, `db_server`, `db_name`, `db_username`, `db_password`, `platform_id`, `domain`, `type_id`, `status`, `active`) VALUES
-(1, 1, 'Optimal Solutions', 'Optimal Solutions is an information technology Business Solutions provider founded by a group of young and highly motivated professionals, dedicated to provide the market with turn-key business solutions.', 'https://www.optimalsolutionscorp.com/', 'optimal', 'optimal', 'optimal', 1, 'https://www.optimalsolutionscorp.com/', 2, 'Support', 1);
+(1, 1, 'test', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', 1, 'stackoverflow.com', 1, 'pending', 1),
+(2, 2, 'test', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', 1, 'stackoverflow.com', 1, 'pending', 1),
+(3, 3, 'test', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', 1, 'stackoverflow.com', 1, 'pending', 1),
+(4, 4, 'test', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', 1, 'stackoverflow.com', 1, 'pending', 1);
 
 -- --------------------------------------------------------
 
@@ -90,10 +95,11 @@ CREATE TABLE `platform` (
 --
 
 INSERT INTO `platform` (`id`, `name`, `active`) VALUES
-(1, 'Native', 1),
-(2, 'Oscommerce', 1),
-(3, 'Shopify', 1),
-(4, 'Wix', 1);
+(1, 'wordpress', 1),
+(2, 'joomla', 1),
+(3, 'oscommerce', 1),
+(4, 'shopify', 1),
+(5, 'native', 1);
 
 -- --------------------------------------------------------
 
@@ -123,8 +129,17 @@ CREATE TABLE `subscriptions` (
   `payment_id` int(11) NOT NULL,
   `payment_status` varchar(50) NOT NULL,
   `status` varchar(50) NOT NULL,
-  `active` int(11) NOT NULL
+  `active` int(11) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `subscriptions`
+--
+
+INSERT INTO `subscriptions` (`id`, `client_id`, `package_id`, `from_date`, `payment_id`, `payment_status`, `status`, `active`) VALUES
+(1, 2, 1, '07/12/2019', 0, 'pending', 'pending', 1),
+(2, 3, 1, '07/12/2019', 0, 'pending', 'pending', 1),
+(3, 4, 1, '07/12/2019', 0, 'pending', 'pending', 1);
 
 -- --------------------------------------------------------
 
@@ -169,9 +184,7 @@ CREATE TABLE `website_type` (
 --
 
 INSERT INTO `website_type` (`id`, `name`, `active`) VALUES
-(1, 'E-Commerce', 1),
-(2, 'Informaitve', 1),
-(3, 'Service Based', 1);
+(1, 'dummy', 1);
 
 --
 -- Indexes for dumped tables
@@ -227,19 +240,19 @@ ALTER TABLE `website_type`
 -- AUTO_INCREMENT for table `client`
 --
 ALTER TABLE `client`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `company`
 --
 ALTER TABLE `company`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `platform`
 --
 ALTER TABLE `platform`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `price_packg`
@@ -251,19 +264,19 @@ ALTER TABLE `price_packg`
 -- AUTO_INCREMENT for table `subscriptions`
 --
 ALTER TABLE `subscriptions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `website_type`
 --
 ALTER TABLE `website_type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
