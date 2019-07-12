@@ -20,7 +20,7 @@
 ?>
   <div class="container box">
    
-   <form method="post" id="register_form" action="<?php echo base_url(); ?>subscribe/submitSubscription">
+   <form method="post" id="register_form" action="<?php echo base_url(); ?>Subscribe/submitSubscription">
     <input type="hidden" name="package_id" value="<?=$package_id?>">
     <ul class="nav nav-tabs">
      <li class="nav-item">
@@ -275,7 +275,7 @@ $(document).ready(function(){
         {
             $.ajax({
                 type: "POST",
-                url: "<?php echo base_url(); ?>" + "subscribe/validateDomain", 
+                url: "<?php echo base_url(); ?>" + "Subscribe/validateDomain", 
                 data: {domain: doma},
                 dataType: "text",  
                 cache:false,

@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $url = rtrim(__DIR__, 'controllers');
 require_once $url . 'classes/user.php';
 
-class subscribe extends CI_Controller {
+class Subscribe extends CI_Controller {
 
     private $data = NULL;
 
