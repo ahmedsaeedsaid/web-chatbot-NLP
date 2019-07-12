@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $url = rtrim(__DIR__, 'controllers');
 require_once $url . 'classes/user.php';
 
-class support extends CI_Controller {
+class Support extends CI_Controller {
 
     private $data = NULL;
 
@@ -14,14 +14,14 @@ class support extends CI_Controller {
         // check if user has access permission
         $this->load->library('authentication');
         // loading models
-        $this->load->model('LogMod', 'loginMod');
+        $this->load->model('support/LogMod', 'loginMod');
     }
 
     public function index() {
         // check loggedIn
         $this->authentication->IsLoggedIn('login');
         $config['title'] = 'Login';
-        $this->load->view('login', $this->data, $config);
+        $this->load->view('support/login', $this->data, $config);
     }
 
     public function login() {
@@ -52,9 +52,12 @@ class support extends CI_Controller {
     public function main() {
         // check loggedIn
         $this->authentication->IsLoggedIn('any');
+        $this->load->model('support/ClientMod', 'clientMod');
+        $client_stats = $this->clientMod->getClientStats();
+        $this->data['client_stats'] = $client_stats;
         $config['title'] = 'Administration';
-        $this->load->view('common', $config);
-        $this->load->view('main');
+        $this->load->view('support/common', $config);
+        $this->load->view('support/main', $this->data);
     }
 
 }

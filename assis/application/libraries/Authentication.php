@@ -11,8 +11,8 @@ class Authentication {
         $this->CI = & get_instance();
 
         // load models
-        $this->CI->load->model('authMod');
-        $this->CI->load->model('profileMod');
+        $this->CI->load->model('support/authMod');
+        $this->CI->load->model('support/profileMod');
     }
 
     public function IsLoggedIn($mode='any') {
