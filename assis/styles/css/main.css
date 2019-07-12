@@ -72,6 +72,7 @@ h1.main-h1 {
 .top5,
 .get-started,
 .departments,
+.pricing,
 .about-us {
     padding-top: 100px;
     padding-bottom: 100px;
@@ -438,6 +439,10 @@ nav.navbar li.nav-item a.nav-link {
 }
 .copy-right{
     color: #000000
+}
+
+.panel-primary {
+    border-color: #428bca;
 }
 
 /*# sourceMappingURL=main.css.map */

@@ -5,17 +5,17 @@
             <div class="col-lg-12">
                 <div class="icons">
                     <!--<a href="#"><i class="fa fa-google-plus"></i></a>-->
-                    <a href="https://www.facebook.com/geeksOrg/" target="_blank"><i class="fab fa-facebook-f geeks-face-icon"></i></a>
-                    <a href="https://twitter.com/geeksOrg" target="_blank"><i class="fab fa-twitter geeks-twitter-icon"></i></a>
-                    <a href="https://www.youtube.com/channel/UCINayIHXYjOXJzn02lLADug" target="_blank"><i class="fab fa-youtube geeks-youtube-icon"></i></a>
-                    <a href="https://www.linkedin.com/in/geeksorg/" target="_blank"><i class="fab fa-linkedin-in geeks-linkedin-icon"></i></a>
+                    <a href="https://www.facebook.com/optimalsolutionscorp/" target="_blank"><i class="fab fa-facebook-f geeks-face-icon"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-twitter geeks-twitter-icon"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-youtube geeks-youtube-icon"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-linkedin-in geeks-linkedin-icon"></i></a>
                     <!--<a href="#"><i class="fa fa-instagram"></i></a>
                     <a href="#"><i class="fa fa-pinterest"></i></a>-->
                 </div>
             </div>
             <div class="col-lg-12">
                 <div class="copy-right">
-                  <p class="copy-right">&copy; <?= date('Y'); ?> Geeks. All rights reserved.</p>
+                  <p class="copy-right">&copy; <?= date('Y'); ?> Optimal AI Team. All rights reserved.</p>
                 </div>
             </div>
         </div>

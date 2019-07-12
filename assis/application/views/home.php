@@ -1,7 +1,5 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:900">
 <style type="text/css">
-
-
     #imageLink:hover {
         position: relative;
     }
@@ -84,6 +82,7 @@
             font-size: 22em;
             right: -25px;
         }
+    }
 
 </style>
 
@@ -91,8 +90,8 @@
 <!-- Start slider section -->
 <div class="slider" id="home">
     <h1 class="main-h1">Welcome to <span class="colored">Optimal Web Assistant</span></h1>
-    <p style="font-size: 18px;"><span class="">Successful and unsuccessful people do not vary greatly in their abilities. They vary in their desires to reach their potential. – John Maxwell.</span><br>We are very happy to have you here and we wish you can spend a lot of time enjoyig our services to help you grow your business</p>
-    <a href="<?= base_url('') ?>" target="_blank" class="anchor">Subscribe Now!</a>
+    <p id="bio" style="font-size: 18px;"></p>
+    <a href="" id="scroll" class="anchor">Subscribe Now!</a>
 </div>
 <!-- end of slider section -->
 
@@ -103,7 +102,6 @@
             <span class="icon icon-basic-sheet-pen"></span>
             <h2>What is<span class="colored">Optimal Web Assistant?</span></h2>
             <p class="centering">Optimal Web Assistant is an AI web assistant that help manage, organize and provide support for a website.</p>
-            <p class="centering colored" style="font-size: 20px;"><b>Available now! Get your own web assistant.</b> <b style="color: #f89a1d"> <a href="<?= base_url('') ?>">Subscribe now</a></b></p>
         </div>
         <div class="row">
             <div class="col-lg-3 col-md-6">
@@ -127,7 +125,7 @@
                     <span class="icon icon-basic-question"></span>
                     <h6><b>Ask Questions</b></h6>
                     <p>User can ask questions any time and get the reply.
-                    <b class="colored">Coming Soon</b>
+                        <b class="colored">Coming Soon</b>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
@@ -196,7 +194,85 @@
 </section>
 <!-- End departments -->
 
-<!-- start want work section-->
+<!-- Start pricing -->
+<section class="pricing-area pt-100 pb-100" id="pricing">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-8 mx-auto text-center">
+                <span class="icon icon-basic-laptop"></span>
+                <div class="section-title sub-info">
+                    <h2>Our <span class="colored">Prices</span></h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-4 panel">
+                <div class="single-price">
+                    <div class="price-title">
+                        <h4>standard</h4>
+                    </div>
+                    <div class="price-tag">
+                        <h2>$25 <span>month</span></h2>
+                    </div>
+                    <div class="price-item">
+                        <ul>
+                            <li>100GB Monthly Bandwidth</li>
+                            <li>100 Google AdWords</li>
+                            <li>100 Domain Hosting</li>
+                            <li>SSL Shopping Cart</li>
+                            <li>24/7 Live Support</li>
+                        </ul>
+                    </div>
+                    <a href="<?= base_url('subscribe') ?>" class="box-btn">Subscribe</a>
+                </div>
+            </div>
+            <div class="col-xl-4 panel">
+                <div class="single-price">
+                    <div class="price-title">
+                        <h4>professional</h4>
+                    </div>
+                    <div class="price-tag center">
+                        <h2>$125 <span>month</span></h2>
+                    </div>
+                    <div class="price-item">
+                        <ul>
+                            <li>100GB Monthly Bandwidth</li>
+                            <li>100 Google AdWords</li>
+                            <li>100 Domain Hosting</li>
+                            <li>SSL Shopping Cart</li>
+                            <li>24/7 Live Support</li>
+                        </ul>
+                    </div>
+                    <a href="<?= base_url('subscribe') ?>" class="box-btn">Subscribe</a>
+                </div>
+            </div>
+            <div class="col-xl-4 panel">
+                <div class="single-price">
+                    <div class="price-title">
+                        <h4>business</h4>
+                    </div>
+                    <div class="price-tag">
+                        <h2>$225 <span>month</span></h2>
+                    </div>
+                    <div class="price-item">
+                        <ul>
+                            <li>100GB Monthly Bandwidth</li>
+                            <li>100 Google AdWords</li>
+                            <li>100 Domain Hosting</li>
+                            <li>SSL Shopping Cart</li>
+                            <li>24/7 Live Support</li>
+                        </ul>
+                    </div>
+                    <a href="<?= base_url('subscribe') ?>" class="box-btn">Subscribe</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- end pricing section-->
+
+<!-- start want work section
 <section class="volunteer text-center">
     <div class="container">
         <div class="info">
@@ -206,7 +282,7 @@
             <a href="#" target="_blank" class="anchor">Join Our Team Now!</a>
         </div>
     </div>
-</section>
+</section>-->
 <!-- End want work section-->
 
 <!-- start scroll top -->
@@ -218,26 +294,36 @@
 
 
 <script>
-    var string = `Da7i7a is one of Geeks projects which target the Academic section in Geeks student Activity.
-Geeks is a multi-branched student activity Connecting different Communities`;
+    var string = `Successful and unsuccessful people do not vary greatly in their abilities. They vary in their desires to reach their potential. – John Maxwell. We are very happy to have you here and we wish you can spend a lot of time enjoyig our services to help you grow your business.`;
     var array = string.split("");
     var timer;
 
     function framelooper() {
         if (array.length > 0) {
-            document.getElementById("loogo").innerHTML += array.shift();
+            document.getElementById("bio").innerHTML += array.shift();
         } else {
             clearTimeout(timer);
             return;
         }
 
-        looptimer = setTimeout('framelooper()', 40);
+        looptimer = setTimeout('framelooper()', 30);
     }
 
     framelooper();
 
-    function welcome() {
-        alert("you are welcomed");
-    }
+    $(document).ready(function() {
+        $('#scroll').click(function(e) {
+            e.preventDefault();
+            var offsetTop = $('#pricing').offset().top;
+
+            if (offsetTop) {
+                $('html,body').animate({
+                    scrollTop: offsetTop
+                }, 1000);
+
+                return false;
+            }
+        });
+    });
 
 </script>

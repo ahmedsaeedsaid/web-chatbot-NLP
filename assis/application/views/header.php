@@ -56,6 +56,7 @@
     <link rel="stylesheet" href="<?php echo base_url(); ?>styles/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>styles/css/styles.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>styles/css/main.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>styles/css/pricing.css">
 
     <style type="text/css">
         #notfi {
