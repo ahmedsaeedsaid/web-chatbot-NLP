@@ -2,10 +2,7 @@
 <html>
  <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title><?php
-            if (isset($title)): echo $title;
-            endif;
-            ?></title>
+  
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
@@ -18,7 +15,7 @@
 <?php
 
 ?>
-  <div class="container box">
+  <div class="container box" style="width:900px;">
    
    <form method="post" id="register_form" action="<?php echo base_url(); ?>Subscribe/submitSubscription">
     <input type="hidden" name="package_id" value="<?=$package_id?>">
@@ -37,7 +34,7 @@
     <div class="tab-content" style="margin-top:16px;">
      <div class="tab-pane active" id="personal_details">
       <div class="panel panel-default">
-       <div class="panel-heading">Personal Details</div>
+       <div class="panel-heading" style="color: #fff;background-color: #042532;">Personal Details</div>
        <div class="panel-body">
        <div class="contact-form">
             <div class="row">
@@ -84,7 +81,7 @@
 
      <div class="tab-pane fade" id="general_details">
       <div class="panel panel-default">
-       <div class="panel-heading">Company Details</div>
+       <div class="panel-heading" style="color: #fff;background-color: #042532;">Company Details</div>
        <div class="panel-body">
         <div class="contact-form">
             <div class="row">
@@ -104,7 +101,7 @@
             <div class="row">
                 <div class="col-lg-6">
                     <label>Platform</label>
-                    <select name="platform" id="platform" class="form-control">
+                    <select name="platform" id="platform" class="form-control" size="auto">
                         <?php
                             foreach ($platforms as $platform)
                             {
@@ -118,7 +115,7 @@
                 </div>
                 <div class="col-lg-6">
                     <label>website type</label>
-                    <select name="website_type" id="website_type" class="form-control">
+                    <select name="website_type" id="website_type" class="form-control" size="auto">
                     <?php
                             foreach ($websiteTypes as $websiteType)
                             {
@@ -156,7 +153,7 @@
      </div>
      <div class="tab-pane fade" id="Database_details">
       <div class="panel panel-default">
-       <div class="panel-heading">Fill Database Details</div>
+       <div class="panel-heading" style="color: #fff;background-color: #042532;">Fill Database Details</div>
        <div class="panel-body">
        <div class="contact-form">
             <div class="row">
@@ -202,7 +199,7 @@
         <br />
         <div align="center">
          <button type="button" name="previous_btn_general_details" id="previous_btn_general_details" class="btn btn-default btn-lg">Previous</button>
-         <button type="button" name="btn_action_details" id="btn_action_details" class="btn btn-info btn-lg">Next</button>
+         <button type="button" name="btn_action_details" id="btn_action_details" class="btn btn-info btn-lg">Submit</button>
         </div>
         <br />
        </div>
@@ -219,7 +216,7 @@
 $(document).ready(function(){
  
  $('#btn_general_details').click(function(){
-    $('#btn_general_details').attr("disabled", "disabled");
+    
   var error_company = '';
   var error_domain = '';
   var error_description = '';
@@ -273,6 +270,7 @@ $(document).ready(function(){
         }
         else
         {
+            $('#btn_general_details').attr("disabled", "disabled");
             $.ajax({
                 type: "POST",
                 url: "<?php echo base_url(); ?>" + "Subscribe/validateDomain", 

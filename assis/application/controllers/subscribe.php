@@ -24,7 +24,10 @@ class Subscribe extends CI_Controller {
         $data['package_id'] = '1';
         $data['platforms'] = $this->subscribeFormMod->loadPlatforms();
         $data['websiteTypes'] = $this->subscribeFormMod->loadWebsiteTypes();
+
+        $this->load->view('header', $data);
         $this->load->view('subscribeForm', $data);
+        $this->load->view('footer');
     }
     public function submitSubscription()
     {

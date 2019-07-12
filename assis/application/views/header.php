@@ -27,8 +27,6 @@
     <!-- RatingYo CSS -->
     <link href="<?php echo base_url(); ?>styles/RateYo/jquery.rateyo.min.css" media="all" rel="stylesheet" type="text/css" />
 
-    <!-- Rating custom CSS -->
-    <link href="<?php echo base_url(); ?>styles/css/rating.css" media="all" rel="stylesheet" type="text/css" />
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <link href="<?php echo base_url(); ?>styles/css/ie10-viewport-bug-workaround.css" media="all" rel="stylesheet" type="text/css" />
