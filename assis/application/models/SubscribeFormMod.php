@@ -30,6 +30,19 @@ class subscribeFormMod extends CI_Model {
         return $website_types;
     }
 
+    public function addClient($data_client) {
+        $this->db->insert('client', $data_client);
+        return $this->db->insert_id();
+    }
+
+    public function addCompany($data_client) {
+        $this->db->insert('company', $data_company);
+    }
+
+    public function addSubscription($data_client) {
+        return $this->db->insert('subscriptions', $data_subscriptions);
+    }
+
     
 
 }
