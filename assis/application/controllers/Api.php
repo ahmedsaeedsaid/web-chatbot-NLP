@@ -18,7 +18,9 @@ class Api extends CI_Controller {
     }
 
     public function chatBotScript() {
- 
+        
+        print_r('console.log("hi in chatbot")');
+        
         
     }
     
