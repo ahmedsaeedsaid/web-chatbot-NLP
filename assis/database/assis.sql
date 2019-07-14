@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 12, 2019 at 04:28 PM
+-- Generation Time: Jul 14, 2019 at 06:06 AM
 -- Server version: 10.1.31-MariaDB
 -- PHP Version: 7.2.4
 
@@ -44,7 +44,19 @@ INSERT INTO `client` (`id`, `name`, `email`, `phone`, `active`) VALUES
 (1, 'test', 'ahmedsaeedmedo6@gmail.com', '01141673522', 1),
 (2, 'test', 'ahmedsaeedmedo6@gmail.com', '01141673522', 1),
 (3, 'test', 'ahmedsaeedmedo6@gmail.com', '01141673522', 1),
-(4, 'test', 'ahmedsaeedmedo6@gmail.com', '01141673522', 1);
+(4, 'test', 'ahmedsaeedmedo6@gmail.com', '01141673522', 1),
+(5, 'test', 'ahmedsaeedmedo6@gmail.com', '01141673522', 1),
+(6, 'test', 'ahmedsaeedmedo6@gmail.com', '01141673522', 1),
+(7, 'ahmedsaeed', 'ahmedsaeedmedo6@gmail.com', '01141673522', 1),
+(8, 'ahmedsaeed', 'ahmedsaeedmedo6@gmail.com', '01141673522', 1),
+(9, 'ahmedsaeed', 'ahmedsaeedmedo6@gmail.com', '01141673522', 1),
+(10, 'ahmedsaeed', 'ahmedsaeedmedo6@gmail.com', '01141673522', 1),
+(11, 'test', 'ahmedsaeedmedo6@gmail.com', '01141673522', 1),
+(12, 'test', 'ahmedsaeed.fcih@gmail.com', '01141673522', 1),
+(13, 'test', 'ahmedsaeed.fcih@gmail.com', '01141673522', 1),
+(14, 'test', 'ahmedsaeed.fcih@gmail.com', '01141673522', 1),
+(15, 'test', 'ahmedsaeed.fcih@gmail.com', '01141673522', 1),
+(16, 'test', 'ahmedsaeed.fcih@gmail.com', '01141673522', 1);
 
 -- --------------------------------------------------------
 
@@ -76,7 +88,40 @@ INSERT INTO `company` (`id`, `client_id`, `name`, `description`, `db_server`, `d
 (1, 1, 'test', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', 1, 'stackoverflow.com', 1, 'pending', 1),
 (2, 2, 'test', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', 1, 'stackoverflow.com', 1, 'pending', 1),
 (3, 3, 'test', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', 1, 'stackoverflow.com', 1, 'pending', 1),
-(4, 4, 'test', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', 1, 'stackoverflow.com', 1, 'pending', 1);
+(4, 4, 'test', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', 1, 'stackoverflow.com', 1, 'pending', 1),
+(5, 5, 'test', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', 1, 'github.com', 1, 'pending', 1),
+(6, 6, 'test', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', 1, 'www.optimalsolutionscorp.com', 1, 'pending', 1),
+(7, 9, 'test', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', 1, 'www.zayedwater.ae', 1, 'pending', 1),
+(8, 10, 'test', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', 1, 'www.zayedwater.ae', 1, 'pending', 1),
+(9, 11, 'test', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', 1, 'www.zayedwater.ae', 1, 'pending', 1),
+(10, 12, 'tes', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', 1, 'www.zayedwater.ae', 1, 'pending', 1),
+(11, 13, 'tes', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', 1, 'www.zayedwater.ae', 1, 'pending', 1),
+(12, 14, 'tes', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', 1, 'www.zayedwater.ae', 1, 'pending', 1),
+(13, 15, 'tes', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', 1, 'www.zayedwater.ae', 1, 'pending', 1),
+(14, 16, 'tes', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', 1, 'www.zayedwater.ae', 1, 'pending', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `payment_det`
+--
+
+CREATE TABLE `payment_det` (
+  `id` int(11) NOT NULL,
+  `indicator` varchar(50) NOT NULL,
+  `subscription_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `payment_det`
+--
+
+INSERT INTO `payment_det` (`id`, `indicator`, `subscription_id`) VALUES
+(1, '56c2e51e6f954f3f', 11),
+(2, '85709b479eed47b2', 12),
+(3, '650da1a201d24ce4', 0),
+(4, '45e3124c54174c55', 13),
+(5, '7b02f4a3ba8144fc', 0);
 
 -- --------------------------------------------------------
 
@@ -139,7 +184,17 @@ CREATE TABLE `subscriptions` (
 INSERT INTO `subscriptions` (`id`, `client_id`, `package_id`, `from_date`, `payment_id`, `payment_status`, `status`, `active`) VALUES
 (1, 2, 1, '07/12/2019', 0, 'pending', 'pending', 1),
 (2, 3, 1, '07/12/2019', 0, 'pending', 'pending', 1),
-(3, 4, 1, '07/12/2019', 0, 'pending', 'pending', 1);
+(3, 4, 1, '07/12/2019', 0, 'pending', 'pending', 1),
+(4, 5, 1, '07/12/2019', 0, 'pending', 'pending', 1),
+(5, 6, 1, '07/12/2019', 0, 'pending', 'pending', 1),
+(6, 9, 1, '07/14/2019', 0, 'pending', 'pending', 1),
+(7, 10, 1, '07/14/2019', 0, 'pending', 'pending', 1),
+(8, 11, 1, '07/14/2019', 0, 'pending', 'pending', 1),
+(9, 12, 1, '07/14/2019', 0, 'pending', 'pending', 1),
+(10, 13, 1, '07/14/2019', 0, 'failed', 'pending', 1),
+(11, 14, 1, '07/14/2019', 0, 'pending', 'pending', 1),
+(12, 15, 1, '07/14/2019', 0, 'pending', 'pending', 1),
+(13, 16, 1, '07/14/2019', 0, 'success', 'pending', 1);
 
 -- --------------------------------------------------------
 
@@ -203,6 +258,12 @@ ALTER TABLE `company`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `payment_det`
+--
+ALTER TABLE `payment_det`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `platform`
 --
 ALTER TABLE `platform`
@@ -240,13 +301,19 @@ ALTER TABLE `website_type`
 -- AUTO_INCREMENT for table `client`
 --
 ALTER TABLE `client`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `company`
 --
 ALTER TABLE `company`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT for table `payment_det`
+--
+ALTER TABLE `payment_det`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `platform`
@@ -264,7 +331,7 @@ ALTER TABLE `price_packg`
 -- AUTO_INCREMENT for table `subscriptions`
 --
 ALTER TABLE `subscriptions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `users`
