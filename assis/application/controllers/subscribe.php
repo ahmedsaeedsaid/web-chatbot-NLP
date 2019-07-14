@@ -7,7 +7,8 @@ require_once $url . 'classes/user.php';
 
 class Subscribe extends CI_Controller {
 
-    private $data = NULL;
+    private $data;
+    private $db_drivers;
 
     function __construct() {
         parent::__construct();
@@ -15,36 +16,27 @@ class Subscribe extends CI_Controller {
         $this->load->library('authentication');
         // loading models
         $this->load->model('subscribeFormMod');
+        $this->data = NULL;
+        $this->db_drivers = array('mysqli');
+    }
+    
+    private function testConnection($drivers, $config){
+        $driver = '';
+        if($drivers){
+            $driver = $drivers[0];
+            $config['dbdriver'] = $driver;
+            $db = @$this->load->database($config, TRUE);
+            if($db->conn_id) {
+                return $driver;
+            } else {
+                array_shift($drivers);
+                $driver = $this->testConnection($drivers, $config);
+            }
+        }
+        return $driver;
     }
 
     public function index() {
-        
-        /*$config = array(
-            'hostname' => 'localhost',
-            'username' => 'root',
-            'password' => '',
-            'database' => 'asis',
-            'dbdriver' => 'mysqli',
-            'db_debug' => false
-        );
-        
-        $tnsname = '(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT = 1521))
-        (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = XE)))';
-        $config_oracle = array(
-            'hostname' => $tnsname,
-            'username' => 'hr',
-            'password' => 'hr',
-            'database' => '',
-            'dbdriver' => 'oci8',
-            'db_debug' => false
-        );
-        $db = @$this->load->database($config_oracle, TRUE);
-        if($db->conn_id) {
-            echo 'Connected successfully';
-        } else {
-            echo 'Unable to connect with database with given db details.';
-        }*/
-        
         $data['title'] = 'Subscribe ChatBot';
         $data['package_id'] = '1';
         $data['platforms'] = $this->subscribeFormMod->loadPlatforms();
@@ -57,6 +49,21 @@ class Subscribe extends CI_Controller {
     
     public function submitSubscription()
     {
+        $config = array(
+            "hostname" => $this->input->post('server'),
+            "username" => $this->input->post('username'),
+            "password" => $this->input->post('password'),
+            "database" => $this->input->post('DB_name'),
+            "dbdriver" => "",
+            "db_debug" => false
+        );
+        $db_driver = $this->testConnection($this->db_drivers, $config);
+        
+        if($db_driver == ''){
+            $this->session->set_flashdata('db_connection', 'failed');
+            redirect(base_url('subscribe'));
+        }
+        
         $data_client = array(
             'name' => $this->input->post('name'),
             'email'  => $this->input->post('email'),
@@ -72,6 +79,7 @@ class Subscribe extends CI_Controller {
             'db_name'  => $this->input->post('DB_name'),
             'db_username'  => $this->input->post('username'),
             'db_password'  => $this->input->post('password'),
+            'db_driver'  => $db_driver,
             'platform_id'  => $this->input->post('platform'),
             'domain'  => $this->input->post('domain'),
             'type_id'  => $this->input->post('website_type'),
@@ -158,7 +166,6 @@ class Subscribe extends CI_Controller {
     public function successOrder()
     {
         $valid=false;
-        $message = '<h1>Access Wrong</h1>';
         if(isset($_GET['resultIndicator']))
         {
             $indicator = $_GET['resultIndicator'];
@@ -206,7 +213,7 @@ class Subscribe extends CI_Controller {
                 }
                 if($valid)
                 {
-                    $message = '<h1>Success</h1>';
+                    $this->session->set_flashdata('payment_status', 'success');
                         
                     $subscripe_data = array(
                         'payment_status' => 'success'
@@ -217,7 +224,7 @@ class Subscribe extends CI_Controller {
                 }
                 else
                 {
-                    $message = '<h1>Failed</h1>';
+                    $this->session->set_flashdata('payment_status', 'failed');
 
                     $subscripe_data = array(
                         'payment_status' => 'failed'
@@ -228,12 +235,7 @@ class Subscribe extends CI_Controller {
                 }
             }
         }
-        
-        echo $message;
-            
-        
-        
-
+        redirect(base_url());
     }
 
 }

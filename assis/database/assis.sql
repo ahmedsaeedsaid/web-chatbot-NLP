@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.0
+-- version 4.7.9
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 14, 2019 at 06:06 AM
+-- Generation Time: Jul 14, 2019 at 06:50 PM
 -- Server version: 10.1.31-MariaDB
--- PHP Version: 7.2.4
+-- PHP Version: 7.2.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -56,7 +56,12 @@ INSERT INTO `client` (`id`, `name`, `email`, `phone`, `active`) VALUES
 (13, 'test', 'ahmedsaeed.fcih@gmail.com', '01141673522', 1),
 (14, 'test', 'ahmedsaeed.fcih@gmail.com', '01141673522', 1),
 (15, 'test', 'ahmedsaeed.fcih@gmail.com', '01141673522', 1),
-(16, 'test', 'ahmedsaeed.fcih@gmail.com', '01141673522', 1);
+(16, 'test', 'ahmedsaeed.fcih@gmail.com', '01141673522', 1),
+(17, 'Ahmed Sherif', 'ahmed.sherif.fcih@gmail.com', '01114236554', 1),
+(18, 'Ahmed Sherif', 'ahmed.sherif.fcih@gmail.com', '01114236554', 1),
+(19, 'Ahmed Sherif', 'ahmed.sherif.fcih@gmail.com', '01114236554', 1),
+(20, 'Ahmed Sherif', 'karen.abiazar@boecker.com', '01114236554', 1),
+(21, 'Ahmed Sherif', 'karen.abiazar@boecker.com', '01114236554', 1);
 
 -- --------------------------------------------------------
 
@@ -73,6 +78,7 @@ CREATE TABLE `company` (
   `db_name` varchar(50) NOT NULL,
   `db_username` varchar(50) NOT NULL,
   `db_password` varchar(75) NOT NULL,
+  `db_driver` varchar(50) NOT NULL,
   `platform_id` int(11) NOT NULL,
   `domain` varchar(100) NOT NULL,
   `type_id` int(11) NOT NULL,
@@ -84,21 +90,26 @@ CREATE TABLE `company` (
 -- Dumping data for table `company`
 --
 
-INSERT INTO `company` (`id`, `client_id`, `name`, `description`, `db_server`, `db_name`, `db_username`, `db_password`, `platform_id`, `domain`, `type_id`, `status`, `active`) VALUES
-(1, 1, 'test', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', 1, 'stackoverflow.com', 1, 'pending', 1),
-(2, 2, 'test', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', 1, 'stackoverflow.com', 1, 'pending', 1),
-(3, 3, 'test', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', 1, 'stackoverflow.com', 1, 'pending', 1),
-(4, 4, 'test', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', 1, 'stackoverflow.com', 1, 'pending', 1),
-(5, 5, 'test', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', 1, 'github.com', 1, 'pending', 1),
-(6, 6, 'test', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', 1, 'www.optimalsolutionscorp.com', 1, 'pending', 1),
-(7, 9, 'test', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', 1, 'www.zayedwater.ae', 1, 'pending', 1),
-(8, 10, 'test', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', 1, 'www.zayedwater.ae', 1, 'pending', 1),
-(9, 11, 'test', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', 1, 'www.zayedwater.ae', 1, 'pending', 1),
-(10, 12, 'tes', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', 1, 'www.zayedwater.ae', 1, 'pending', 1),
-(11, 13, 'tes', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', 1, 'www.zayedwater.ae', 1, 'pending', 1),
-(12, 14, 'tes', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', 1, 'www.zayedwater.ae', 1, 'pending', 1),
-(13, 15, 'tes', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', 1, 'www.zayedwater.ae', 1, 'pending', 1),
-(14, 16, 'tes', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', 1, 'www.zayedwater.ae', 1, 'pending', 1);
+INSERT INTO `company` (`id`, `client_id`, `name`, `description`, `db_server`, `db_name`, `db_username`, `db_password`, `db_driver`, `platform_id`, `domain`, `type_id`, `status`, `active`) VALUES
+(1, 1, 'test', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', '', 1, 'stackoverflow.com', 1, 'pending', 1),
+(2, 2, 'test', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', '', 1, 'stackoverflow.com', 1, 'pending', 1),
+(3, 3, 'test', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', '', 1, 'stackoverflow.com', 1, 'pending', 1),
+(4, 4, 'test', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', '', 1, 'stackoverflow.com', 1, 'pending', 1),
+(5, 5, 'test', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', '', 1, 'github.com', 1, 'pending', 1),
+(6, 6, 'test', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', '', 1, 'www.optimalsolutionscorp.com', 1, 'pending', 1),
+(7, 9, 'test', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', '', 1, 'www.zayedwater.ae', 1, 'pending', 1),
+(8, 10, 'test', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', '', 1, 'www.zayedwater.ae', 1, 'pending', 1),
+(9, 11, 'test', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', '', 1, 'www.zayedwater.ae', 1, 'pending', 1),
+(10, 12, 'tes', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', '', 1, 'www.zayedwater.ae', 1, 'pending', 1),
+(11, 13, 'tes', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', '', 1, 'www.zayedwater.ae', 1, 'pending', 1),
+(12, 14, 'tes', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', '', 1, 'www.zayedwater.ae', 1, 'pending', 1),
+(13, 15, 'tes', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', '', 1, 'www.zayedwater.ae', 1, 'pending', 1),
+(14, 16, 'tes', '', 'http://localhost/google_drive_api/config.php', 'sarr', 'ahmad.saeed', 'test', '', 1, 'www.zayedwater.ae', 1, 'pending', 1),
+(15, 17, 'Optimal', '', 'geeks-da7i7a.app', 'da7i7a_db', 'da7i7a_admin', '=!U_J1n?csHv', '', 1, 'www.optimalsolutionscorp.com', 1, 'pending', 1),
+(16, 18, 'Optimal Solutions', '', 'geeks-da7i7a.app', 'da7i7a_db', 'da7i7a_admin', '=!U_J1n?csHv', '', 1, 'www.optimalsolutionscorp.com', 1, 'pending', 1),
+(17, 19, 'Geeks', '', 'geeks-da7i7a.app', 'da7i7a_db', 'da7i7a_admin', '=!U_J1n?csHv', 'sqlite3', 5, 'geeks-da7i7a.app', 1, 'pending', 1),
+(18, 20, 'Optimal Solutions', '', 'localhost', 'assis', 'root', '', 'mysqli', 5, 'geeks-da7i7a.app', 2, 'pending', 1),
+(19, 21, 'Optimal Solutions', '', 'geeks-da7i7a.app', 'da7i7a_db', 'da7i7a_admin', '=!U_J1n?csHv', 'sqlite3', 5, 'geeks-da7i7a.app', 2, 'pending', 1);
 
 -- --------------------------------------------------------
 
@@ -121,7 +132,14 @@ INSERT INTO `payment_det` (`id`, `indicator`, `subscription_id`) VALUES
 (2, '85709b479eed47b2', 12),
 (3, '650da1a201d24ce4', 0),
 (4, '45e3124c54174c55', 13),
-(5, '7b02f4a3ba8144fc', 0);
+(5, '7b02f4a3ba8144fc', 0),
+(6, 'd45efb7e00584af8', 15),
+(7, '147a771f899c4158', 0),
+(8, '5a1f627ab972492e', 16),
+(9, '17facd9155de4346', 0),
+(10, '95dc86df605b436e', 17),
+(11, '7a26fecea97443d3', 18),
+(12, '60a3f8d011e448eb', 19);
 
 -- --------------------------------------------------------
 
@@ -194,7 +212,12 @@ INSERT INTO `subscriptions` (`id`, `client_id`, `package_id`, `from_date`, `paym
 (10, 13, 1, '07/14/2019', 0, 'failed', 'pending', 1),
 (11, 14, 1, '07/14/2019', 0, 'pending', 'pending', 1),
 (12, 15, 1, '07/14/2019', 0, 'pending', 'pending', 1),
-(13, 16, 1, '07/14/2019', 0, 'success', 'pending', 1);
+(13, 16, 1, '07/14/2019', 0, 'success', 'pending', 1),
+(15, 17, 1, '07/14/2019', 0, 'success', 'pending', 1),
+(16, 18, 1, '07/14/2019', 0, 'success', 'pending', 1),
+(17, 19, 1, '07/14/2019', 0, 'pending', 'pending', 1),
+(18, 20, 1, '07/14/2019', 0, 'pending', 'pending', 1),
+(19, 21, 1, '07/14/2019', 0, 'pending', 'pending', 1);
 
 -- --------------------------------------------------------
 
@@ -239,7 +262,9 @@ CREATE TABLE `website_type` (
 --
 
 INSERT INTO `website_type` (`id`, `name`, `active`) VALUES
-(1, 'dummy', 1);
+(1, 'E-Commerce', 1),
+(2, 'Informaitve', 1),
+(3, 'Service Based', 1);
 
 --
 -- Indexes for dumped tables
@@ -301,19 +326,19 @@ ALTER TABLE `website_type`
 -- AUTO_INCREMENT for table `client`
 --
 ALTER TABLE `client`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `company`
 --
 ALTER TABLE `company`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `payment_det`
 --
 ALTER TABLE `payment_det`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `platform`
@@ -331,7 +356,7 @@ ALTER TABLE `price_packg`
 -- AUTO_INCREMENT for table `subscriptions`
 --
 ALTER TABLE `subscriptions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -343,7 +368,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `website_type`
 --
 ALTER TABLE `website_type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

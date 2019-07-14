@@ -1,3 +1,18 @@
+<?php
+if($this->session->flashdata('payment_status') == 'success'){
+    echo "<script>Swal.fire(
+            'Success!',
+            'You have subscribed to our service successfully, One of our support will contact you soon!',
+            'success'
+        );</script>";
+} else if ($this->session->flashdata('payment_status') == 'failed'){
+    echo "<script>Swal.fire(
+            'Something went wrong!',
+            'There\'s something wrong happened with your payment please contact our support!',
+            'error'
+        );</script>";
+}
+?>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:900">
 <style type="text/css">
     #imageLink:hover {
