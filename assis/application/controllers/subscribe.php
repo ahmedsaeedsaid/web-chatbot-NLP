@@ -71,7 +71,16 @@ class Subscribe extends CI_Controller {
         );
         
         $insert_id = $this->subscribeFormMod->addClient($data_client);
-
+        $need_support = 0;
+        // Platform is native
+        if($this->input->post('platform') == 5){
+            $need_support = 1;
+        }
+        
+        // The next id for company
+        $new_company_id = $this->subscribeFormMod->getLastComapnyId() + 1;
+        
+        $token = password_hash($insert_id . $this->input->post('company') . $this->input->post('bot_name') , PASSWORD_DEFAULT);
         $data_company= array(
             'client_id' => $insert_id,
             'name'  => $this->input->post('company'),
@@ -83,10 +92,13 @@ class Subscribe extends CI_Controller {
             'platform_id'  => $this->input->post('platform'),
             'domain'  => $this->input->post('domain'),
             'type_id'  => $this->input->post('website_type'),
+            'support'  => $need_support,
+            'bot_name'  => $this->input->post('bot_name') . "_" . $new_company_id,
+            'token'  => $token,
             'status'  => 'pending'
         );
         
-         $this->subscribeFormMod->addCompany($data_company);
+        $this->subscribeFormMod->addCompany($data_company);
         
         $data_subscriptions= array(
             'client_id' => $insert_id,
@@ -97,7 +109,7 @@ class Subscribe extends CI_Controller {
             'status'  => 'pending'
         ); 
     
-        $insert_id =$this->subscribeFormMod->addSubscription($data_subscriptions);
+        $insert_id = $this->subscribeFormMod->addSubscription($data_subscriptions);
 
         $url = 'https://ap-gateway.mastercard.com/api/rest/version/51/merchant/TEST222204466001/session';
         $data = array("apiOperation" => "CREATE_CHECKOUT_SESSION");

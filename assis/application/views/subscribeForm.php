@@ -183,6 +183,14 @@ if($this->session->flashdata('db_connection') == 'failed'){
                                 <br>
 
                                 <div class="row">
+                                    <div class="col-lg-6">
+                                        <label>Bot Name</label>
+                                        <input type="text" name="bot_name" id="bot_name" class="form-control" />
+                                        <span id="error_bot_name" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row">
                                     <div class="col-lg-12">
                                         <label>Description</label>
                                         <textarea name="description" id="description" class="form-control" cols="15" rows="5" style="resize: none;"></textarea>
@@ -271,6 +279,7 @@ if($this->session->flashdata('db_connection') == 'failed'){
         $('#btn_general_details').click(function() {
 
             var error_company = '';
+            var error_bot_name = '';
             var error_domain = '';
             var error_description = '';
             var filter = new RegExp(/^((?:(?:(?:\w[\.\-\+]?)*)\w)+)((?:(?:(?:\w[\.\-\+]?){0,62})\w)+)\.(\w{2,6})$/);
@@ -284,6 +293,17 @@ if($this->session->flashdata('db_connection') == 'failed'){
                 error_company = '';
                 $('#error_company').text(error_company);
                 $('#company').removeClass('has-error');
+
+            }
+
+            if ($.trim($('#bot_name').val()).length == 0) {
+                error_bot_name = 'company name is required';
+                $('#error_bot_name').text(error_bot_name);
+                $('#bot_name').addClass('has-error');
+            } else {
+                error_bot_name = '';
+                $('#error_bot_name').text(error_bot_name);
+                $('#bot_name').removeClass('has-error');
 
             }
 
@@ -331,7 +351,7 @@ if($this->session->flashdata('db_connection') == 'failed'){
                                 $('#error_domain').text(error_domain);
                                 $('#company').removeClass('has-error');
                             }
-                            if ($('#error_description').text() != '' || $('#error_domain').text() != '' || $('#error_company').text() != '') {
+                            if ($('#error_description').text() != '' || $('#error_domain').text() != '' || $('#error_company').text() != '' || $('#error_bot_name').text() != '') {
                                 return false;
                             } else {
                                 $('#list_general_details').removeClass('active active_tab1');

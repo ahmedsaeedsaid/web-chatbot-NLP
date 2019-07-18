@@ -66,6 +66,14 @@ class subscribeFormMod extends CI_Model {
         $this->db->update('subscriptions', $subscripe_data);
     }
 
+    public function getLastComapnyId() {
+        $this->db->select('id');
+        $this->db->from('company');
+        $this->db->order_by('id', 'desc');
+        $result = $this->db->get();
+        return $result->row()->id;
+    }
+
     
 
 }
