@@ -1,43 +1,21 @@
 <html>
     <head>
-        <script src="https://ap-gateway.mastercard.com/checkout/version/51/checkout.js"
-                data-error="errorCallback"
-                data-cancel="cancelCallback"
-        data-complete="<?php echo base_url(); ?>subscribe/successOrder">
-            </script>
+        
 
-        <script type="text/javascript">
-            function errorCallback(error) {
-                  console.log(JSON.stringify(error));
-            }
-            function cancelCallback() {
-                  console.log('Payment cancelled');
-            }
-            
-            Checkout.configure({
-                merchant:'TEST222204466001',
-                order: {
-                    amount: 50,
-                    currency: 'USD',
-                    description: 'Ordered goods',
-                   id: '2'
-                    },
-                    session: {
-                      id: '<?=$session_id?>'
-                    },
-                interaction: {
-                    merchant: {
-                        name: 'optimal solution',
-                        address: {
-                            line1: '200 Sample St',
-                            line2: '1234 Example Town'     
-                        }    
-                    }
-                }
-            });
-            Checkout.showPaymentPage();
-        </script>
+       
     </head>
     <body>
+    <form id="myForm" action="https://www.optimalsolutionscorp.com/payment/redirectPaymentPage.php" method="post">
+        <input type="hidden" name="order_id"  value="<?=$order_id?>">
+        <input type="hidden" name="description_order" value="<?=$description_order?>">
+        <input type="hidden" name="price" value="<?=$price?>">
+        <input type="hidden" name="currency" value="<?=$currency?>">
+        <input type="hidden" name="id" value="2">
+    </form>
+    <script type="text/javascript">
+        
+            document.getElementById('myForm').submit();
+        
+    </script>
     </body>
 </html>

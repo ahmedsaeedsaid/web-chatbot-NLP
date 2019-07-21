@@ -57,8 +57,8 @@ class Subscribe extends CI_Controller {
             "dbdriver" => "",
             "db_debug" => false
         );
-        $db_driver = $this->testConnection($this->db_drivers, $config);
-        
+        //$db_driver = $this->testConnection($this->db_drivers, $config);
+        $db_driver = 'mysql';
         if($db_driver == ''){
             $this->session->set_flashdata('db_connection', 'failed');
             redirect(base_url('subscribe'));
@@ -110,41 +110,12 @@ class Subscribe extends CI_Controller {
         ); 
     
         $insert_id = $this->subscribeFormMod->addSubscription($data_subscriptions);
-
-        $url = 'https://ap-gateway.mastercard.com/api/rest/version/51/merchant/TEST222204466001/session';
-        $data = array("apiOperation" => "CREATE_CHECKOUT_SESSION");
-        $order = array("currency" => "USD" , "id"=>$insert_id , "amount"=>50);
-        $data['order'] = $order;
-        $username = "merchant.TEST222204466001";
-        $password = "cf51268482346a6c0131fb41e9675bee";
+        $data['order_id']=$insert_id;
+        $data['description_order']='Bot chat';
+        $data['price']=50;
+        $data['currency']='USD';
+        $this->load->view('paymentGetaway', $data);
         
-        $ch=curl_init($url);
-        $data_string = (json_encode($data));
-        
-        
-        curl_setopt($ch, CURLOPT_USERPWD, $username . ":" . $password);  
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-
-        $result = curl_exec($ch);
-        curl_close($ch);
-
-        
-        $result=json_decode($result, true);
-        if(isset($result['session']['id']))
-        {
-            $session_id=$result['session']['id'];
-            $indicator=$result['successIndicator'];
-            $data_payment= array(
-                'indicator' => $indicator,
-                'subscription_id'  => $insert_id
-            ); 
-        
-            $this->subscribeFormMod->addPayment($data_payment);
-            $data['session_id']=$session_id;
-            $this->load->view('paymentGetaway', $data);
-        }
     }
     
     public function validateDomain() {
@@ -177,74 +148,27 @@ class Subscribe extends CI_Controller {
 
     public function successOrder()
     {
-        $valid=false;
-        if(isset($_GET['resultIndicator']))
+        if (isset($_POST['transaction_id']) && isset($_POST['status']) && isset($_POST['order_id']))
         {
-            $indicator = $_GET['resultIndicator'];
-            $subscription_id=$this->subscribeFormMod->getSubscription($indicator);
-            if($subscription_id !='')
+            if($_POST['status']=='success')
             {
-                $url = 'https://ap-gateway.mastercard.com/api/rest/version/50/merchant/TEST222204466001/order/'.$subscription_id;
-                
-                $username = "merchant.TEST222204466001";
-                $password = "cf51268482346a6c0131fb41e9675bee";
-                
-                $ch=curl_init($url);
-                
-                
-                curl_setopt($ch, CURLOPT_USERPWD, $username . ":" . $password);  
-                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+                $this->session->set_flashdata('payment_status', 'success');
 
-                $result = curl_exec($ch);
-                curl_close($ch);
-
-                
-                $result=json_decode($result, true);
-                if(isset($result['totalAuthorizedAmount']))
-                {
-                    $message= $result['result'];
-                    $status= $result['status'];
-                    $totalAuthorizedAmount= $result['totalAuthorizedAmount'];
-                    $totalCapturedAmount= $result['totalCapturedAmount'];
-                    if ($message == 'SUCCESS' && $status=="CAPTURED" && $totalAuthorizedAmount==$totalCapturedAmount)
-                    {
-                        $valid=true;
-                        
-                    }
-                    else
-                    {
-                        $valid=false;
-
-                    }
-                }
-                else
-                {
-                    $valid=false;
-
-                }
-                if($valid)
-                {
-                    $this->session->set_flashdata('payment_status', 'success');
-                        
                     $subscripe_data = array(
                         'payment_status' => 'success'
-                        
                     );
                 
                     $this->subscribeFormMod->UpdateSubscripe($subscripe_data,$subscription_id);
-                }
-                else
-                {
-                    $this->session->set_flashdata('payment_status', 'failed');
+            }
+            else
+            {
+                $this->session->set_flashdata('payment_status', 'failed');
 
                     $subscripe_data = array(
                         'payment_status' => 'failed'
                     );
                 
                     $this->subscribeFormMod->UpdateSubscripe($subscripe_data,$subscription_id);
-
-                }
             }
         }
         redirect(base_url());
