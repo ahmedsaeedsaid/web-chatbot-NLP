@@ -57,8 +57,7 @@ class Subscribe extends CI_Controller {
             "dbdriver" => "",
             "db_debug" => false
         );
-        //$db_driver = $this->testConnection($this->db_drivers, $config);
-        $db_driver = 'mysql';
+        $db_driver = $this->testConnection($this->db_drivers, $config);
         if($db_driver == ''){
             $this->session->set_flashdata('db_connection', 'failed');
             redirect(base_url('subscribe'));
@@ -158,7 +157,7 @@ class Subscribe extends CI_Controller {
                         'payment_status' => 'success'
                     );
                 
-                    $this->subscribeFormMod->UpdateSubscripe($subscripe_data,$subscription_id);
+                    $this->subscribeFormMod->UpdateSubscripe($subscripe_data,$_POST['order_id']);
             }
             else
             {
@@ -168,7 +167,7 @@ class Subscribe extends CI_Controller {
                         'payment_status' => 'failed'
                     );
                 
-                    $this->subscribeFormMod->UpdateSubscripe($subscripe_data,$subscription_id);
+                    $this->subscribeFormMod->UpdateSubscripe($subscripe_data,$_POST['order_id']);
             }
         }
         redirect(base_url());
