@@ -58,6 +58,7 @@
     <link rel="stylesheet" href="<?php echo base_url(); ?>styles/css/main.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>styles/css/pricing.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>styles/sweetalert/sweetalert2.min.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>styles/css/jquery.dataTables.min.css">
 
     <style type="text/css">
         #notfi {
@@ -181,3 +182,5 @@
 <script src="<?php echo base_url(); ?>styles/js/jquery.nicescroll.min.js"></script>
 <script src="<?php echo base_url(); ?>styles/js/main.js"></script>
 <script src="<?php echo base_url(); ?>styles/sweetalert/sweetalert2.all.min.js"></script>
+<script src="<?php echo base_url(); ?>styles/js/jquery.dataTables.min.js"></script>
+
