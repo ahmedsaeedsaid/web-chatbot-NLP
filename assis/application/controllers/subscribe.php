@@ -80,6 +80,10 @@ class Subscribe extends CI_Controller {
         $new_company_id = $this->subscribeFormMod->getLastComapnyId() + 1;
         
         $token = password_hash($insert_id . $this->input->post('company') . $this->input->post('bot_name') , PASSWORD_DEFAULT);
+        //$this->load->library('encrypt');
+        // Encrypt bot name
+        //$bot_name = $this->encrypt->encode($this->input->post('bot_name') . "_" . $new_company_id);
+        $bot_name = $this->input->post('bot_name') . "_" . $new_company_id;
         $data_company= array(
             'client_id' => $insert_id,
             'name'  => $this->input->post('company'),
@@ -92,7 +96,7 @@ class Subscribe extends CI_Controller {
             'domain'  => $this->input->post('domain'),
             'type_id'  => $this->input->post('website_type'),
             'support'  => $need_support,
-            'bot_name'  => $this->input->post('bot_name') . "_" . $new_company_id,
+            'bot_name'  => $bot_name,
             'token'  => $token,
             'status'  => 'pending'
         );
@@ -109,12 +113,12 @@ class Subscribe extends CI_Controller {
         ); 
     
         $insert_id = $this->subscribeFormMod->addSubscription($data_subscriptions);
+        $this->sendFirstStepEmail($bot_name, $data_client['email'], $data_client['name']);
         $data['order_id']=$insert_id;
         $data['description_order']='Bot chat';
         $data['price']=50;
         $data['currency']='USD';
         $this->load->view('paymentGetaway', $data);
-        
     }
     
     public function validateDomain() {
@@ -171,6 +175,35 @@ class Subscribe extends CI_Controller {
             }
         }
         redirect(base_url());
+    }
+    
+    private function sendEmail ($subject, $body, $to){
+        $this->load->library('email');
+        // Also, for getting full html you may use the following internal method:
+        //$body = $this->email->full_html($subject, $message);
+
+        $result = $this->email
+            ->from('optimal.bot.service@gmail.com', 'Optimal AI Support')
+            ->to($to)
+            ->subject($subject)
+            ->message($body)
+            ->send();
+    }
+    
+    public function sendFirstStepEmail($bot_name, $email, $username){
+        $info = array("bot_name" => $bot_name, "username" => $username, "email" => $email);
+        $data = $this->load->view('emailTemplates/db_verification', $info, TRUE);
+        $this->sendEmail('Welcome to Optimal Bot', $data, $email);
+    } 
+    
+    public function downloadScript($bot_name){
+        $this->load->helper('download');
+        $bot_name = $this->input->post('bot_name');
+        $company = $this->subscribeFormMod->getComapnyByBotName($bot_name);
+        $info = array('company' => $company);
+        $data = $this->load->view('verificationScripts/db_verification', $info, TRUE);
+        $name = 'db_verification.php';
+        force_download($name, $data);
     }
 
 }
