@@ -36,7 +36,6 @@ class FlowAdapter(LogicAdapter):
 
         self.excluded_words = kwargs.get('excluded_words')
         self.Story_ID = kwargs.get('Story_ID')
-        print(kwargs.get('bot_information'))
         bot_name, db_server, db_name, db_username, db_password, db_driver, _ = kwargs.get('bot_information')
         self.DBManager = DBManager(user=db_username,
                                    password=db_password,
@@ -113,7 +112,6 @@ class FlowAdapter(LogicAdapter):
             alternate_response_selection_parameters.update(additional_response_selection_parameters)
 
         # Get all statements that are in response to the closest match
-        print(response_selection_parameters)
         response_list = list(self.chatbot.storage.filter(**response_selection_parameters))
 
         alternate_response_list = []

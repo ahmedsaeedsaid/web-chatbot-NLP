@@ -20,6 +20,8 @@ from sentence_classification import *
 import os
 from os.path import join, dirname
 from dotenv import load_dotenv
+import optimalBot.Filters as filters
+
 
 dotenv_path = join(dirname(__file__), '../.env')
 load_dotenv(dotenv_path)
@@ -34,7 +36,6 @@ DB_PASSWORD = os.getenv('DB_PASSWORD')
 TABLE_BOT_1 = os.getenv('TABLE_BOT_1')
 TABLE_BOT_2 = os.getenv('TABLE_BOT_2')
 TABLE_BOT_3 = os.getenv('TABLE_BOT_3')
-print(TABLE_BOT_1)
 FAQ_TABLE_NAME = os.getenv('FAQ_TABLE_NAME')
 DEFAULT_STORY_ID = os.getenv('DEFAULT_STORY_ID')
 
@@ -95,7 +96,7 @@ def api_askBot():
                                   "statement_comparison_function": comp.SentimentComparison,
                                   "response_selection_method": resp.get_flow_response
                                   }],
-                                 filters=[filters.get_recent_repeated_responses],
+                                 filters=[filters.get_recent_repeated_responsesCustomized],
                                  Story_ID=Story_ID,
                                  bot_information=bot_information)
             # Filter User Query
@@ -122,9 +123,18 @@ def api_create():
         bot_name, db_server, db_name, db_username, db_password, db_driver, client_id = bot_information
         if db_driver == 'mysqli' or db_driver == 'mysql':
             uri = "mysql://" + db_username + ":" + db_password + "@" + db_server + ":3306/" + db_name
-            chatbot = ChatBot(bot_name,
-                              storage_adapter="chatterbot.storage.SQLStorageAdapter",
-                              database_uri=uri)
+            chatbot = optimalbot(name=bot_name,
+                                 storage_adapter="chatterbot.storage.SQLStorageAdapter",
+                                 database_uri=uri,
+                                 logic_adapters=
+                                 [{
+                                      "import_path": "FlowAdapter.FlowAdapter",
+                                      "statement_comparison_function": comp.SentimentComparison,
+                                      "response_selection_method": resp.get_flow_response
+                                  }],
+                                 filters=[filters.get_recent_repeated_responses],
+                                 Story_ID=Story_ID,
+                                 bot_information=bot_information)
             db = DBManager(user=db_username,
                            password=db_password,
                            host=db_server,

@@ -20,8 +20,6 @@ def get_flow_response(input_statement, response_list, Story_ID, storage=None):
     :return: The response statement with the greatest number of occurrences.
     :rtype: Statement
     """
-    print(response_list)
-    print(Story_ID)
     matching_response = None
     occurrence_count = -1
 
