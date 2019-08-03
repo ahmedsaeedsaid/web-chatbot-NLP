@@ -58,7 +58,7 @@ class MySQL:
     # TODO: Merge __execute with commit__
     def __execute(self):
         con = self.connection()
-        cr = con.cursor()
+        cr = con.cursor(buffered=True)
         cr.execute(self.query)
         con.commit()
         self._save_last_query()
@@ -67,7 +67,7 @@ class MySQL:
 
     def commit_(self):
         con = self.connection()
-        cr = con.cursor()
+        cr = con.cursor(buffered=True)
         try:
             cr.execute(self.query)
             cr.commit()

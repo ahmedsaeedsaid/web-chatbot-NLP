@@ -37,9 +37,10 @@ def get_faq_Q_A_Pairs(faq_table_name, db):
     faq_table_data = db.get_table_data(faq_table_name)
     Q_A = dict()
     for item in faq_table_data:
-        question = ''
-        answer = ''
-        for idx, value in enumerate(item):
+        question = item[1]
+        answer = item[2]
+        Q_A[question] = answer
+        """for idx, value in enumerate(item):
             if str(value).isdigit() or len(nltk.word_tokenize(str(value))) < 3:
                 continue
             else:
@@ -55,5 +56,5 @@ def get_faq_Q_A_Pairs(faq_table_name, db):
         # Removing Whitespaces
         question = " ".join(question.split()).replace(u"\u2018", "'").replace(u"\u2019", "'")
         answer = " ".join(answer.split()).replace(u"\u2018", "'").replace(u"\u2019", "'")
-        Q_A[question] = answer
+        Q_A[question] = answer"""
     return Q_A

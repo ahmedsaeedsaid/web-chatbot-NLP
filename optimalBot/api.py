@@ -16,12 +16,10 @@ import re
 import chatterbot.logic.best_match
 from chatterbot import ChatBot
 from optimalBot.trainer import ListTrainerOverridden,ChatterBotCorpusTrainerOverridden
-from chatterbot.trainers import ListTrainer, ChatterBotCorpusTrainer
 from sentence_classification import *
 import os
 from os.path import join, dirname
 from dotenv import load_dotenv
-import nltk
 
 dotenv_path = join(dirname(__file__), '../.env')
 load_dotenv(dotenv_path)
@@ -36,6 +34,7 @@ DB_PASSWORD = os.getenv('DB_PASSWORD')
 TABLE_BOT_1 = os.getenv('TABLE_BOT_1')
 TABLE_BOT_2 = os.getenv('TABLE_BOT_2')
 TABLE_BOT_3 = os.getenv('TABLE_BOT_3')
+print(TABLE_BOT_1)
 FAQ_TABLE_NAME = os.getenv('FAQ_TABLE_NAME')
 DEFAULT_STORY_ID = os.getenv('DEFAULT_STORY_ID')
 
@@ -92,9 +91,9 @@ def api_askBot():
                                  database_uri=uri,
                                  logic_adapters=
                                  [{
-                                      "import_path": "FlowAdapter.FlowAdapter",
-                                      "statement_comparison_function": comp.LevenshteinDistance,
-                                      "response_selection_method": resp.get_flow_response
+                                  "import_path": "FlowAdapter.FlowAdapter",
+                                  "statement_comparison_function": comp.SentimentComparison,
+                                  "response_selection_method": resp.get_flow_response
                                   }],
                                  filters=[filters.get_recent_repeated_responses],
                                  Story_ID=Story_ID,
@@ -142,13 +141,13 @@ def api_create():
                 conversation.append(key)
                 conversation.append(value)
 
-            trainer = ChatterBotCorpusTrainer(chatbot)
+            trainer = ChatterBotCorpusTrainerOverridden(chatbot)
             trainer.train(
                 "chatterbot.corpus.english.greetings",
                 "chatterbot.corpus.english.conversations"
             )
 
-            trainer = ListTrainer(chatbot)
+            trainer = ListTrainerOverridden(chatbot)
             trainer.train(conversation)
             return jsonify('success')
 

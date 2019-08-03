@@ -192,7 +192,15 @@
                     Questions_generated: Questions_generated,
                     '<?= $this->security->get_csrf_token_name() ?>': '<?= $this->security->get_csrf_hash() ?>'
                 },
-                success: function(data) {
+                success: function() {
+                    Swal.fire(
+                        'Success!',
+                        'Questions Saved Successfully!',
+                        'success'
+                    );
+                    setTimeout(function(){
+                        window.location = "<?= base_url("customer/scenariosList") ?>";
+                     }, 3000);
                 }
             });
         });
