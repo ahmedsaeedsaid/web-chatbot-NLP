@@ -77,10 +77,18 @@ class subscribeFormMod extends CI_Model {
         return 0;
     }
     
-    public function getComapnyByBotName ($bot_name) {
+    public function getCompanyByBotName ($bot_name) {
         $this->db->select('*');
         $this->db->from('company');
         $this->db->where('bot_name', $bot_name);
+        $result = $this->db->get();
+        return $result->row();
+    }
+    
+    public function getCompanyById ($id) {
+        $this->db->select('*');
+        $this->db->from('company');
+        $this->db->where('id', $id);
         $result = $this->db->get();
         return $result->row();
     }

@@ -21,7 +21,7 @@ class Support extends CI_Controller {
         // check loggedIn
         $this->authentication->IsLoggedIn('login');
         $config['title'] = 'Login';
-        $this->load->view('support/login', $this->data, $config);
+        $this->load->view('support/login', $config);
     }
 
     public function login() {

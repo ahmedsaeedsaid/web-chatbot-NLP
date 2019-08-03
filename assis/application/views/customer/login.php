@@ -92,12 +92,12 @@
                     <section class="login-form">
                         <?php
                         $attributes = array('name' => 'login_form', 'id' => 'cms_log_form', 'class' => 'form-horizontal', 'role' => 'login');
-                        echo form_open(base_url() . 'support/login', $attributes);
+                        echo form_open(base_url() . 'customer/login', $attributes);
                         ?>
-                        <p id="geeks_word_p">Support Portal</p>
+                        <p id="geeks_word_p">CUSTOMER PORTAL</p>
                         <?php
                         echo form_error('dusername');
-                        echo form_input(array('id' => 'dusername', 'name' => 'dusername', 'type' => 'text', 'class' => 'form-control input-lg', 'placeholder' => 'Username', 'required' => ''));
+                        echo form_input(array('id' => 'demail', 'name' => 'demail', 'type' => 'email', 'class' => 'form-control input-lg', 'placeholder' => 'Email', 'required' => ''));
                         echo form_error('dpass');
                         echo form_input(array('id' => 'dpass', 'name' => 'dpass', 'type' => 'password', 'class' => 'form-control input-lg', 'placeholder' => 'Password', 'required' => ''));
                         if (isset($err)) {

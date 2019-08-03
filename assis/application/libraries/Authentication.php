@@ -30,4 +30,19 @@ class Authentication {
         return true;
     }
 
+    public function IsLoggedInCustomer($mode='any') {
+        if($mode == 'any'){
+            if (!$this->CI->session->userdata('assis_customerid')) {
+                redirect('customer');
+                exit;
+            }
+        } else if($mode == 'login') {
+           if ($this->CI->session->userdata('assis_customerid')) {
+                redirect('customer/main');
+                exit;
+            }
+        }
+        return true;
+    }
+
 }

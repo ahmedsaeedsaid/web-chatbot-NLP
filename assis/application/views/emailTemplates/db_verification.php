@@ -402,7 +402,7 @@
                                                                 <tbody>
                                                                     <tr>
                                                                         <td>
-                                                                            <a href="http://localhost/web-assistant/assis/BotQuestionGetter/" target="_blank">Customer Portal</a>
+                                                                            <a href="http://localhost/web-assistant/assis/customer/" target="_blank">Customer Portal</a>
                                                                         </td>
                                                                     </tr>
                                                                 </tbody>

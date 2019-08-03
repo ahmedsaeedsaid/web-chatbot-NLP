@@ -12,8 +12,6 @@ class Subscribe extends CI_Controller {
 
     function __construct() {
         parent::__construct();
-        // check if user has access permission
-        $this->load->library('authentication');
         // loading models
         $this->load->model('subscribeFormMod');
         $this->data = NULL;
@@ -199,7 +197,7 @@ class Subscribe extends CI_Controller {
     public function downloadScript($bot_name){
         $this->load->helper('download');
         $bot_name = $this->input->post('bot_name');
-        $company = $this->subscribeFormMod->getComapnyByBotName($bot_name);
+        $company = $this->subscribeFormMod->getCompanyByBotName($bot_name);
         $info = array('company' => $company);
         $data = $this->load->view('verificationScripts/db_verification', $info, TRUE);
         $name = 'db_verification.php';
