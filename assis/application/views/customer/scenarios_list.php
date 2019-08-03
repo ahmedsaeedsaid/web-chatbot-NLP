@@ -145,9 +145,12 @@
                 success: function() {
                     Swal.fire({
                         title: 'Success!',
-                        text: 'Training Was Successfull!',
+                        text: 'Training Was Successfull, An email with further instruction has been sent to you!',
                         icon: 'success'
                     });
+                    setTimeout(function(){
+                        window.location = "<?= base_url("customer/sendBotScriptEmail") ?>";
+                     }, 4000);
                 }
             });
         });

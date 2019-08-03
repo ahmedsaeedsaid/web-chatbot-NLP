@@ -20,6 +20,23 @@ class customerMod extends CI_Model {
         $this->db->where('id', $id);
         $this->db->update('scenarios', array("active" => $active));
     }
+
+    public function finishedTrainingFirstTime($id) {
+        $this->db->where('id', $id);
+        $this->db->update('company', array("first_train" => 1));
+    }
+
+    public function checkIfTrainedFirstTime($id) {
+        $this->db->select('first_train');
+        $this->db->from('company');
+        $this->db->where('id', $id);
+        $query = $this->db->get();
+        $res = $query->row();
+        if($res->first_train){
+            return true;
+        }
+        return false;
+    }
     
     public function saveQASC ($Questions_generated) {
         $this->load->model('subscribeFormMod');

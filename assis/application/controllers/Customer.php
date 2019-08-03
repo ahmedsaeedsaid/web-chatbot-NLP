@@ -109,5 +109,32 @@ class Customer extends CI_Controller {
         $Questions_generated = $this->input->post('Questions_generated');
         $this->CM->saveQASC($Questions_generated);
     }
+    
+    private function sendEmail ($subject, $body, $to){
+        $this->load->library('email');
+        // Also, for getting full html you may use the following internal method:
+        //$body = $this->email->full_html($subject, $message);
+
+        $result = $this->email
+            ->from('optimal.bot.service@gmail.com', 'Optimal AI Support')
+            ->to($to)
+            ->subject($subject)
+            ->message($body)
+            ->send();
+    }
+    
+    public function sendBotScriptEmail(){
+        $this->load->model('subscribeFormMod');
+        $trained = $this->CM->checkIfTrainedFirstTime($this->session->userdata('assis_companyid'));
+        if(!$trained){
+            $company = $this->subscribeFormMod->getCompanyById($this->session->userdata('assis_companyid'));
+            $client = $this->subscribeFormMod->getClientById($this->session->userdata('assis_customerid'));
+            $info = array("username" => $client->name, 'token' => $company->token);
+            $data = $this->load->view('emailTemplates/bot_script', $info, TRUE);
+            $this->sendEmail('Optimal Bot Deployment', $data, $client->email);
+            $this->CM->finishedTrainingFirstTime($this->session->userdata('assis_companyid'));
+        }
+        redirect('customer');
+    } 
 
 }

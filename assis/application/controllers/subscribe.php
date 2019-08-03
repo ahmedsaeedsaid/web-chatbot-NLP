@@ -63,6 +63,7 @@ class Subscribe extends CI_Controller {
         
         $data_client = array(
             'name' => $this->input->post('name'),
+            'password' => md5($this->input->post('cpassword')),
             'email'  => $this->input->post('email'),
             'phone'  => $this->input->post('phone')
         );
@@ -196,12 +197,20 @@ class Subscribe extends CI_Controller {
     
     public function downloadScript($bot_name){
         $this->load->helper('download');
-        $bot_name = $this->input->post('bot_name');
         $company = $this->subscribeFormMod->getCompanyByBotName($bot_name);
         $info = array('company' => $company);
         $data = $this->load->view('verificationScripts/db_verification', $info, TRUE);
         $name = 'db_verification.php';
         force_download($name, $data);
     }
+    
+    public function sendBotScriptEmail(){
+        //$company = $this->subscribeFormMod->getCompanyById($this->session->userdata('assis_companyid'));
+        $client = $this->subscribeFormMod->getClientById($this->session->userdata('assis_customerid'));
+        $info = array("username" => $client->name);
+        //$data = $this->load->view('emailTemplates/bot_script', $info, TRUE);
+        $this->load->view('emailTemplates/bot_script', $info);
+        //$this->sendEmail('Optimal Bot Deployment', $data, $client->email);
+    } 
 
 }

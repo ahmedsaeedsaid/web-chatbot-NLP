@@ -109,6 +109,15 @@ if($this->session->flashdata('db_connection') == 'failed'){
                                 <br>
                                 <div class="row">
                                     <div class="col-lg-12">
+                                        <label>Password</label>
+                                        <input type="password" name="cpassword" id="cpassword" class="form-control" />
+                                        <span id="error_cpassword" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-lg-12">
                                         <label>Phone</label>
                                         <input type="text" name="phone" id="phone" class="form-control" />
                                         <span id="error_phone" class="text-danger"></span>
@@ -459,6 +468,7 @@ if($this->session->flashdata('db_connection') == 'failed'){
             var error_server = '';
             var error_username = '';
             var error_password = '';
+            var error_cpassword = '';
             var error_DB_name = '';
             var mobile_validation = /^\d{10}$/;
             if ($.trim($('#server').val()).length == 0) {
@@ -492,6 +502,17 @@ if($this->session->flashdata('db_connection') == 'failed'){
                 $('#password').removeClass('has-error');
             }*/
 
+
+            if ($.trim($('#cpassword').val()).length == 0) {
+                error_cpassword = 'password is required';
+                $('#error_cpassword').text(error_password);
+                $('#cpassword').addClass('has-error');
+            } else {
+                error_cpassword = '';
+                $('#error_cpassword').text(error_password);
+                $('#cpassword').removeClass('has-error');
+            }
+
             if ($.trim($('#DB_name').val()).length == 0) {
                 error_DB_name = 'name is required';
                 $('#error_DB_name').text(error_DB_name);
@@ -503,7 +524,7 @@ if($this->session->flashdata('db_connection') == 'failed'){
             }
 
 
-            if (error_password != '' || error_DB_name != '' || error_username != '' || error_server != '') {
+            if (error_password != '' || error_cpassword != '' || error_DB_name != '' || error_username != '' || error_server != '') {
                 return false;
             } else {
                 $('#btn_action_details').attr("disabled", "disabled");

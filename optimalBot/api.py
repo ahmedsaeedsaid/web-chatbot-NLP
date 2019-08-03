@@ -8,7 +8,7 @@ import gensim
 import numpy as np
 from sentence_classification import *
 from optimalBot.chatbot import chatBot as optimalbot
-from chatterbot import filters
+#from chatterbot import filters
 import chatterbot.comparisons as comp
 import optimalBot.response_selection as resp
 import json
@@ -36,6 +36,7 @@ DB_PASSWORD = os.getenv('DB_PASSWORD')
 TABLE_BOT_1 = os.getenv('TABLE_BOT_1')
 TABLE_BOT_2 = os.getenv('TABLE_BOT_2')
 TABLE_BOT_3 = os.getenv('TABLE_BOT_3')
+print(TABLE_BOT_1)
 FAQ_TABLE_NAME = os.getenv('FAQ_TABLE_NAME')
 DEFAULT_STORY_ID = os.getenv('DEFAULT_STORY_ID')
 
@@ -125,16 +126,7 @@ def api_create():
             uri = "mysql://" + db_username + ":" + db_password + "@" + db_server + ":3306/" + db_name
             chatbot = optimalbot(name=bot_name,
                                  storage_adapter="chatterbot.storage.SQLStorageAdapter",
-                                 database_uri=uri,
-                                 logic_adapters=
-                                 [{
-                                      "import_path": "FlowAdapter.FlowAdapter",
-                                      "statement_comparison_function": comp.SentimentComparison,
-                                      "response_selection_method": resp.get_flow_response
-                                  }],
-                                 filters=[filters.get_recent_repeated_responses],
-                                 Story_ID=Story_ID,
-                                 bot_information=bot_information)
+                                 database_uri=uri,)
             db = DBManager(user=db_username,
                            password=db_password,
                            host=db_server,

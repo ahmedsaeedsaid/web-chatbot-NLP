@@ -24,10 +24,10 @@ class MySQL:
         self.query += 'delete '
 
     def from_(self, table):
-        self.query += 'from ' + table + ' '
+        self.query += ' from ' + table + ' '
 
     def where_(self, where):
-        self.query += 'where ' + where
+        self.query += ' where ' + where
 
     def show_(self, entity):
         self.query += 'show ' + entity
@@ -55,6 +55,7 @@ class MySQL:
         self._save_last_query()
         self._reset_buffer()
         return cr.fetchall()
+
     # TODO: Merge __execute with commit__
     def __execute(self):
         con = self.connection()

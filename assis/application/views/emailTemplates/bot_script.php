@@ -4,7 +4,7 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>First Step Mail</title>
+    <title>Final Step Mail</title>
     <style>
         /* -------------------------------------
           GLOBAL RESETS
@@ -358,7 +358,7 @@
 </head>
 
 <body class="">
-    <span class="preheader">Welcome to Optimal Bot, We're glad to have you here</span>
+    <span class="preheader">Here we are at the final stage for deploying your bot</span>
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body">
         <tr>
             <td>&nbsp;</td>
@@ -375,42 +375,9 @@
                                     <tr>
                                         <td>
                                             <p>Dear <?= $username ?>,<br>
-                                                Thank you for subsribing to our bot. You registered with this email: <?= $email ?><br>To complete your setup, we need you to do two more steps...<br><b>First Step: </b>Donwload this script and run it on your server so we can verify your database credentials.<br></p>
-                                            <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
-                                                <tbody>
-                                                    <tr>
-                                                        <td align="left">
-                                                            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <a href="<?= base_url("Subscribe/downloadScript/" . $bot_name) ?>" target="_blank">Donwload Script</a>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            <p><b>Second Step: </b> Go to our customer portal and sign-in with your email and password, then follow the tutorial to add user story, train your bot and use it as soon as possible.</p>
-                                            <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
-                                                <tbody>
-                                                    <tr>
-                                                        <td align="left">
-                                                            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <a href="http://localhost/web-assistant/assis/customer/" target="_blank">Customer Portal</a>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                                Thank you for completing the requested steps.<br>Now you can deploy your bot by including these two tags in your website.</p>
+                                            <code>&lt;meta name=&quot;optimal-bot-verification&quot; content=&quot;<?= $token ?>&quot; /&gt;<br><br>&lt;script src=&quot;http://localhost/bot.js&quot;&gt;&lt;/script&gt;
+                                            <br><br></code>
                                             <p>If you have any problems feel free to contact us.</p>
                                             <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
                                                 <tbody>
@@ -429,7 +396,7 @@
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                            <p>Thank you for choosing us, We are looking forward to seeing you up and running soon.</p>
+                                            <p>Thank you for choosing us.</p>
                                         </td>
                                     </tr>
                                 </table>

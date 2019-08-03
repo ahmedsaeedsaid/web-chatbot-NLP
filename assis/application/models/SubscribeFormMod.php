@@ -92,6 +92,14 @@ class subscribeFormMod extends CI_Model {
         $result = $this->db->get();
         return $result->row();
     }
+    
+    public function getClientById ($id) {
+        $this->db->select('*');
+        $this->db->from('client');
+        $this->db->where('id', $id);
+        $result = $this->db->get();
+        return $result->row();
+    }
 
     
 
