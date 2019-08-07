@@ -20,6 +20,7 @@ class Customer extends CI_Controller {
 
     public function index() {
         // check loggedIn
+        
         $this->authentication->IsLoggedInCustomer('login');
         $config['title'] = 'Login';
         $this->load->view('customer/login', $config);
@@ -58,6 +59,7 @@ class Customer extends CI_Controller {
         $this->authentication->IsLoggedInCustomer('any');
         $config['title'] = 'Bot Question ChatBot';
         $data['scenario_id'] = $scenario_id;
+        $data['QAs'] = $this->CM->getQASC($scenario_id);
         $this->load->view('customer/common', $config);
         $this->load->view('BotQuestionGetterForm', $data);
     }
@@ -68,6 +70,7 @@ class Customer extends CI_Controller {
         $scenarios = $this->CM->getAllScenarios();
         $data['scenarios'] = $scenarios;
         $this->load->model('subscribeFormMod');
+        
         $company = $this->subscribeFormMod->getCompanyById($this->session->userdata('assis_companyid'));
         $data['token'] = $company->token;
         $config['title'] = 'Bot Scenarios';
@@ -107,7 +110,8 @@ class Customer extends CI_Controller {
         // check loggedIn
         $this->authentication->IsLoggedInCustomer('any');
         $Questions_generated = $this->input->post('Questions_generated');
-        $this->CM->saveQASC($Questions_generated);
+        $scenario = $this->input->post('scenario');
+        $this->CM->saveQASC($Questions_generated,$scenario);
     }
     
     private function sendEmail ($subject, $body, $to){

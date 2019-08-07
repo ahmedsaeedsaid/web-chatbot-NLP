@@ -30,18 +30,35 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <?php for($i=0;$i<count($QAs);$i++){ ?>
+                                    <tr>
+                                        <td><?=($i+1)?></td>
+                                        <td><?=$QAs[$i]['question']?></td>
+                                        <td><?=$QAs[$i]['answer']?></td>
+                                        <td><?php
+                                                if($QAs[$i]['parent']!='0')
+                                                   echo $QAs[$i]['parent']-$QAs[0]['id']+1;
+                                                else
+                                                   echo '0';
+                                            ?></td>
+                                        <td><button  class="btn btn-primary btn-xs Edit-row">Edit</button> <button  class="btn btn-danger btn-xs Delete-row" >Delete</button></td>
+                                    </tr>
+
+                                <?php } ?>
                             </tbody>
                         </table>
                     </div>
                     <div class="col-lg-4 ">
                         <div class="form-group">
                             <label for="question">Question:</label>
-                            <input type="question" class="form-control" id="question">
+                            <textarea name="question" id="question" class="form-control" style="resize: none;    height: 90px;"></textarea>
+                            <!--<input type="question" class="form-control" id="question">-->
                         </div>
 
                         <div class="form-group">
                             <label for="answer">Answer:</label>
-                            <input type="answer" class="form-control" id="answer">
+                            <textarea name="answer" id="answer" class="form-control" style="resize: none;    height: 90px;"></textarea>
+                            <!--<input type="answer" class="form-control" id="answer">-->
                         </div>
 
                         <div class="form-group">
@@ -66,8 +83,31 @@
         </div>
     </div>
 </div>
+
 <script>
     $(document).ready(function() {
+        $('#parent_question').select2()
+            .on('select2-open', function() {
+
+                // however much room you determine you need to prevent jumping
+                var requireHeight = 600;
+                var viewportBottom = $(window).scrollTop() + $(window).height();
+
+                // figure out if we need to make changes
+                if (viewportBottom < requireHeight) 
+                {           
+                    // determine how much padding we should add (via marginBottom)
+                    var marginBottom = requireHeight - viewportBottom;
+
+                    // adding padding so we can scroll down
+                    $(".aLwrElmntOrCntntWrppr").css("marginBottom", marginBottom + "px");
+
+                    // animate to just above the select2, now with plenty of room below
+                    $('html, body').animate({
+                        scrollTop: $("#mySelect2").offset().top - 10
+                    }, 1000);
+                }
+            });
         var editing_SL = "1";
 
         function refreshIndexes() {
@@ -76,13 +116,19 @@
                     $(this).text(index + 1);
             });
         }
+        function refreshParents() {
+            $("#questionsTable tbody tr td:nth-child(4)").each(function(index) {
+                if ($(this).text() != "0")
+                    $(this).text(parseInt($(this).text()) + 1);
+            });
+        }
 
         function redrowSelect() {
             $("#parent_question").html("");
             $("#parent_question").append('<option value="0">primary Question</option>');
             $("#questionsTable tbody tr td:first-child").each(function(index) {
                 if ($(this).text() != "No data available in table") {
-                    $("#parent_question").append('<option value="' + (index + 1) + '">' + (index + 1) + ' - ' + $(this).parent().children(":nth-child(2)").text() + ' | ans: ' + $(this).parent().children(":nth-child(3)").text() + '</option>');
+                    $("#parent_question").append('<option value="' + (index + 1) + '">' + (index + 1) + ' - ' + $(this).parent().children(":nth-child(2)").text() + '</option>');
                 }
             });
         }
@@ -97,9 +143,11 @@
         $('#addRow').on('click', function() {
             var addRowText = $('#addRow').text();
             if (addRowText == "Add Question") {
+                refreshParents();
                 var Question_value = $("#question").val().trim();
                 var Answer_value = $("#answer").val().trim();
                 var parent_question = $("#parent_question").val();
+                console.log(Question_value);
                 if (Question_value != "" && Answer_value != "") {
                     myTable.row.add([
                         "",
@@ -190,9 +238,11 @@
                 type: "POST",
                 data: {
                     Questions_generated: Questions_generated,
+                    scenario: <?= $scenario_id ?>,
                     '<?= $this->security->get_csrf_token_name() ?>': '<?= $this->security->get_csrf_hash() ?>'
                 },
-                success: function() {
+                success: function(res) {
+                    console.log(res);
                     Swal.fire(
                         'Success!',
                         'Questions Saved Successfully!',
