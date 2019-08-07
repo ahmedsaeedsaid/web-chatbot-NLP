@@ -86,6 +86,7 @@
 
 <script>
     $(document).ready(function() {
+        redrowSelect();
         $('#parent_question').select2()
             .on('select2-open', function() {
 
