@@ -376,7 +376,7 @@
                                         <td>
                                             <p>Dear <?= $username ?>,<br>
                                                 Thank you for completing the requested steps.<br>Now you can deploy your bot by including these two tags in your website.</p>
-                                            <code>&lt;meta name=&quot;optimal-bot-verification&quot; content=&quot;<?= $token ?>&quot; /&gt;<br><br>&lt;script src=&quot;http://localhost/bot.js&quot;&gt;&lt;/script&gt;
+                                            <code>&lt;meta name=&quot;optimal-bot-verification&quot; content=&quot;<?= $token ?>&quot; /&gt;<br><br>&lt;script src=&quot;<?= base_url() ?>custom-scripts/bot.js&quot;&gt;&lt;/script&gt;
                                             <br><br></code>
                                             <p>If you have any problems feel free to contact us.</p>
                                             <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">

@@ -62,7 +62,41 @@ class customerMod extends CI_Model {
         return false;
     }
     
-    public function saveQASC ($Questions_generated,$scenario) {
+    public function createScenariosTable (){
+        $dbData = $this->ConencttoClientDB();
+        $db = $dbData[0];
+        $db_forge = $dbData[1];
+        if(!$db->table_exists('scenarios')){
+            $fields = array(
+                'id' => array(
+                    'type' => 'INT',
+                    'constraint' => 9,
+                    'unsigned' => TRUE,
+                    'auto_increment' => TRUE
+                ),
+                'name' => array(
+                    'type' => 'VARCHAR',
+                    'constraint' => 255
+                ),
+                'companyId' => array(
+                    'type' => 'INT',
+                    'constraint' => 9
+                ),
+                'active' => array(
+                    'type' => 'INT',
+                    'constraint' => 9,
+                    'default' => 1
+                )
+            );
+            $db_forge->add_field($fields);
+            // define primary key
+            $db_forge->add_key('id', TRUE);
+            // create table
+            $db_forge->create_table('scenarios');
+        }
+    }
+    
+    public function saveQASC ($Questions_generated, $scenario) {
         $dbData = $this->ConencttoClientDB();
         $db = $dbData[0];
         $db_forge = $dbData[1];
@@ -70,7 +104,6 @@ class customerMod extends CI_Model {
         // define table fields
         if($db->table_exists('optimal_bot_q_a'))
         {
-            
             $db->delete('optimal_bot_q_a', array('scenario' => $scenario)); 
         }
         else

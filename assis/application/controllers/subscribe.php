@@ -204,14 +204,5 @@ class Subscribe extends CI_Controller {
         $name = 'db_verification.php';
         force_download($name, $data);
     }
-    
-    public function sendBotScriptEmail(){
-        //$company = $this->subscribeFormMod->getCompanyById($this->session->userdata('assis_companyid'));
-        $client = $this->subscribeFormMod->getClientById($this->session->userdata('assis_customerid'));
-        $info = array("username" => $client->name);
-        //$data = $this->load->view('emailTemplates/bot_script', $info, TRUE);
-        $this->load->view('emailTemplates/bot_script', $info);
-        //$this->sendEmail('Optimal Bot Deployment', $data, $client->email);
-    } 
 
 }

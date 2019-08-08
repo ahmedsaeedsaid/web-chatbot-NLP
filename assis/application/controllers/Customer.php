@@ -32,6 +32,7 @@ class Customer extends CI_Controller {
         $cust->password = strip_tags(addslashes(stripslashes($this->input->post('dpass'))));
         $res = $this->loginMod->authenticateCustomer($cust);
         if ($res) {
+            $this->CM->createScenariosTable();
             redirect('customer/main');
         } else {
             $this->data['err'] = 'normal_login_auth_error';

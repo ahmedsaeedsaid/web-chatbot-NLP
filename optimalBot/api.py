@@ -84,6 +84,7 @@ def api_askBot():
         args = request.args
     if 'token' in args and 'query' in args:
         bot_information = authorize(args['token'])
+        print(bot_information)
         bot_name, db_server, db_name, db_username, db_password, db_driver, _ = bot_information
         if db_driver == 'mysqli' or db_driver == 'mysql':
             # TODO: configure db_port

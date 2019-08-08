@@ -56,6 +56,8 @@ class DBManager:
         self.db.from_('company')
         self.db.where_("token='" + token + "'")
         company = self.db.fetch_all_()
+        print(company)
+        print(self.db.last_query())
         if company:
             # Retrieve Bot Name, server, name, username, password, driver, client_id
             return (company[0][15], company[0][4], company[0][5],
@@ -67,6 +69,7 @@ class DBManager:
         self.db.from_('company')
         self.db.where_("token='" + content + "'")
         company = self.db.fetch_all_()
+        print(company)
         if company:
             return 'success'
         return 'failure'
