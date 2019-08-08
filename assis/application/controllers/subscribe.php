@@ -56,9 +56,9 @@ class Subscribe extends CI_Controller {
             "db_debug" => false
         );
         $db_driver = $this->testConnection($this->db_drivers, $config);
-        if($db_driver == ''){
-            $this->session->set_flashdata('db_connection', 'failed');
-            redirect(base_url('subscribe'));
+        $db_verified = 0;
+        if($db_driver){
+            $db_verified = 1;
         }
         
         $data_client = array(
@@ -97,6 +97,7 @@ class Subscribe extends CI_Controller {
             'support'  => $need_support,
             'bot_name'  => $bot_name,
             'token'  => $token,
+            'db_verified'  => $db_verified,
             'status'  => 'pending'
         );
         
@@ -112,7 +113,7 @@ class Subscribe extends CI_Controller {
         ); 
     
         $insert_id = $this->subscribeFormMod->addSubscription($data_subscriptions);
-        $this->sendFirstStepEmail($bot_name, $data_client['email'], $data_client['name']);
+        $this->sendFirstStepEmail($bot_name, $data_client['email'], $data_client['name'], $db_verified);
         $data['order_id']=$insert_id;
         $data['description_order']='Bot chat';
         $data['price']=50;
@@ -189,8 +190,8 @@ class Subscribe extends CI_Controller {
             ->send();
     }
     
-    public function sendFirstStepEmail($bot_name, $email, $username){
-        $info = array("bot_name" => $bot_name, "username" => $username, "email" => $email);
+    public function sendFirstStepEmail($bot_name, $email, $username, $db_verified){
+        $info = array("bot_name" => $bot_name, "username" => $username, "email" => $email, "db_verified" => $db_verified);
         $data = $this->load->view('emailTemplates/db_verification', $info, TRUE);
         $this->sendEmail('Welcome to Optimal Bot', $data, $email);
     } 

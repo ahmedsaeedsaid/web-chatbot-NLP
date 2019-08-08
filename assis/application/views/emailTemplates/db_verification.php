@@ -356,7 +356,7 @@
 
     </style>
 </head>
-
+<?php $step = 1; ?>
 <body class="">
     <span class="preheader">Welcome to Optimal Bot, We're glad to have you here</span>
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body">
@@ -375,7 +375,8 @@
                                     <tr>
                                         <td>
                                             <p>Dear <?= $username ?>,<br>
-                                                Thank you for subsribing to our bot. You registered with this email: <?= $email ?><br>To complete your setup, we need you to do two more steps...<br><b>First Step: </b>Donwload this script and run it on your server so we can verify your database credentials.<br></p>
+                                                Thank you for subsribing to our bot. You registered with this email: <?= $email ?><br>To complete your setup, we need you to do:<br><?php if (!$db_verified) { ?><b>Step <?= $step ?>: </b>Donwload this script and run it on your server so we can verify your database credentials.<br></p>
+                                            <?php $step +=1; ?>
                                             <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
                                                 <tbody>
                                                     <tr>
@@ -393,7 +394,8 @@
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                            <p><b>Second Step: </b> Go to our customer portal and sign-in with your email and password, then follow the tutorial to add user story, train your bot and use it as soon as possible.</p>
+                                            <?php } ?>
+                                            <p><b>Step <?= $step ?>: </b> Go to our customer portal and sign-in with your email and password, then follow the tutorial to add user story, train your bot and use it as soon as possible.</p>
                                             <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
                                                 <tbody>
                                                     <tr>
