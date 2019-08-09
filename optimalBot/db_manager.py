@@ -59,9 +59,9 @@ class DBManager:
         print(company)
         print(self.db.last_query())
         if company:
-            # Retrieve Bot Name, server, name, username, password, driver, client_id
+            # Retrieve Bot Name, server, name, username, password, driver, client_id , domain
             return (company[0][15], company[0][4], company[0][5],
-                    company[0][6], company[0][7], company[0][8], company[0][1])
+                    company[0][6], company[0][7], company[0][8], company[0][1] , company[0][10] )
         return False
 
     def verify_meta(self, content):

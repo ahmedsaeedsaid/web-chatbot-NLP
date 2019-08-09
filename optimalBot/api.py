@@ -1,4 +1,5 @@
 from flask import Flask, request, abort, make_response
+from urllib.parse import urlparse
 from flask_restful import Resource, Api
 from flask_jsonpify import jsonify
 from flask_cors import CORS
@@ -51,6 +52,13 @@ Story_ID = DEFAULT_STORY_ID
 CORS(app)
 api = Api(app)
 
+def verifyDomain(domain,requested_domain):
+    if requested_domain:
+        parsed_uri = urlparse(requested_domain)
+        requested_domain = '{uri.netloc}'.format(uri=parsed_uri)
+        return domain == requested_domain
+    return True
+
 
 def authorize(user_token):
     # Contain User Verification Logic
@@ -85,29 +93,37 @@ def api_askBot():
     if 'token' in args and 'query' in args:
         bot_information = authorize(args['token'])
         print(bot_information)
-        bot_name, db_server, db_name, db_username, db_password, db_driver, _ = bot_information
-        if db_driver == 'mysqli' or db_driver == 'mysql':
-            # TODO: configure db_port
-            uri = "mysql://" + db_username + ":" + db_password + "@" + db_server + ":3306/" + db_name
-            chatbot = optimalbot(name=bot_name,
-                                 storage_adapter="chatterbot.storage.SQLStorageAdapter",
-                                 database_uri=uri,
-                                 logic_adapters=
-                                 [{
-                                  "import_path": "FlowAdapter.FlowAdapter",
-                                  "statement_comparison_function": comp.SentimentComparison,
-                                  "response_selection_method": resp.get_flow_response
-                                  }],
-                                 filters=[filters.get_recent_repeated_responsesCustomized],
-                                 Story_ID=Story_ID,
-                                 bot_information=bot_information)
-            # Filter User Query
-            cleaned_query = re.sub('[^ a-zA-Z0-9]', ' ', args['query'])
-            cleaned_query = " ".join(nltk.word_tokenize(cleaned_query))
-            response, Story_ID = chatbot.get_response(cleaned_query)
-            data = dict()
-            data['bot_reply'] = str(response)
-            return jsonify(data)
+        if bot_information :
+            bot_name, db_server, db_name, db_username, db_password, db_driver, domain = bot_information
+            requested_domain = request.headers.get("Referer")
+            if verifyDomain(domain , requested_domain):
+            
+                if db_driver == 'mysqli' or db_driver == 'mysql' :
+                    # TODO: configure db_port
+                    uri = "mysql://" + db_username + ":" + db_password + "@" + db_server + ":3306/" + db_name
+                    chatbot = optimalbot(name=bot_name,
+                                        storage_adapter="chatterbot.storage.SQLStorageAdapter",
+                                        database_uri=uri,
+                                        logic_adapters=
+                                        [{
+                                        "import_path": "FlowAdapter.FlowAdapter",
+                                        "statement_comparison_function": comp.SentimentComparison,
+                                        "response_selection_method": resp.get_flow_response
+                                        }],
+                                        filters=[filters.get_recent_repeated_responsesCustomized],
+                                        Story_ID=Story_ID,
+                                        bot_information=bot_information)
+                    # Filter User Query
+                    cleaned_query = re.sub('[^ a-zA-Z0-9]', ' ', args['query'])
+                    cleaned_query = " ".join(nltk.word_tokenize(cleaned_query))
+                    response, Story_ID = chatbot.get_response(cleaned_query)
+                    data = dict()
+                    data['bot_reply'] = str(response)
+                    return jsonify(data)
+                else:
+                    abort(403)
+            else:
+                abort(403)
         else:
             abort(403)
     else:
@@ -122,37 +138,42 @@ def api_create():
         args = request.args
     if 'token' in args:
         bot_information = authorize(args['token'])
-        bot_name, db_server, db_name, db_username, db_password, db_driver, client_id = bot_information
-        if db_driver == 'mysqli' or db_driver == 'mysql':
-            uri = "mysql://" + db_username + ":" + db_password + "@" + db_server + ":3306/" + db_name
-            chatbot = optimalbot(name=bot_name,
-                                 storage_adapter="chatterbot.storage.SQLStorageAdapter",
-                                 database_uri=uri,)
-            db = DBManager(user=db_username,
-                           password=db_password,
-                           host=db_server,
-                           database=db_name)
+        if bot_information :
+            bot_name, db_server, db_name, db_username, db_password, db_driver, client_id , domain = bot_information
+            requested_domain = request.headers.get("Referer")
+            if verifyDomain(domain , requested_domain):
+                if db_driver == 'mysqli' or db_driver == 'mysql':
+                    uri = "mysql://" + db_username + ":" + db_password + "@" + db_server + ":3306/" + db_name
+                    chatbot = optimalbot(name=bot_name,
+                                        storage_adapter="chatterbot.storage.SQLStorageAdapter",
+                                        database_uri=uri,)
+                    db = DBManager(user=db_username,
+                                password=db_password,
+                                host=db_server,
+                                database=db_name)
 
-            tables = [TABLE_BOT_1, TABLE_BOT_2, TABLE_BOT_3]
-            for table in tables:
-                db.delete_table_data(table)
+                    tables = [TABLE_BOT_1, TABLE_BOT_2, TABLE_BOT_3]
+                    for table in tables:
+                        db.delete_table_data(table)
 
-            faq_table_name = FAQ_TABLE_NAME
-            Q_A = get_faq_Q_A_Pairs(faq_table_name, db)
-            conversation = list()
-            for key, value in Q_A.items():
-                conversation.append(key)
-                conversation.append(value)
+                    faq_table_name = FAQ_TABLE_NAME
+                    Q_A = get_faq_Q_A_Pairs(faq_table_name, db)
+                    conversation = list()
+                    for key, value in Q_A.items():
+                        conversation.append(key)
+                        conversation.append(value)
 
-            trainer = ChatterBotCorpusTrainerOverridden(chatbot)
-            trainer.train(
-                "chatterbot.corpus.english.greetings",
-                "chatterbot.corpus.english.conversations"
-            )
+                    trainer = ChatterBotCorpusTrainerOverridden(chatbot)
+                    trainer.train(
+                        "chatterbot.corpus.english.greetings",
+                        "chatterbot.corpus.english.conversations"
+                    )
 
-            trainer = ListTrainerOverridden(chatbot)
-            trainer.train(conversation)
-            return jsonify('success')
+                    trainer = ListTrainerOverridden(chatbot)
+                    trainer.train(conversation)
+                    return jsonify('success')
+            else:
+                abort(403)
 
 
 @app.route('/checkMetaValidity', methods=['POST'])

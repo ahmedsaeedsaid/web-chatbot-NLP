@@ -36,7 +36,7 @@ class FlowAdapter(LogicAdapter):
 
         self.excluded_words = kwargs.get('excluded_words')
         self.Story_ID = kwargs.get('Story_ID')
-        bot_name, db_server, db_name, db_username, db_password, db_driver, _ = kwargs.get('bot_information')
+        bot_name, db_server, db_name, db_username, db_password, db_driver, _ , _ = kwargs.get('bot_information')
         self.DBManager = DBManager(user=db_username,
                                    password=db_password,
                                    host=db_server,
