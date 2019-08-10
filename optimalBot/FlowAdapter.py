@@ -1,19 +1,7 @@
 from chatterbot.logic import LogicAdapter
 from chatterbot import filters
 from optimalBot.db_manager import *
-import os
-from os.path import join, dirname
-from dotenv import load_dotenv
-
-dotenv_path = join(dirname(__file__), '../.env')
-load_dotenv(dotenv_path)
-
-# Accessing variables.
-FAQ_TABLE_NAME = os.getenv('FAQ_TABLE_NAME')
-STORY_ID_COLUMN = os.getenv('STORY_ID_COLUMN')
-QUESTION_SUBJECT_COLUMN = os.getenv('QUESTION_SUBJECT_COLUMN')
-QUESTION_ID_COLUMN = os.getenv('QUESTION_ID_COLUMN')
-PARENT_ID_COLUMN = os.getenv('PARENT_ID_COLUMN')
+from optimalBot.settings import *
 
 
 class FlowAdapter(LogicAdapter):

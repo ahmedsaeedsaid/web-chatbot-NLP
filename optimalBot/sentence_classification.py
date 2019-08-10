@@ -3,10 +3,8 @@ import pickle
 from db_manager import DBManager
 from bs4 import BeautifulSoup
 import time
-import gensim
 import numpy as np
 
-# nltk.download('nps_chat')
 posts = nltk.corpus.nps_chat.xml_posts()
 
 
@@ -26,11 +24,11 @@ classifier = nltk.ConditionalExponentialClassifier.train(train_set, **cutoffs)
 
 f = open('sentence_classifier.pickle', 'wb')
 pickle.dump(classifier, f)
-f.close()"""
+f.close()
 
 f = open('sentence_classifier.pickle', 'rb')
 classifier = pickle.load(f)
-f.close()
+f.close()"""
 
 
 def get_faq_Q_A_Pairs(faq_table_name, db):

@@ -5,11 +5,9 @@ from flask_jsonpify import jsonify
 from flask_cors import CORS
 from db_manager import DBManager
 import time
-import gensim
 import numpy as np
 from sentence_classification import *
 from optimalBot.chatbot import chatBot as optimalbot
-#from chatterbot import filters
 import chatterbot.comparisons as comp
 import optimalBot.response_selection as resp
 import json
@@ -18,28 +16,11 @@ import chatterbot.logic.best_match
 from chatterbot import ChatBot
 from optimalBot.trainer import ListTrainerOverridden,ChatterBotCorpusTrainerOverridden
 from sentence_classification import *
-import os
-from os.path import join, dirname
-from dotenv import load_dotenv
 import optimalBot.Filters as filters
+from optimalBot.settings import *
 
 
-dotenv_path = join(dirname(__file__), '../.env')
-load_dotenv(dotenv_path)
 
-# Accessing variables.
-HOST = os.getenv('HOST')
-PORT = os.getenv('PORT')
-DB_SERVER = os.getenv('DB_SERVER')
-DB_NAME = os.getenv('DB_NAME')
-DB_USERNAME = os.getenv('DB_USERNAME')
-DB_PASSWORD = os.getenv('DB_PASSWORD')
-TABLE_BOT_1 = os.getenv('TABLE_BOT_1')
-TABLE_BOT_2 = os.getenv('TABLE_BOT_2')
-TABLE_BOT_3 = os.getenv('TABLE_BOT_3')
-print(TABLE_BOT_1)
-FAQ_TABLE_NAME = os.getenv('FAQ_TABLE_NAME')
-DEFAULT_STORY_ID = os.getenv('DEFAULT_STORY_ID')
 
 db = DBManager(user=DB_USERNAME,
                password=DB_PASSWORD,
@@ -94,7 +75,7 @@ def api_askBot():
         bot_information = authorize(args['token'])
         print(bot_information)
         if bot_information :
-            bot_name, db_server, db_name, db_username, db_password, db_driver, domain = bot_information
+            bot_name, db_server, db_name, db_username, db_password, db_driver, _ , domain = bot_information
             requested_domain = request.headers.get("Referer")
             if verifyDomain(domain , requested_domain):
             
@@ -138,6 +119,7 @@ def api_create():
         args = request.args
     if 'token' in args:
         bot_information = authorize(args['token'])
+        print(bot_information)
         if bot_information :
             bot_name, db_server, db_name, db_username, db_password, db_driver, client_id , domain = bot_information
             requested_domain = request.headers.get("Referer")
