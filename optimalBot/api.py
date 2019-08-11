@@ -186,6 +186,12 @@ def api_validateDatabase():
     else:
         abort(403)
 
+@app.route('/test', methods=['POST'])
+def test():
+    print (request.is_json)
+    content = request.get_json()
+    return jsonify(request.get_json())
+
 
 if __name__ == '__main__':
     app.run(host=HOST, port=PORT)
