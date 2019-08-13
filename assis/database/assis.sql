@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.9
+-- version 4.8.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 19, 2019 at 01:23 AM
+-- Generation Time: Aug 13, 2019 at 11:20 AM
 -- Server version: 10.1.31-MariaDB
--- PHP Version: 7.2.3
+-- PHP Version: 7.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -32,6 +32,7 @@ CREATE TABLE `client` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
+  `password` varchar(255) NOT NULL,
   `phone` varchar(20) NOT NULL,
   `active` int(11) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -40,8 +41,8 @@ CREATE TABLE `client` (
 -- Dumping data for table `client`
 --
 
-INSERT INTO `client` (`id`, `name`, `email`, `phone`, `active`) VALUES
-(1, 'Geeks', 'geeks@gmail.com', '454151204', 1);
+INSERT INTO `client` (`id`, `name`, `email`, `password`, `phone`, `active`) VALUES
+(1, 'Ahmed Sherif', 'ahmedsaeed.fcih@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', '01114236554', 1);
 
 -- --------------------------------------------------------
 
@@ -66,6 +67,9 @@ CREATE TABLE `company` (
   `support` int(11) NOT NULL,
   `token` varchar(255) NOT NULL,
   `bot_name` varchar(255) NOT NULL,
+  `db_verified` int(11) NOT NULL DEFAULT '0',
+  `first_train` int(11) NOT NULL DEFAULT '0',
+  `current_story_id` int(11) NOT NULL,
   `active` int(11) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -73,8 +77,8 @@ CREATE TABLE `company` (
 -- Dumping data for table `company`
 --
 
-INSERT INTO `company` (`id`, `client_id`, `name`, `description`, `db_server`, `db_name`, `db_username`, `db_password`, `db_driver`, `platform_id`, `domain`, `type_id`, `status`, `support`, `token`, `bot_name`, `active`) VALUES
-(1, 1, 'Geeks', '', 'localhost', 'test', 'root', '', 'mysqli', 5, 'geeks-da7i7a.app', 2, 'pending', 1, '$2y$10$5ALRNousa9YR4lPKQ8afpO/B.ywaBbeWEclgtO9R.kj.dL1jmfcOO', 'Optimal_1', 1);
+INSERT INTO `company` (`id`, `client_id`, `name`, `description`, `db_server`, `db_name`, `db_username`, `db_password`, `db_driver`, `platform_id`, `domain`, `type_id`, `status`, `support`, `token`, `bot_name`, `db_verified`, `first_train`, `current_story_id`, `active`) VALUES
+(1, 1, 'Optimal Solutions', '', 'localhost', 'test', 'root', '', 'mysqli', 5, 'localhost', 1, 'pending', 1, '$2y$10$McAvpJsUXTRQddeICxLeJ.PzALgMV.QBrIOfHhvMAJAbz./Ej9eHu', 'Optimal_1', 1, 1, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -135,6 +139,26 @@ CREATE TABLE `price_packg` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `scenarios`
+--
+
+CREATE TABLE `scenarios` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `companyId` int(11) NOT NULL,
+  `active` int(11) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `scenarios`
+--
+
+INSERT INTO `scenarios` (`id`, `name`, `companyId`, `active`) VALUES
+(1, 'Test', 1, 1);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `subscriptions`
 --
 
@@ -154,7 +178,27 @@ CREATE TABLE `subscriptions` (
 --
 
 INSERT INTO `subscriptions` (`id`, `client_id`, `package_id`, `from_date`, `payment_id`, `payment_status`, `status`, `active`) VALUES
-(1, 1, 1, '07/18/2019', 0, 'pending', 'pending', 1);
+(1, 1, 1, '07/18/2019', 0, 'pending', 'pending', 1),
+(2, 3, 1, '08/02/2019', 0, 'pending', 'pending', 1),
+(3, 4, 1, '08/02/2019', 0, 'pending', 'pending', 1),
+(4, 5, 1, '08/02/2019', 0, 'pending', 'pending', 1),
+(5, 6, 1, '08/02/2019', 0, 'pending', 'pending', 1),
+(6, 7, 1, '08/02/2019', 0, 'pending', 'pending', 1),
+(7, 8, 1, '08/02/2019', 0, 'pending', 'pending', 1),
+(8, 9, 1, '08/02/2019', 0, 'pending', 'pending', 1),
+(9, 10, 1, '08/02/2019', 0, 'pending', 'pending', 1),
+(10, 11, 1, '08/02/2019', 0, 'pending', 'pending', 1),
+(11, 1, 1, '08/02/2019', 0, 'pending', 'pending', 1),
+(12, 1, 1, '08/02/2019', 0, 'pending', 'pending', 1),
+(13, 2, 1, '08/02/2019', 0, 'pending', 'pending', 1),
+(14, 3, 1, '08/02/2019', 0, 'pending', 'pending', 1),
+(15, 4, 1, '08/02/2019', 0, 'pending', 'pending', 1),
+(16, 5, 1, '08/02/2019', 0, 'pending', 'pending', 1),
+(17, 1, 1, '08/02/2019', 0, 'pending', 'pending', 1),
+(18, 1, 1, '08/02/2019', 0, 'pending', 'pending', 1),
+(19, 2, 1, '08/02/2019', 0, 'pending', 'pending', 1),
+(20, 1, 1, '08/02/2019', 0, 'pending', 'pending', 1),
+(21, 1, 1, '08/03/2019', 0, 'pending', 'pending', 1);
 
 -- --------------------------------------------------------
 
@@ -238,6 +282,12 @@ ALTER TABLE `price_packg`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `scenarios`
+--
+ALTER TABLE `scenarios`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `subscriptions`
 --
 ALTER TABLE `subscriptions`
@@ -290,10 +340,16 @@ ALTER TABLE `price_packg`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `scenarios`
+--
+ALTER TABLE `scenarios`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `subscriptions`
 --
 ALTER TABLE `subscriptions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `users`

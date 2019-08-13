@@ -1,6 +1,6 @@
-from database_servers.mysql import MySQL
-from database_servers.oracle import Oracle
-from settings import *
+from optimalBot.database_servers.mysql import MySQL
+from optimalBot.database_servers.oracle import Oracle
+from .settings import *
 
 
 class DBManager:
