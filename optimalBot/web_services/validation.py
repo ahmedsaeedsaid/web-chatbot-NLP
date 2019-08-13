@@ -1,30 +1,43 @@
 from optimalBot.settings import *
 import json
-from flask import  request
+from flask import request
 from .response import *
 import re
 from urllib.parse import urlparse
 
-# Class handle Validation Request
 
-class Validation :
+# Class handle Validation Request
+class Validation:
     @staticmethod
     def validateRequest():
+        if request.method == 'OPTIONS':
+            return {'data': jsonify({'Access-Control-Allow-Origin': '*',
+                                     'Access-Control-Allow-Methods': 'POST, OPTIONS',
+                                     'Access-Control-Max-Age': 1000,
+                                     'Access-Control-Allow-Headers': 'origin, x-csrf-token, content-type, accept'}), 'valid': False}
+
         if request.content_type != 'application/json':
-            return {'data': Response.throwError(REQUEST_CONTENTTYPE_NOT_VALID, 'Request content type is not valid'),'valid':False}
+            return {'data': Response.throwError(REQUEST_CONTENTTYPE_NOT_VALID,
+                                                'Request content type is not valid'), 'valid': False}
+
         data = request.get_json()
 
-        if 'name' in data.keys() :
-            if data['name'] == "":
-                return {'data': Response.throwError(API_NAME_REQUIRED, "API name is required."),'valid':False}
-        else:
-            return {'data': Response.throwError(API_NAME_REQUIRED, "API name is required."),'valid':False}
+        api_name_not_found_error = {'data': Response.throwError(API_NAME_REQUIRED,
+                                                                "API name is required."), 'valid': False}
+        api_param_not_found_error = {'data': Response.throwError(API_PARAM_REQUIRED,
+                                                                 "API PARAM is required."), 'valid': False}
 
-        if 'param' in data.keys() :
-            if not isinstance(data['param'], list):
-                return {'data': Response.throwError(API_PARAM_REQUIRED, "API PARAM is required."),'valid':False}
+        if 'name' in data.keys():
+            if data['name'] == "":
+                return api_name_not_found_error
         else:
-            return {'data': Response.throwError(API_PARAM_REQUIRED, "API PARAM is required."),'valid':False}
+            return api_name_not_found_error
+
+        if 'param' in data.keys():
+            if not isinstance(data['param'], list):
+                api_param_not_found_error
+        else:
+            return api_param_not_found_error
 
         return {'data': data,'valid':True}
 
@@ -35,33 +48,37 @@ class Validation :
         if auth_header:
             token = re.findall('Bearer\s(\S+)', auth_header)
             if token:
-                return {'data': token[0],'valid':True}
+                return {'data': token[0], 'valid': True}
 
-        return {'data': Response.throwError(ATHORIZATION_HEADER_NOT_FOUND, "Access Token Not found."),'valid':False}
+        return {'data': Response.throwError(ATHORIZATION_HEADER_NOT_FOUND, "Access Token Not found."), 'valid': False}
 
     @staticmethod
     def validateParameter(fieldName, value, dataType, required=True):
-
         if required and not value:
-            return {'data': Response.throwError(VALIDATE_PARAMETER_REQUIRED, fieldName + " parameter is required."), 'valid':False}
+            return {'data': Response.throwError(VALIDATE_PARAMETER_REQUIRED,
+                                                fieldName + " parameter is required."), 'valid': False}
 
-        if (dataType == INTEGER):
+        if dataType == INTEGER:
             if isinstance(value, int):
-                return {'data': value, 'valid':True}
+                return {'data': value, 'valid': True}
             else:
-                return {'data': Response.throwError(VALIDATE_PARAMETER_REQUIRED,"Datatype is not valid for " + fieldName + " It should be Numeric."), 'valid':False}
-        elif (dataType == STRING):
+                return {'data': Response.throwError(VALIDATE_PARAMETER_REQUIRED, "Data type is not valid for "
+                                                    + fieldName + " It should be Numeric."), 'valid': False}
+        elif dataType == STRING:
             if isinstance(value, str):
-                return {'data': value, 'valid':True}
+                return {'data': value, 'valid': True}
             else:
-                return {'data': Response.throwError(VALIDATE_PARAMETER_REQUIRED,"Datatype is not valid for " + fieldName + " It should be String."), 'valid':False}
-        elif (dataType == BOOLEAN):
+                return {'data': Response.throwError(VALIDATE_PARAMETER_REQUIRED, "Data type is not valid for "
+                                                    + fieldName + " It should be String."), 'valid': False}
+        elif dataType == BOOLEAN:
             if isinstance(value, bool):
-                return {'data': value, 'valid':True}
+                return {'data': value, 'valid': True}
             else:
-                return {'data': Response.throwError(VALIDATE_PARAMETER_REQUIRED,"Datatype is not valid for " + fieldName + " It should be String."), 'valid':False}
+                return {'data': Response.throwError(VALIDATE_PARAMETER_REQUIRED, "Data type is not valid for "
+                                                    + fieldName + " It should be Boolean."), 'valid': False}
         else:
-            return {'data': Response.throwError(VALIDATE_PARAMETER_REQUIRED,"Datatype is not valid for " + fieldName), 'valid':False}
+            return {'data': Response.throwError(VALIDATE_PARAMETER_REQUIRED,
+                                                "Data type is not valid for " + fieldName), 'valid': False}
 
     @staticmethod
     def verifyDomain(domain):

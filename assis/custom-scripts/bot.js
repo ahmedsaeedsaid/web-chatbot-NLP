@@ -411,7 +411,7 @@ var html = `<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.
         <div class="Messenger_header" style="background-color: rgb(22, 46, 98); color: rgb(255, 255, 255);">
           <h4 class="Messenger_prompt">How can we help you?</h4> <span class="chat_close_icon"><i class="fa fa-window-close" aria-hidden="true"></i></span> </div>
         <div class="Messenger_content">
-          <div class="Messages">
+          <div class="Messages" id="msg-list">
             <div class="Messages_list">
 
                 <div class="incoming_msg">
@@ -490,16 +490,22 @@ function load_script(src) {
 }
 
 function get_bot_reply(user_query, token) {
+    var param = JSON.stringify({
+        name: 'askBot',
+        param: {query: user_query}
+    });
     $.ajax({
         type: "POST",
-        url: "http://localhost:5002/askBot",
-        data: {
-            token: token,
-            query: user_query
+        dataType: "json",
+        url: "http://localhost:5002/",
+        data: param,
+        headers: {
+            'Authorization': "Bearer " + token,
+            'Content-Type':'application/json',
         },
         success: function (data) {
             var current_date = moment().format('h:mm a | MMMM D YYYY');
-            var suggested_answers = ["What are you?", "Good morning!"];
+            var suggested_answers = ["What are you?", "Hello!"];
             var suggested_text = ``;
             suggested_answers.forEach(function(answer){
                 suggested_text += `
@@ -513,16 +519,14 @@ function get_bot_reply(user_query, token) {
                 <div class="incoming_msg">
                       <div class="received_msg">
                         <div class="received_withd_msg">
-                            <p>` + data.bot_reply + `</p>
+                            <p>` + data.response.result.bot_reply + `</p>
                             <span class="time_date">` + current_date + `</span>
                         </div>
                         ` + suggested_text + `
                     </div>
                 </div>`;
             $(".Messages_list").append(send_to_user);
-            var elm = $($( ".incoming_msg" ).last()[0]);
-            console.log(elm);
-            $('body, html').animate({ scrollTop: $(elm).offset().top }, 1000);
+            $("#msg-list").animate({ scrollTop: $("#msg-list").prop('scrollHeight') }, 500);
         }
     });
 }
@@ -557,54 +561,45 @@ load_script('https://code.jquery.com/jquery-3.4.1.min.js');
                 // Check for Meta Tag
                 if (document.querySelector("meta[name=optimal-bot-verification]")) {
                     var content = document.querySelector("meta[name=optimal-bot-verification]").getAttribute("content");
-                    $.ajax({
-                        type: "POST",
-                        url: "http://localhost:5002/checkMetaValidity",
-                        data: {
-                            content: content,
-                        },
-                        success: function (result) {
-                            if (result.status == 'success') {
-                                $("body").append(html);
+                    $("body").append(html);
 
-                                // Set Default welcome message time now
-                                $("#welcome_msg-time").html(moment().format('h:mm a | MMMM D YYYY'));
-                                $(".chat_on").click(function () {
-                                    $(".Layout").toggle();
-                                    $(".chat_on").hide(300);
-                                });
-
-                                $(".chat_close_icon").click(function () {
-                                    $(".Layout").hide();
-                                    $(".chat_on").show(300);
-                                });
-                                
-                                $("body").on('click', '.copyAnswer', function(){
-                                    var msg = $(this).html();
-                                    $("#user_query").val('');
-                                    $("#user_query").val(msg);
-                                    $("#send").trigger('click');
-                                });
-
-                                $("#send").on('click', function () {
-                                    var query = $("#user_query").val();
-                                    var current_date = moment().format('h:mm a | MMMM D YYYY');
-                                    var send_to_bot = `
-                                        <div class="outgoing_msg">
-                                              <div class="sent_msg">
-                                                <p>` + query + `</p>
-                                                <span class="time_date">` + current_date + `</span> </div>
-                                        </div>`;
-                                    $("#user_query").val('');
-                                    $(".Messages_list").append(send_to_bot);
-                                    get_bot_reply(query, content);
-                                });
-                            } else {
-                                document.write("Forbidden, Access is denied!");
-                                return;
-                            }
-                        }
+                    // Set Default welcome message time now
+                    $("#welcome_msg-time").html(moment().format('h:mm a | MMMM D YYYY'));
+                    $(".chat_on").click(function () {
+                        $(".Layout").toggle();
+                        $(".chat_on").hide(300);
                     });
+
+                    $(".chat_close_icon").click(function () {
+                        $(".Layout").hide();
+                        $(".chat_on").show(300);
+                    });
+                    
+
+                    $("body").on('click', '.copyAnswer', function(){
+                        var msg = $(this).html();
+                        $("#user_query").val('');
+                        $("#user_query").val(msg);
+                        $("#send").trigger('click');
+                    });
+
+                    $("#send").on('click', function () {
+                        var query = $("#user_query").val();
+                        var current_date = moment().format('h:mm a | MMMM D YYYY');
+                        var send_to_bot = `
+                            <div class="outgoing_msg">
+                                  <div class="sent_msg">
+                                    <p>` + query + `</p>
+                                    <span class="time_date">` + current_date + `</span> </div>
+                            </div>`;
+                        $("#user_query").val('');
+                        $(".Messages_list").append(send_to_bot);
+                        $("#msg-list").animate({ scrollTop: $("#msg-list").prop('scrollHeight') }, 500);
+                        get_bot_reply(query, content);
+                    });
+                } else {
+                    document.write("Forbidden, Access is denied!");
+                    return;
                 }
             });
         });

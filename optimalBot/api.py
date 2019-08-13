@@ -3,10 +3,10 @@ from urllib.parse import urlparse
 from flask_restful import Resource, Api
 from flask_jsonpify import jsonify
 from flask_cors import CORS
-from db_manager import DBManager
+from .db_manager import DBManager
 import time
 import numpy as np
-from sentence_classification import *
+from .sentence_classification import *
 from optimalBot.chatbot import chatBot as optimalbot
 import chatterbot.comparisons as comp
 import optimalBot.response_selection as resp
@@ -14,10 +14,10 @@ import json
 import re
 import chatterbot.logic.best_match
 from chatterbot import ChatBot
-from optimalBot.trainer import ListTrainerOverridden,ChatterBotCorpusTrainerOverridden
-from sentence_classification import *
-import optimalBot.Filters as filters
-from optimalBot.settings import *
+from .trainer import ListTrainerOverridden,ChatterBotCorpusTrainerOverridden
+from .sentence_classification import *
+from .Filters import *
+from .settings import *
 
 
 
@@ -91,7 +91,7 @@ def api_askBot():
                                         "statement_comparison_function": comp.SentimentComparison,
                                         "response_selection_method": resp.get_flow_response
                                         }],
-                                        filters=[filters.get_recent_repeated_responsesCustomized],
+                                        filters=[get_recent_repeated_responsesCustomized],
                                         Story_ID=Story_ID,
                                         bot_information=bot_information)
                     # Filter User Query

@@ -8,7 +8,8 @@ app = Flask(__name__)
 CORS(app)
 api = Api(app)
 
-@app.route('/', methods=['POST'])
+
+@app.route('/', methods=['POST', 'OPTIONS'])
 def root():
     api_bot = ApiBot()
     return api_bot.processApi()
