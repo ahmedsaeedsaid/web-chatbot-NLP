@@ -58,9 +58,9 @@ class DBManager:
         self.db.where_("token='" + token + "'")
         company = self.db.fetch_all_()
         if company:
-            # Retrieve Bot Name, server, name, username, password, driver, client_id , domain , company_id
+            # Retrieve Bot Name, server, name, username, password, driver, client_id , domain
             return (company[0][15], company[0][4], company[0][5],
-                    company[0][6], company[0][7], company[0][8], company[0][1] , company[0][10] , company[0][0] )
+                    company[0][6], company[0][7], company[0][8], company[0][1] , company[0][10] )
         return False
 
     def verify_meta(self, content):
@@ -78,6 +78,4 @@ class DBManager:
         status = self.db.update_(COMPANY_TABLE_NAME, data, "token='" + token + "'")
         return status
 
-    def update_story_id(self, story_id, company_id):
-        status = self.db.update_(COMPANY_TABLE_NAME, {CURRENT_STORY_ID_COLUMN:story_id}, "id=" + str(company_id))
-        return status
+

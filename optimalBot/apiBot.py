@@ -13,21 +13,16 @@ class ApiBot(WS.Rest):
         try:
             query = WS.Validation.validateParameter('query', self.param['query'], STRING)
             if query['valid']:
-                query = query ['data']
+                query = query['data']
             else:
                 return query['data']
-            startChat = WS.Validation.validateParameter('startChat', self.param['startChat'], BOOLEAN)
-            if startChat['valid']:
-                startChat = startChat ['data']
+            Story_ID = WS.Validation.validateParameter('story_id', self.param['story_id'], INTEGER)
+            if Story_ID['valid']:
+                Story_ID = Story_ID['data']
             else:
-                return startChat['data']
+                return Story_ID['data']
 
-            bot_name, db_server, db_name, db_username, db_password, db_driver, _, domain , company_id= self.bot_information
-
-            if startChat:
-                self.db.update_story_id(DEFAULT_STORY_ID,company_id)
-
-            Story_ID = self.db.get_value(COMPANY_TABLE_NAME,CURRENT_STORY_ID_COLUMN,{'id':str(company_id)})
+            bot_name, db_server, db_name, db_username, db_password, db_driver, _, domain  = self.bot_information
 
             if db_driver == 'mysqli' or db_driver == 'mysql':
                 # TODO: configure db_port
@@ -51,8 +46,7 @@ class ApiBot(WS.Rest):
                 cleaned_query = " ".join(nltk.word_tokenize(cleaned_query))
                 response, Story_ID = chatbot.get_response(cleaned_query)
 
-                self.db.update_story_id(Story_ID,company_id)
-                return WS.Response.returnResponse(HTTP_SUCCESS_RESPONSE, {'bot_reply':str(response)})
+                return WS.Response.returnResponse(HTTP_SUCCESS_RESPONSE, {'bot_reply': str(response),'story_id': Story_ID})
             else:
                 return WS.Response.throwError(DATABASE_TYPE_ERROR, "this Database type not supported.")
         except:
@@ -60,7 +54,7 @@ class ApiBot(WS.Rest):
 
     def createBot(self):
         try:
-            bot_name, db_server, db_name, db_username, db_password, db_driver, _, domain , company_id= self.bot_information
+            bot_name, db_server, db_name, db_username, db_password, db_driver, _, domain = self.bot_information
             if db_driver == 'mysqli' or db_driver == 'mysql':
                 db = DBManager(user=db_username,
                             password=db_password,
@@ -94,7 +88,6 @@ class ApiBot(WS.Rest):
                 trainer = ListTrainerOverridden(chatbot)
                 trainer.train(conversation)
 
-                self.db.update_story_id(DEFAULT_STORY_ID,company_id)
                 return WS.Response.returnResponse(HTTP_SUCCESS_RESPONSE, 'success')
             else:
                 return WS.Response.throwError(DATABASE_TYPE_ERROR, "this Database type not supported.")
