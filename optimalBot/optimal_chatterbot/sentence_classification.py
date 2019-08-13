@@ -1,9 +1,5 @@
 import nltk
-import pickle
-from db_manager import DBManager
-from bs4 import BeautifulSoup
-import time
-import numpy as np
+
 
 posts = nltk.corpus.nps_chat.xml_posts()
 

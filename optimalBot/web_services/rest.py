@@ -1,7 +1,7 @@
-from ..settings import *
+from optimalBot.settings import *
 from .response import *
 from .validation import *
-from ..db_manager import DBManager
+from optimalBot.db_manager import DBManager
 
 
 class Rest:

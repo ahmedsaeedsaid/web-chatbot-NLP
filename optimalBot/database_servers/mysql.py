@@ -44,7 +44,9 @@ class MySQL:
             self.query += str(key) + "=" + str(value)
             if keys[-1] != key:
                 self.query += ","
+
         self.where_(where)
+
         cr = self.__execute()
         return cr.rowcount
 

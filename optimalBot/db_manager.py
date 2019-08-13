@@ -1,5 +1,6 @@
 from database_servers.mysql import MySQL
 from database_servers.oracle import Oracle
+from settings import *
 
 
 class DBManager:
@@ -26,7 +27,7 @@ class DBManager:
         tables = list(zip(*tables))
         return tables
 
-    def delete_table_data(self, table_name, conditions=[], like=False):
+    def delete_table_data(self, table_name, conditions={}, like=False):
         self.db.delete_()
         self.db.from_(table_name)
         where = self.__build_query_condition(conditions, like)
@@ -38,7 +39,7 @@ class DBManager:
         self.db.from_(table_name)
         return self.db.fetch_all_()
 
-    def get_value(self, table_name, column_name, conditions=[], like=False, multiple_values=False):
+    def get_value(self, table_name, column_name, conditions={}, like=False, multiple_values=False):
         self.db.select_(column_name)
         self.db.from_(table_name)
         where = self.__build_query_condition(conditions, like)
@@ -53,18 +54,18 @@ class DBManager:
 
     def authenticate_user(self, token):
         self.db.select_('*')
-        self.db.from_('company')
+        self.db.from_(COMPANY_TABLE_NAME)
         self.db.where_("token='" + token + "'")
         company = self.db.fetch_all_()
         if company:
-            # Retrieve Bot Name, server, name, username, password, driver, client_id , domain
+            # Retrieve Bot Name, server, name, username, password, driver, client_id , domain , company_id
             return (company[0][15], company[0][4], company[0][5],
-                    company[0][6], company[0][7], company[0][8], company[0][1] , company[0][10] )
+                    company[0][6], company[0][7], company[0][8], company[0][1] , company[0][10] , company[0][0] )
         return False
 
     def verify_meta(self, content):
         self.db.select_('*')
-        self.db.from_('company')
+        self.db.from_(COMPANY_TABLE_NAME)
         self.db.where_("token='" + content + "'")
         company = self.db.fetch_all_()
         if company:
@@ -74,5 +75,9 @@ class DBManager:
     def validate_db(self, token):
         data = dict()
         data['db_verified'] = 1
-        status = self.db.update_('company', data, "token='" + token + "'")
+        status = self.db.update_(COMPANY_TABLE_NAME, data, "token='" + token + "'")
+        return status
+
+    def update_story_id(self, story_id, company_id):
+        status = self.db.update_(COMPANY_TABLE_NAME, {CURRENT_STORY_ID_COLUMN:story_id}, "id=" + str(company_id))
         return status

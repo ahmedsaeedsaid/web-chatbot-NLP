@@ -54,7 +54,7 @@ class Validation:
 
     @staticmethod
     def validateParameter(fieldName, value, dataType, required=True):
-        if required and not value:
+        if required and not value and str(value) != "0":
             return {'data': Response.throwError(VALIDATE_PARAMETER_REQUIRED,
                                                 fieldName + " parameter is required."), 'valid': False}
 
@@ -71,8 +71,10 @@ class Validation:
                 return {'data': Response.throwError(VALIDATE_PARAMETER_REQUIRED, "Data type is not valid for "
                                                     + fieldName + " It should be String."), 'valid': False}
         elif dataType == BOOLEAN:
-            if isinstance(value, bool):
-                return {'data': value, 'valid': True}
+            if str(value) == "0":
+                return {'data': False, 'valid': True}
+            elif str(value) == "1":
+                return {'data': True, 'valid': True}
             else:
                 return {'data': Response.throwError(VALIDATE_PARAMETER_REQUIRED, "Data type is not valid for "
                                                     + fieldName + " It should be Boolean."), 'valid': False}
