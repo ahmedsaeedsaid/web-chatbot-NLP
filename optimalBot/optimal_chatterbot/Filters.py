@@ -19,6 +19,7 @@ def get_recent_repeated_responsesCustomized(chatbot, conversation, sample=10, th
 
     # Find the n most common responses from the conversation
     most_common = counter.most_common(quantity)
+    print(most_common)
 
     return [
         counted[0] for counted in most_common

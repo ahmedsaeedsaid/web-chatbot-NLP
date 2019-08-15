@@ -27,7 +27,10 @@ class customerMod extends CI_Model {
         $db->select('*');
         $db->from('scenarios');
         $res = $db->get();
-        return $res->result_array();
+        if($res){
+            return $res->result_array();
+        }
+        return false;
     }
 
     public function addScenario($data) {

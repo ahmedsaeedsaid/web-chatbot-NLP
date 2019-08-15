@@ -459,40 +459,23 @@ var html = `<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.
 </div>
 `;
 
+var story_id = 0;
+
 // CHAT BOOT MESSENGER////////////////////////
 
 // Anonymous "self-invoking" function
 function load_script(src) {
-    (function () {
-        var startingTime = new Date().getTime();
-        // Load the script
-        var script = document.createElement("SCRIPT");
-        script.src = src;
-        script.type = 'text/javascript';
-        document.getElementsByTagName("head")[0].appendChild(script);
 
-        // Poll for jQuery to come into existance
-        var checkReady = function (callback) {
-            if (window.jQuery) {
-                callback(jQuery);
-            } else {
-                window.setTimeout(function () {
-                    checkReady(callback);
-                }, 20);
-            }
-        };
-
-        // Start polling...
-        checkReady(function ($) {
-            $(function () {});
-        });
-    })();
 }
 
 function get_bot_reply(user_query, token) {
+    console.log("Old: " + story_id);
     var param = JSON.stringify({
         name: 'askBot',
-        param: {query: user_query}
+        param: {
+            query: user_query,
+            story_id: story_id
+        }
     });
     $.ajax({
         type: "POST",
@@ -501,13 +484,17 @@ function get_bot_reply(user_query, token) {
         data: param,
         headers: {
             'Authorization': "Bearer " + token,
-            'Content-Type':'application/json',
+            'Content-Type': 'application/json',
         },
         success: function (data) {
+            if ('error' in data) {
+                document.write(data.error.message);
+                return;
+            }
             var current_date = moment().format('h:mm a | MMMM D YYYY');
             var suggested_answers = ["What are you?", "Hello!"];
             var suggested_text = ``;
-            suggested_answers.forEach(function(answer){
+            suggested_answers.forEach(function (answer) {
                 suggested_text += `
                         <div class="received_msg">
                             <div class="row msg-btns">
@@ -526,20 +513,19 @@ function get_bot_reply(user_query, token) {
                     </div>
                 </div>`;
             $(".Messages_list").append(send_to_user);
-            $("#msg-list").animate({ scrollTop: $("#msg-list").prop('scrollHeight') }, 500);
+            $("#msg-list").animate({
+                scrollTop: $("#msg-list").prop('scrollHeight')
+            }, 500);
+            console.log("New: " + data.response.result.story_id);
+            story_id = data.response.result.story_id;
         }
     });
 }
 
-// Load jquery Firstly
-load_script('https://code.jquery.com/jquery-3.4.1.min.js');
-
-// Then Load Moment.js
 (function () {
-    var startingTime = new Date().getTime();
     // Load the script
     var script = document.createElement("SCRIPT");
-    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js';
+    script.src = 'https://code.jquery.com/jquery-3.4.1.min.js';
     script.type = 'text/javascript';
     document.getElementsByTagName("head")[0].appendChild(script);
 
@@ -557,51 +543,77 @@ load_script('https://code.jquery.com/jquery-3.4.1.min.js');
     // Start polling...
     checkReady(function ($) {
         $(function () {
-            $(document).ready(function () {
-                // Check for Meta Tag
-                if (document.querySelector("meta[name=optimal-bot-verification]")) {
-                    var content = document.querySelector("meta[name=optimal-bot-verification]").getAttribute("content");
-                    $("body").append(html);
+            // Then Load Moment.js
+            (function () {
+                // Load the script
+                var script = document.createElement("SCRIPT");
+                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js';
+                script.type = 'text/javascript';
+                document.getElementsByTagName("head")[0].appendChild(script);
 
-                    // Set Default welcome message time now
-                    $("#welcome_msg-time").html(moment().format('h:mm a | MMMM D YYYY'));
-                    $(".chat_on").click(function () {
-                        $(".Layout").toggle();
-                        $(".chat_on").hide(300);
-                    });
+                // Poll for moment to come into existance
+                var checkReady = function (callback) {
+                    if (window.moment) {
+                        callback(jQuery);
+                    } else {
+                        window.setTimeout(function () {
+                            checkReady(callback);
+                        }, 20);
+                    }
+                };
+                // Start polling...
+                checkReady(function ($) {
+                    $(function () {
+                        $(document).ready(function () {
+                            // Check for Meta Tag
+                            if (document.querySelector("meta[name=optimal-bot-verification]")) {
+                                var content = document.querySelector("meta[name=optimal-bot-verification]").getAttribute("content");
+                                $("body").append(html);
 
-                    $(".chat_close_icon").click(function () {
-                        $(".Layout").hide();
-                        $(".chat_on").show(300);
-                    });
-                    
+                                // Set Default welcome message time now
+                                $("#welcome_msg-time").html(moment().format('h:mm a | MMMM D YYYY'));
+                                $(".chat_on").click(function () {
+                                    $(".Layout").toggle();
+                                    $(".chat_on").hide(300);
+                                });
 
-                    $("body").on('click', '.copyAnswer', function(){
-                        var msg = $(this).html();
-                        $("#user_query").val('');
-                        $("#user_query").val(msg);
-                        $("#send").trigger('click');
-                    });
+                                $(".chat_close_icon").click(function () {
+                                    $(".Layout").hide();
+                                    $(".chat_on").show(300);
+                                });
 
-                    $("#send").on('click', function () {
-                        var query = $("#user_query").val();
-                        var current_date = moment().format('h:mm a | MMMM D YYYY');
-                        var send_to_bot = `
+
+                                $("body").on('click', '.copyAnswer', function () {
+                                    var msg = $(this).html();
+                                    $("#user_query").val('');
+                                    $("#user_query").val(msg);
+                                    $("#send").trigger('click');
+                                });
+
+                                $("#send").on('click', function () {
+                                    var query = $("#user_query").val();
+                                    var current_date = moment().format('h:mm a | MMMM D YYYY');
+                                    var send_to_bot = `
                             <div class="outgoing_msg">
                                   <div class="sent_msg">
                                     <p>` + query + `</p>
                                     <span class="time_date">` + current_date + `</span> </div>
                             </div>`;
-                        $("#user_query").val('');
-                        $(".Messages_list").append(send_to_bot);
-                        $("#msg-list").animate({ scrollTop: $("#msg-list").prop('scrollHeight') }, 500);
-                        get_bot_reply(query, content);
+                                    $("#user_query").val('');
+                                    $(".Messages_list").append(send_to_bot);
+                                    $("#msg-list").animate({
+                                        scrollTop: $("#msg-list").prop('scrollHeight')
+                                    }, 500);
+                                    get_bot_reply(query, content);
+                                });
+                            } else {
+                                document.write("Forbidden, Access is denied!");
+                                return;
+                            }
+                        });
                     });
-                } else {
-                    document.write("Forbidden, Access is denied!");
-                    return;
-                }
-            });
+                });
+            })();
         });
     });
 })();

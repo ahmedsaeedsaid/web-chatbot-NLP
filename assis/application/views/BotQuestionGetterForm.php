@@ -144,7 +144,7 @@
         $('#addRow').on('click', function() {
             var addRowText = $('#addRow').text();
             if (addRowText == "Add Question") {
-                refreshParents();
+                //refreshParents();
                 var Question_value = $("#question").val().trim();
                 var Answer_value = $("#answer").val().trim();
                 var parent_question = $("#parent_question").val();

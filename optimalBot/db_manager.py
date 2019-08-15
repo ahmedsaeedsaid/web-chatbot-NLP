@@ -59,8 +59,9 @@ class DBManager:
         company = self.db.fetch_all_()
         if company:
             # Retrieve Bot Name, server, name, username, password, driver, client_id , domain
-            return (company[0][15], company[0][4], company[0][5],
-                    company[0][6], company[0][7], company[0][8], company[0][1] , company[0][10] )
+            return (company[0][15], company[0][4], company[0][5], company[0][6],
+                    company[0][7], company[0][8], company[0][1],
+                    company[0][10], company[0][16], company[0][17])
         return False
 
     def verify_meta(self, content):
@@ -76,6 +77,8 @@ class DBManager:
         data = dict()
         data['db_verified'] = 1
         status = self.db.update_(COMPANY_TABLE_NAME, data, "token='" + token + "'")
-        return status
+        if status:
+            return 'success'
+        return 'failure'
 
 

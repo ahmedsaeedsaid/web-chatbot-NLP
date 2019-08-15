@@ -136,13 +136,23 @@
             "scrollX": true
         });
         $("#train").on('click', function() {
+            var param = JSON.stringify({
+                name: 'createBot',
+                param: {}
+            });
             $.ajax({
                 type: "POST",
-                url: "http://localhost:5002/create",
-                data: {
-                    token: "<?= $token ?>",
+                url: "http://localhost:5002/",
+                data: param,
+                headers: {
+                    'Authorization': "Bearer " + "<?= $token ?>",
+                    'Content-Type':'application/json',
                 },
-                success: function() {
+                success: function(data) {
+                    if('error' in data){
+                        document.write(data.error.message);
+                        return;
+                    }
                     Swal.fire({
                         title: 'Success!',
                         text: 'Training Was Successfull, An email with further instruction has been sent to you!',
