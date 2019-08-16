@@ -145,10 +145,7 @@ class FlowAdapter(LogicAdapter):
         else:
             response = self.get_default_response(input_statement)
 
-        if children_questions:
-            bot_replay = "<br><br> Suggested Questions: <br><br>"
-            for question in children_questions:
-                bot_replay += question[0]
-            response.text += bot_replay
+        if not children_questions:
+            children_questions = []
 
-        return response, self.Story_ID
+        return response, self.Story_ID ,children_questions

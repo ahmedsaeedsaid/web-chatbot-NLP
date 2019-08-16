@@ -284,6 +284,7 @@
   </component>
   <component name="RunManager" selected="Python.api">
     <configuration name="api" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="web-assistant" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -294,13 +295,17 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="web-assistant" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/optimalBot/api.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
     </configuration>
     <configuration name="apiBot" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="web-assistant" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -311,13 +316,17 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="web-assistant" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/optimalBot/apiBot.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
     </configuration>
     <configuration name="api_test" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="web-assistant" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -328,22 +337,25 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="web-assistant" />
       <option name="SCRIPT_NAME" value="C:\xampp\htdocs\web-assistant\optimalBot\api.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
     </configuration>
-    <list size="3">
-      <item index="0" class="java.lang.String" itemvalue="Python.apiBot" />
-      <item index="1" class="java.lang.String" itemvalue="Python.api_test" />
-      <item index="2" class="java.lang.String" itemvalue="Python.api" />
+    <list>
+      <item itemvalue="Python.apiBot" />
+      <item itemvalue="Python.api" />
+      <item itemvalue="Python.api_test" />
     </list>
     <recent_temporary>
-      <list size="3">
-        <item index="0" class="java.lang.String" itemvalue="Python.api" />
-        <item index="1" class="java.lang.String" itemvalue="Python.api_test" />
-        <item index="2" class="java.lang.String" itemvalue="Python.apiBot" />
+      <list>
+        <item itemvalue="Python.api" />
+        <item itemvalue="Python.api_test" />
+        <item itemvalue="Python.apiBot" />
       </list>
     </recent_temporary>
   </component>

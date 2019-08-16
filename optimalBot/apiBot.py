@@ -52,10 +52,10 @@ class ApiBot(WS.Rest):
             # Filter User Query
             cleaned_query = re.sub('[^ a-zA-Z0-9]', ' ', query)
             cleaned_query = " ".join(nltk.word_tokenize(cleaned_query))
-            response, Story_ID = chatbot.get_response(cleaned_query)
+            response, Story_ID, children_questions = chatbot.get_response(cleaned_query)
             print(Story_ID)
 
-            return WS.Response.returnResponse(HTTP_SUCCESS_RESPONSE, {'bot_reply': str(response), 'story_id': Story_ID})
+            return WS.Response.returnResponse(HTTP_SUCCESS_RESPONSE, {'bot_reply': str(response), 'story_id': Story_ID ,'children_questions':children_questions})
         else:
             return WS.Response.throwError(DATABASE_TYPE_ERROR, "Database type is not supported.")
         #except:
