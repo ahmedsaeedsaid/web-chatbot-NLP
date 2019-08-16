@@ -73,9 +73,10 @@ class DBManager:
             return 'success'
         return 'failure'
 
-    def validate_db(self, token):
+    def validate_db(self, token, driver):
         data = dict()
         data['db_verified'] = 1
+        data['db_driver'] = driver
         status = self.db.update_(COMPANY_TABLE_NAME, data, "token='" + token + "'")
         if status:
             return 'success'

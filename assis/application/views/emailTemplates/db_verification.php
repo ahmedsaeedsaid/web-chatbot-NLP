@@ -404,7 +404,7 @@
                                                                 <tbody>
                                                                     <tr>
                                                                         <td>
-                                                                            <a href="http://localhost/web-assistant/assis/customer/" target="_blank">Customer Portal</a>
+                                                                            <a href="<?= base_url('customer') ?>" target="_blank">Customer Portal</a>
                                                                         </td>
                                                                     </tr>
                                                                 </tbody>
