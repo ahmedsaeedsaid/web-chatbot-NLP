@@ -2,17 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7d280b8a-435b-4fb6-bafa-8b6d5d811cdf" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/assis/application/views/verificationScripts/db_verification.php" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/web-assistant.iml" afterPath="$PROJECT_DIR$/.idea/web-assistant.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assis/application/controllers/subscribe.php" afterPath="$PROJECT_DIR$/assis/application/controllers/subscribe.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assis/application/models/SubscribeFormMod.php" afterPath="$PROJECT_DIR$/assis/application/models/SubscribeFormMod.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assis/application/views/emailTemplates/db_verification.php" afterPath="$PROJECT_DIR$/assis/application/views/emailTemplates/db_verification.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assis/custom-scripts/bot.js" afterPath="$PROJECT_DIR$/assis/custom-scripts/bot.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/optimalBot/apiBot.py" afterPath="$PROJECT_DIR$/optimalBot/apiBot.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/optimalBot/database_servers/mysql.py" afterPath="$PROJECT_DIR$/optimalBot/database_servers/mysql.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/optimalBot/db_manager.py" afterPath="$PROJECT_DIR$/optimalBot/db_manager.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -365,7 +357,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25305623" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />

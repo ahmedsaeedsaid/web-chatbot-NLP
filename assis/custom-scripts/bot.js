@@ -463,11 +463,6 @@ var story_id = 0;
 
 // CHAT BOOT MESSENGER////////////////////////
 
-// Anonymous "self-invoking" function
-function load_script(src) {
-
-}
-
 function get_bot_reply(user_query, token) {
     console.log("Old: " + story_id);
     var param = JSON.stringify({

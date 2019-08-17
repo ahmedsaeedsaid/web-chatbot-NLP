@@ -33,6 +33,29 @@ class Subscribe extends CI_Controller {
         }
         return $driver;
     }
+    
+    private function testConnectionWithDriver($config){
+        $db = @$this->load->database($config, TRUE);
+        if($db->conn_id) {
+            return true;
+        }
+        return false;
+    }
+    
+    public function connect($config, $companyId){
+        $status = false;
+        if($config['dbdriver']){
+            $status = $this->testConnectionWithDriver($config);
+        } else {
+            $db_driver = $this->testConnection($this->db_drivers, $config);
+            if($db_driver){
+                $status = true;
+                $data = array("db_driver" => $db_driver);
+                $this->subscribeFormMod->updateCompanyDbDriver($data, $companyId);
+            }
+        }
+        return $status;
+    }
 
     public function index() {
         $data['title'] = 'Subscribe ChatBot';
@@ -199,10 +222,62 @@ class Subscribe extends CI_Controller {
     public function downloadScript($bot_name){
         $this->load->helper('download');
         $company = $this->subscribeFormMod->getCompanyByBotName($bot_name);
-        $info = array('company' => $company);
-        $data = $this->load->view('verificationScripts/db_verification', $info, TRUE);
+        $file = '<meta name="optimal-bot-verification" content="' . $company->token . '" />
+<?php
+
+function connect($host, $username, $password, $DBName){
+    $conn = new mysqli($host, $username, $password, $DBName);
+    // Check connection
+    if (!$conn->connect_error) {
+        return "mysqli";
+    }
+
+    $conn = pg_connect("host=$host dbname=$DBName user=$username password=$password");
+    // Check connection
+    if ($conn->connect_error) {
+        return "postgresql";
+    }
+
+    return "";
+}
+
+$driver = connect("localhost", "' . $company->db_username . '", "' . $company->db_password . '", "' . $company->db_name . '");
+?>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" type="text/javascript"></script>
+<script>
+    $(document).ready(function() {
+        var driver = "<?= $driver ?>";
+        var param = JSON.stringify({
+            name: "validateDatabase",
+            param: {driver: driver}
+        });
+        var token = document.querySelector("meta[name=optimal-bot-verification]").getAttribute("content");
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:5002/",
+            data: param,
+            headers: {
+                "Authorization": "Bearer " + token,
+                "Content-Type":"application/json",
+            },
+            success: function(data) {
+                if("error" in data){
+                    document.write(data.error.message);
+                    return;
+                }
+                if (data.response.result.status == "success") {
+                    document.write("Success, Database verified successfully, Thank you!");
+                } else {
+                    document.write("You have already verified the db.");
+                }
+            }
+        });
+    });
+
+</script>
+';
         $name = 'db_verification.php';
-        force_download($name, $data);
+        force_download($name, $file);
     }
 
 }

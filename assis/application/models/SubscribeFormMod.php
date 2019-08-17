@@ -100,6 +100,11 @@ class subscribeFormMod extends CI_Model {
         $result = $this->db->get();
         return $result->row();
     }
+    
+    public function updateCompanyDbDriver ($data, $id) {
+        $this->db->where('id', $id);
+        $this->db->update('company', $data);
+    }
 
     
 
