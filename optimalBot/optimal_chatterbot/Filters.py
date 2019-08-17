@@ -3,7 +3,7 @@ def get_recent_repeated_responsesCustomized(chatbot, conversation, sample=10, th
     A filter that eliminates possibly repetitive responses to prevent
     a chat bot from repeating statements that it has recently said.
     """
-    from collections import Counter
+    """from collections import Counter
 
     # Get the most recent statements from the conversation
     conversation_statements = list(chatbot.storage.filter(
@@ -24,4 +24,5 @@ def get_recent_repeated_responsesCustomized(chatbot, conversation, sample=10, th
     return [
         counted[0] for counted in most_common
         if counted[1] >= threshold
-    ]
+    ]"""
+    return []

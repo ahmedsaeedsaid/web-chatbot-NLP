@@ -475,7 +475,7 @@ function get_bot_reply(user_query, token) {
     $.ajax({
         type: "POST",
         dataType: "json",
-        url: "http://localhost:5002/",
+        url: "https://207.180.195.64:5002/",
         data: param,
         headers: {
             'Authorization': "Bearer " + token,
@@ -487,13 +487,13 @@ function get_bot_reply(user_query, token) {
                 return;
             }
             var current_date = moment().format('h:mm a | MMMM D YYYY');
-            var suggested_answers = ["What are you?", "Hello!"];
+            var suggested_answers = data.response.result.suggested_actions;
             var suggested_text = ``;
             suggested_answers.forEach(function (answer) {
                 suggested_text += `
                         <div class="received_msg">
                             <div class="row msg-btns">
-                                <button class="btn btn-primary copyAnswer">` + answer + `</button>
+                                <button class="btn btn-primary copyAnswer">` + answer[0] + `</button>
                             </div>
                         </div><br>`;
             });

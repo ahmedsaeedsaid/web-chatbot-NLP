@@ -1,4 +1,5 @@
 import chatterbot.chatterbot as chatterbot
+import re
 
 
 class chatBot(chatterbot.ChatBot):
@@ -83,7 +84,9 @@ class chatBot(chatterbot.ChatBot):
             self.learn_response(input_statement)
 
             # Save the response generated for the input
-            self.storage.create(**response.serialize())
+            res = response.serialize()
+            res['text'] = re.sub(u"(\u2018|\u2019)", "'", res['text'])
+            self.storage.create(**res)
 
         return response, Story_ID ,children_questions
 

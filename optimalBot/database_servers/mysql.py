@@ -15,6 +15,7 @@ class MySQL:
                                       password=self.password,
                                       host=self.host,
                                       database=self.database)
+        con.set_charset_collation('utf8')
         return con
 
     def select_(self, select):
@@ -31,6 +32,10 @@ class MySQL:
 
     def show_(self, entity):
         self.query += 'show ' + entity
+
+    def alter_(self, table, column, datatype):
+        self.query += 'alter table ' + table + ' modify column ' + column + ' ' + datatype
+        cr = self.__execute()
 
     def insert_(self, table_name, data):
         self.query += 'insert into ' + table_name + ' values('

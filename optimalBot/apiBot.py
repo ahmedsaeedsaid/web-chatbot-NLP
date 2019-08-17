@@ -1,13 +1,14 @@
-import optimalBot.web_services as WS
+import web_services as WS
 import chatterbot.comparisons as comp
-import optimalBot.optimal_chatterbot.response_selection as resp
+import optimal_chatterbot.response_selection as resp
 import re
-from optimalBot.optimal_chatterbot.chatbot import chatBot as optimalbot
-from optimalBot.optimal_chatterbot.sentence_classification import *
-from optimalBot.optimal_chatterbot.Filters import *
-from optimalBot.optimal_chatterbot.trainer import ListTrainerOverridden,ChatterBotCorpusTrainerOverridden
-from .db_manager import DBManager
-from .settings import *
+from optimal_chatterbot.chatbot import chatBot as optimalbot
+from optimal_chatterbot.sentence_classification import *
+from optimal_chatterbot.Filters import *
+from optimal_chatterbot.trainer import ListTrainerOverridden,ChatterBotCorpusTrainerOverridden
+from db_manager import DBManager
+from settings import *
+from DataCleaning import DataCleaning
 
 
 class ApiBot(WS.Rest):
@@ -41,7 +42,7 @@ class ApiBot(WS.Rest):
                                      database_uri=uri,
                                      logic_adapters=
                                      [{
-                                         "import_path": "optimalBot.optimal_chatterbot.FlowAdapter.FlowAdapter",
+                                         "import_path": "optimal_chatterbot.FlowAdapter.FlowAdapter",
                                          "statement_comparison_function": comp.SentimentComparison,
                                          "response_selection_method": resp.get_flow_response
                                      }],
@@ -50,10 +51,13 @@ class ApiBot(WS.Rest):
                                      bot_information=self.bot_information)
 
                 # Filter User Query
-                cleaned_query = re.sub('[^ a-zA-Z0-9]', ' ', query)
-                cleaned_query = " ".join(nltk.word_tokenize(cleaned_query))
+                dt = DataCleaning()
+                cleaned_query = dt.clean(query)
+                #cleaned_query = re.sub('[^ a-zA-Z0-9]', ' ', query)
+                #escaped_query = re.escape(query)
+                #tokenized_query = " ".join(nltk.word_tokenize(escaped_query))
+                #cleaned_query = re.sub(u"(\u2018|\u2019)", "'", tokenized_query)
                 response, Story_ID, children_questions = chatbot.get_response(cleaned_query)
-                print(Story_ID)
 
                 return WS.Response.returnResponse(HTTP_SUCCESS_RESPONSE, {'bot_reply': str(response), 'story_id': Story_ID, 'suggested_actions': children_questions})
             else:
@@ -75,6 +79,11 @@ class ApiBot(WS.Rest):
                                     storage_adapter="chatterbot.storage.SQLStorageAdapter",
                                     database_uri=uri,)
 
+                db.change_column_datatype('statement', 'text', 'text')
+                db.change_column_datatype('statement', 'search_text', 'text')
+                db.change_column_datatype('statement', 'in_response_to', 'text')
+                db.change_column_datatype('statement', 'search_in_response_to', 'text')
+
 
                 tables = [TABLE_BOT_1, TABLE_BOT_2, TABLE_BOT_3]
                 for table in tables:
@@ -83,10 +92,12 @@ class ApiBot(WS.Rest):
                 faq_table_name = FAQ_TABLE_NAME
                 Q_A = get_faq_Q_A_Pairs(faq_table_name, db)
 
+                dt = DataCleaning()
+
                 conversation = list()
                 for key, value in Q_A.items():
-                    conversation.append(key)
-                    conversation.append(value)
+                    conversation.append(dt.clean(key))
+                    conversation.append(dt.clean(value))
 
                 trainer = ChatterBotCorpusTrainerOverridden(chatbot)
                 trainer.train(

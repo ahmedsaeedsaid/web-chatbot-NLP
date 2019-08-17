@@ -1,6 +1,6 @@
-from optimalBot.database_servers.mysql import MySQL
-from optimalBot.database_servers.oracle import Oracle
-from .settings import *
+from database_servers.mysql import MySQL
+from database_servers.oracle import Oracle
+from settings import *
 
 
 class DBManager:
@@ -81,5 +81,8 @@ class DBManager:
         if status:
             return 'success'
         return 'failure'
+
+    def change_column_datatype(self, table, column, datatype):
+        self.db.alter_(table, column, datatype)
 
 

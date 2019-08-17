@@ -142,7 +142,7 @@
             });
             $.ajax({
                 type: "POST",
-                url: "http://localhost:5002/",
+                url: "https://207.180.195.64:5002/",
                 data: param,
                 headers: {
                     'Authorization': "Bearer " + "<?= $token ?>",

@@ -66,6 +66,11 @@ class FlowAdapter(LogicAdapter):
         if question_id != 0:
             children_questions = self.DBManager.get_value(table_name=FAQ_TABLE_NAME, column_name=QUESTION_SUBJECT_COLUMN,
                                                           conditions={PARENT_ID_COLUMN: str(question_id)}, multiple_values=True)
+            
+        answer = self.DBManager.get_value(table_name=FAQ_TABLE_NAME, column_name=ANSWER_COLUMN_NAME,
+                                                    conditions={QUESTION_SUBJECT_COLUMN: str(closest_match)}, like=True)
+        print(answer)
+        print(closest_match)
 
         self.chatbot.logger.info('Using "{}" as a close match to "{}" with a confidence of {}'.format(
             closest_match.text, input_statement.text, closest_match.confidence
@@ -147,5 +152,9 @@ class FlowAdapter(LogicAdapter):
 
         if not children_questions:
             children_questions = []
+        
+        if answer:
+            response.text = answer
+            return response, self.Story_ID ,children_questions
 
         return response, self.Story_ID ,children_questions

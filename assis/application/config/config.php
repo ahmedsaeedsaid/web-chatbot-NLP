@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost/web-assistant/assis/';
+$config['base_url'] = 'https://207.180.195.64/web-assistant/assis/';
 
 /*
 |--------------------------------------------------------------------------

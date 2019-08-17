@@ -1,9 +1,12 @@
-from optimalBot.settings import *
 import json
 from flask import request
 from .response import *
 import re
 from urllib.parse import urlparse
+import sys
+
+sys.path.append("..")
+from settings import *
 
 
 # Class handle Validation Request
@@ -88,7 +91,7 @@ class Validation:
         if requested_domain:
             parsed_uri = urlparse(requested_domain)
             requested_domain = '{uri.netloc}'.format(uri=parsed_uri)
-            return domain == requested_domain
+            return (domain == requested_domain) or (requested_domain == HOST)
         return True
 
 
