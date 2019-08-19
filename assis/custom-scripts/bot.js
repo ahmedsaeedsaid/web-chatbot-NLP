@@ -305,7 +305,7 @@ var html = `<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.
 #Smallchat .Input_button {
     position: absolute;
     bottom: 15px;
-    width: 25px;
+    width: 45px;
     height: 25px;
     padding: 0;
     border: none;
@@ -313,8 +313,32 @@ var html = `<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.
     background-color: transparent;
     cursor: pointer;
 }
+#Smallchat .Input_button-mic {
+    position: absolute;
+    bottom: 20px;
+    width: 50px;
+    height: 20px;
+    padding: 0;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    cursor: pointer;
+}
 #Smallchat .Input_button-send {
-    right: 15px;
+    right: -12px;
+}
+#Smallchat .Input_button-mic {
+    right: 18px;
+}
+#Smallchat .Input-emoji .Input_button-mic .Icon, #Smallchat .Input_button:hover .Icon {
+    -webkit-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    transform: scale(1.1);
+    -webkit-transition: all .1s ease-in-out;
+    transition: all .1s ease-in-out;
+}
+#Smallchat .Input-emoji .Input_button-mic .Icon path, #Smallchat .Input_button:hover .Icon path {
+    fill: #2c2c46;
 }
 #Smallchat .Input-emoji .Input_button-emoji .Icon, #Smallchat .Input_button:hover .Icon {
     -webkit-transform: scale(1.1);
@@ -405,6 +429,8 @@ var html = `<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.
 </style>
 <div class="container">
 	<div class="row">
+
+    <span id='message'></span>
 	 <div id="Smallchat">
     <div class="Layout Layout-open Layout-expand Layout-right" style="background-color: #3F51B5;color: rgb(255, 255, 255);opacity: 5;border-radius: 10px;">
       <div class="Messenger_messenger">
@@ -434,6 +460,15 @@ var html = `<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.
                     <path d="M28,47 C18.0588745,47 10,38.9411255 10,29 C10,27.5224898 11.5469487,26.5550499 12.8754068,27.2017612 C13.0116063,27.2662365 13.0926181,27.3037345 13.1866998,27.3464814 C13.4611235,27.4711684 13.7819537,27.6111958 14.1451774,27.7627577 C15.1908595,28.199088 16.3591406,28.6365764 17.6173846,29.0449298 C21.1841638,30.2025005 24.7379224,30.8945075 28,30.8945075 C31.2620776,30.8945075 34.8158362,30.2025005 38.3826154,29.0449298 C39.6408594,28.6365764 40.8091405,28.199088 41.8548226,27.7627577 C42.2180463,27.6111958 42.5388765,27.4711684 42.8133002,27.3464814 C42.9073819,27.3037345 42.9883937,27.2662365 43.0558366,27.2344634 C44.4530513,26.5550499 46,27.5224898 46,29 C46,38.9411255 37.9411255,47 28,47 Z M28,43 C34.6510529,43 40.2188483,38.3620234 41.6456177,32.1438387 C40.9980758,32.3847069 40.320642,32.6213409 39.6173846,32.8495777 C35.6841638,34.1260741 31.7379224,34.8945075 28,34.8945075 C24.2620776,34.8945075 20.3158362,34.1260741 16.3826154,32.8495777 C15.679358,32.6213409 15.0019242,32.3847069 14.3543823,32.1438387 C15.7811517,38.3620234 21.3489471,43 28,43 Z" id="Oval-8" fill="#96AAB4" fill-rule="nonzero"></path>
                     <path d="M19,15 L19,20 C19,21.1045695 19.8954305,22 21,22 C22.1045695,22 23,21.1045695 23,20 L23,15 C23,13.8954305 22.1045695,13 21,13 C19.8954305,13 19,13.8954305 19,15 Z" id="Line" fill="#96AAB4" fill-rule="nonzero"></path>
                     <path d="M32,15 L32,20 C32,21.1045695 32.8954305,22 34,22 C35.1045695,22 36,21.1045695 36,20 L36,15 C36,13.8954305 35.1045695,13 34,13 C32.8954305,13 32,13.8954305 32,15 Z" id="Line-Copy-2" fill="#96AAB4" fill-rule="nonzero"></path>
+                  </g>
+                </svg>
+              </div>
+            </button>
+            <button id='btnGiveCommand' class="Input_button Input_button-mic">
+              <div class="Icon" style="width: 18px; height: 18px;">
+                <svg width="60px" height="60px" viewBox="1496 193 57 54" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                  <g id="Group-9-Copy-3" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(1523.000000, 220.000000) translate(-1523.000000, -220.000000) translate(1499.000000, 193.000000)">
+                    <path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z" fill="#96AAB4" fill-rule="nonzero"/>
                   </g>
                 </svg>
               </div>
@@ -605,6 +640,71 @@ function get_bot_reply(user_query, token) {
                                 document.write("Forbidden, Access is denied!");
                                 return;
                             }
+                            var message = document.querySelector('#message');
+                            /*
+                                - this webkitSpeechRecognition is for Chrome & SpeechRecognition for Firefox
+                                - We Must Add those for safari ,Edge, Chromium, internet explorer, and so on
+                            */
+                            var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+                            /*
+                                - this webkitSpeechGrammarList is for Chrome & SpeechGrammarList for Firefox
+                                - We Must Add those for safari ,Edge, Chromium, internet explorer, and so on
+                            */
+                            var SpeechGrammarList = SpeechGrammarList || webkitSpeechGrammarList;
+                            /*
+                                The Following Links May Help:
+                                - https://medium.com/@seoul_engineer/speech-recognition-in-browsers-2018-f25bf59857bc
+                                - https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition
+                            */
+
+
+                            /*
+                            This speech recognition interface constructor is used to create a new speech recognition object which has a number of event handlers available for detecting when speech is input through the Mic & grammar interface which represents a container for a particular set of grammar that the application should be able to recognize the grammar is defined using the speech and grammar format.
+
+                            For More info check : https://www.w3.org/TR/jsgf/
+                            */
+
+
+                            var grammar = '#JSGF V1.0;' //This is Type of Grammer
+
+                            var recognition = new SpeechRecognition();
+                            var speechRecognitionList = new SpeechGrammarList();
+
+                            speechRecognitionList.addFromString(grammar, 1);
+                            recognition.grammars = speechRecognitionList;
+
+                            recognition.lang = 'en-US'; 
+                            // 'ar-EG';
+                            // 'ar-SA';
+                            // 'ar-LB';
+                            // 'en-CA';
+                            // 'fr-FR';
+                            // 'de-DE';
+                            // 'it-IT';
+                            // 'es-ES';
+                            // 'tr';
+                            /*
+                                - we can try more Languages:
+                                https://stackoverflow.com/questions/14257598/what-are-language-codes-in-chromes-implementation-of-the-html5-speech-recogniti
+                                https://www.science.co.il/language/Locale-codes.php
+                            */
+
+                            recognition.interimResults = false; // we need only the final result
+
+                            recognition.onresult = function (event) {
+                                var last = event.results.length - 1;
+                                var command = event.results[last][0].transcript;
+                                $("#user_query").val(command);
+                            };
+                            recognition.onspeechend = function () {
+                                recognition.stop();
+                            };
+                            recognition.onerror = function (event) {
+                                alert('Error occurred in recognition: ' + event.error);
+                            }
+                            document.querySelector('#btnGiveCommand').addEventListener('click', function () {
+                                recognition.start();
+                            });
                         });
                     });
                 });
