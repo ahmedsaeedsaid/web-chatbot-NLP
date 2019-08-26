@@ -38,7 +38,7 @@ class Validation:
 
         if 'param' in data.keys():
             if not isinstance(data['param'], list):
-                api_param_not_found_error
+                 api_param_not_found_error
         else:
             return api_param_not_found_error
 

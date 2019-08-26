@@ -69,9 +69,8 @@ class FlowAdapter(LogicAdapter):
             
         answer = self.DBManager.get_value(table_name=FAQ_TABLE_NAME, column_name=ANSWER_COLUMN_NAME,
                                                     conditions={QUESTION_SUBJECT_COLUMN: str(closest_match)}, like=True)
-        print(answer)
-        print(closest_match)
 
+        print(input_statement.conversation)
         self.chatbot.logger.info('Using "{}" as a close match to "{}" with a confidence of {}'.format(
             closest_match.text, input_statement.text, closest_match.confidence
         ))

@@ -3,14 +3,14 @@ import nltk
 import string
 from itertools import takewhile, tee
 import networkx
-import numpy as np
-import operator
+
 
 
 class KeywordsExtractor:
 
     def extract_candidate_words(self, tokenized_words):
-        """ This function simply extract possible candidate key words from given text.
+        """
+         This function simply extract possible candidate key words from given text.
 
             This function split the given text to sentences, then split sentences to words,
             then it extracts nouns, noun phrases, etc...
@@ -42,7 +42,7 @@ class KeywordsExtractor:
         return candidates
 
     # update docstrings
-    def score_keyphrases_by_textrank(self, statement, n_keywords=0.5):
+    def score_keyphrases_by_textrank(self, statement, n_keywords=0.75):
         """ Construct weighted & undirected graph with key phrases, ranked by the score of each key phrase.
 
             This function takes the output of the extract_candidate_words, then it represents
@@ -93,36 +93,9 @@ class KeywordsExtractor:
 
         # word_ranks={'keywords':rank value},
         # make a dict for first n_keywords order by ranks descending
-        word_ranks = {word_rank[0]: word_rank[1]
+        word_ranks = [(word_rank[0], word_rank[1])
                       for word_rank in sorted(ranks.items(),
                                               key=lambda x: x[1],
-                                              reverse=True)[:n_keywords]}
+                                              reverse=True)[:n_keywords]]
 
-        # store dict keys
-        keywords = set(word_ranks.keys())
-        # merge keywords into keyphrases
-        keyphrases = {}
-        j = 0
-        for i, word in enumerate(words):
-            if i < j:
-                continue
-            if word in keywords:
-                # look for next 10 words,
-                # after the keyword to merge them into one keyphrase
-                kp_words = list(takewhile(lambda x: x in keywords,
-                                          words[i:i + 10]))
-                # word_ranks={'keywords':rank value},
-                # access rank value by kp_words key,
-                # for each word in the keyphrase(kp_words)
-                # calculate avg rank for the keyphrase
-                avg_pagerank = sum(word_ranks[w]
-                                   for w in kp_words) / float(len(kp_words))
-                keyphrases[' '.join(kp_words)] = avg_pagerank
-                # counter as hackish way to ensure,
-                # merged keyphrases are non-overlapping
-                j = i + len(kp_words)
-
-        keyphrases_sorted = sorted(keyphrases.items(), key=lambda x: x[1], reverse=True)
-        # keyphrases = [phrase for phrase in keyphrases.items()]
-
-        return keyphrases_sorted
+        return word_ranks
