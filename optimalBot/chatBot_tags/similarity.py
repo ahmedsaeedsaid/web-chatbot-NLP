@@ -1,8 +1,10 @@
 import numpy as np
+from .keywordsExtractor import *
 
 class Similarity :
-    def __init__(self,glove):
+    def __init__(self,glove,tags):
         self.glove = glove
+        self.tags = tags
 
 
     def similarity(self ,word1,word2):
@@ -15,6 +17,19 @@ class Similarity :
         except:
             return 0
 
+    def get_tags(self,statement):
+        keywords_extractor = KeywordsExtractor()
+        keyphrases_sorted = keywords_extractor.score_keyphrases_by_textrank(statement)
+        statement_tags = []
+        for keyword in keyphrases_sorted :
+            highestTag = (None,0)
+            for tag in self.tags:
+                score = self.similarity(tag,keyword[0])
+                if score > highestTag[1]:
+                    highestTag = (tag,score)
+            statement_tags.append(highestTag[0])
+
+        return statement_tags
 
 
 

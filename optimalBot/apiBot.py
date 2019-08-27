@@ -1,4 +1,5 @@
 import web_services as WS
+import chatBot_tags as CT
 import chatterbot.comparisons as comp
 import optimal_chatterbot.response_selection as resp
 import re
@@ -48,7 +49,9 @@ class ApiBot(WS.Rest):
                                      }],
                                      filters=[get_recent_repeated_responsesCustomized],
                                      Story_ID=Story_ID,
-                                     bot_information=self.bot_information)
+                                     bot_information=self.bot_information,
+                                     glove = self.glove,
+                                     tags = self.tags)
 
                 # Filter User Query
                 dt = DataCleaning()
@@ -139,5 +142,22 @@ class ApiBot(WS.Rest):
                 return WS.Response.returnResponse(HTTP_SUCCESS_RESPONSE, {'status': str(status)})
             else:
                 return WS.Response.throwError(DATABASE_TYPE_ERROR, "Sorry, We couldn't verify your database, please check with our support")
+        except:
+             return WS.Response.throwError(JWT_PROCESSING_ERROR, "Sorry, Server is down, please contact the administrators")
+
+
+    def suggestionTags(self):
+        try:
+            statement = WS.Validation.validateParameter('statement', self.param['statement'], STRING)
+            if statement['valid']:
+                statement = statement['data']
+            else:
+                return statement['data']
+
+            similarity = CT.Similarity(self.glove,self.tags)
+            statement_tags = similarity.get_tags(statement)
+
+            return WS.Response.returnResponse(HTTP_SUCCESS_RESPONSE, {'tags':statement_tags})
+
         except:
              return WS.Response.throwError(JWT_PROCESSING_ERROR, "Sorry, Server is down, please contact the administrators")

@@ -2,7 +2,7 @@ from chatterbot.logic import LogicAdapter
 from chatterbot import filters
 from optimalBot.db_manager import *
 from optimalBot.settings import *
-
+import optimalBot.chatBot_tags as CT
 
 class FlowAdapter(LogicAdapter):
     """
@@ -26,6 +26,8 @@ class FlowAdapter(LogicAdapter):
 
         self.excluded_words = kwargs.get('excluded_words')
         self.Story_ID = kwargs.get('Story_ID')
+        self.glove = kwargs.get('glove')
+        self.tags = kwargs.get('tags')
         bot_name, db_server, db_name, db_username, db_password, db_driver, _, _, _, _ = kwargs.get('bot_information')
         self.DBManager = DBManager(user=db_username,
                                    password=db_password,
@@ -45,6 +47,21 @@ class FlowAdapter(LogicAdapter):
                 tags.append(tag)
             return tags
         else:
+            similarity = CT.Similarity(self.glove,self.tags)
+            return similarity.get_tags(statement)
+
+    def __voting_results(self,tags_input_statement,tag_results):
+        for tag_input_statement in tags_input_statement:
+            for tag_result in tag_results:
+                for tag in tag_result['tags']:
+                    if tag == tag_input_statement:
+                        tag_result['vote']+=1
+
+                if len(tag_input_statement) == 0 and len(tag_result) == 0 :
+                    tag_result['vote']+=1
+
+
+
 
 
     def process(self, input_statement, additional_response_selection_parameters=None):
@@ -61,16 +78,28 @@ class FlowAdapter(LogicAdapter):
 
 
         # Search for the closest match to the input statement
+        tag_results = []
         for result in search_results:
-            self.__get_tags(str(result))
+            tags = self.__get_tags(str(result))
+            tag_results.append({'result':result , 'tags':tags , 'vote':0})
+
+        tags_input_statement = self.__get_tags(str(input_statement))
+
+        self.__voting_results(tags_input_statement,tag_results)
+
+
+        for tag_result in tag_results:
+
             # Stop searching if a match that is close enough is found
-            if result.confidence >= self.maximum_similarity_threshold or not closest_match:
-                closest_match = result
+            if tag_result['result'].confidence >= self.maximum_similarity_threshold or not closest_match:
+                closest_match = tag_result['result']
                 story_id = self.DBManager.get_value(table_name=FAQ_TABLE_NAME, column_name=STORY_ID_COLUMN,
-                                                    conditions={QUESTION_SUBJECT_COLUMN: str(result)}, like=True)
+                                                    conditions={QUESTION_SUBJECT_COLUMN: str(tag_result['result'])}, like=True)
                 if story_id > 0:
                     closest_match_story_id = story_id
-                accepted_results.append(result)
+                accepted_results.append(tag_result['result'])
+
+
         if not closest_match :
             closest_match = input_statement
         for result in accepted_results:
