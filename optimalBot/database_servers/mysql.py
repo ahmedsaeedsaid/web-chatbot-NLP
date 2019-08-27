@@ -30,8 +30,10 @@ class MySQL:
     def where_(self, where):
         self.query += ' where ' + where
 
+
     def show_(self, entity):
         self.query += 'show ' + entity
+
 
     def alter_(self, table, column, datatype):
         self.query += 'alter table ' + table + ' modify column ' + column + ' ' + datatype

@@ -19,6 +19,8 @@ class FlowAdapter(LogicAdapter):
     :type excluded_words: list
     """
 
+
+
     def __init__(self, chatbot, **kwargs):
         super().__init__(chatbot, **kwargs)
 
@@ -30,32 +32,54 @@ class FlowAdapter(LogicAdapter):
                                    host=db_server,
                                    database=db_name)
 
+    def __get_tags(self, statement):
+        statement_id = self.DBManager.get_value(table_name=FAQ_TABLE_NAME, column_name='id',
+                                 conditions={QUESTION_SUBJECT_COLUMN: str(statement)}, like=True)
+        if statement_id:
+            tag_ids = self.DBManager.get_value(table_name=JOIN_TAGS_TABLE_NAME, column_name=JOIN_TAGS_TAG_ID_COLUMN_NAME,
+                                    conditions={JOIN_TAGS_Q_A_ID_COLUMN_NAME: str(statement_id)},multiple_values=True)
+            tags = []
+            for tag_id in tag_ids:
+                tag = self.DBManager.get_value(table_name=TAGS_TABLE_NAME, column_name='tag',
+                                    conditions={'id': str(tag_id[0])})
+                tags.append(tag)
+            return tags
+        else:
+
+
     def process(self, input_statement, additional_response_selection_parameters=None):
+
         search_results = self.search_algorithm.search(input_statement)
 
         # Use the input statement as the closest match if no other results are found
-        closest_match = next(search_results, input_statement)
+
+        closest_match = None
         accepted_results = []
         story_id_changed = True
         closest_match_story_id = self.Story_ID
         children_questions = []
+
+
         # Search for the closest match to the input statement
         for result in search_results:
+            self.__get_tags(str(result))
             # Stop searching if a match that is close enough is found
-            if result.confidence >= self.maximum_similarity_threshold:
+            if result.confidence >= self.maximum_similarity_threshold or not closest_match:
                 closest_match = result
                 story_id = self.DBManager.get_value(table_name=FAQ_TABLE_NAME, column_name=STORY_ID_COLUMN,
                                                     conditions={QUESTION_SUBJECT_COLUMN: str(result)}, like=True)
                 if story_id > 0:
                     closest_match_story_id = story_id
                 accepted_results.append(result)
-
+        if not closest_match :
+            closest_match = input_statement
         for result in accepted_results:
             story_id = self.DBManager.get_value(table_name=FAQ_TABLE_NAME, column_name=STORY_ID_COLUMN,
                                                 conditions={QUESTION_SUBJECT_COLUMN: str(result)}, like=True)
             if story_id == self.Story_ID:
                 story_id_changed = False
                 closest_match = result
+
 
         if accepted_results and story_id_changed:
             self.Story_ID = closest_match_story_id
@@ -70,7 +94,8 @@ class FlowAdapter(LogicAdapter):
         answer = self.DBManager.get_value(table_name=FAQ_TABLE_NAME, column_name=ANSWER_COLUMN_NAME,
                                                     conditions={QUESTION_SUBJECT_COLUMN: str(closest_match)}, like=True)
 
-        print(input_statement.conversation)
+
+
         self.chatbot.logger.info('Using "{}" as a close match to "{}" with a confidence of {}'.format(
             closest_match.text, input_statement.text, closest_match.confidence
         ))

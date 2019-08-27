@@ -13,7 +13,7 @@ from DataCleaning import DataCleaning
 
 class ApiBot(WS.Rest):
     def askBot(self):
-        try:
+        #try:
             query = WS.Validation.validateParameter('query', self.param['query'], STRING)
             if query['valid']:
                 query = query['data']
@@ -62,8 +62,8 @@ class ApiBot(WS.Rest):
                 return WS.Response.returnResponse(HTTP_SUCCESS_RESPONSE, {'bot_reply': str(response), 'story_id': Story_ID, 'suggested_actions': children_questions})
             else:
                 return WS.Response.throwError(DATABASE_TYPE_ERROR, "Database type is not supported.")
-        except:
-            return WS.Response.throwError(JWT_PROCESSING_ERROR, "Sorry, Server is down, please contact the administrators")
+        #except:
+            #return WS.Response.throwError(JWT_PROCESSING_ERROR, "Sorry, Server is down, please contact the administrators")
 
     def createBot(self):
         try:
