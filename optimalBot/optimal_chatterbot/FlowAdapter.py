@@ -1,9 +1,10 @@
 from chatterbot.logic import LogicAdapter
+from chatterbot.logic import BestMatch
 from chatterbot import filters
 from optimalBot.db_manager import *
 from optimalBot.settings import *
 import optimalBot.chatBot_tags as CT
-
+import math
 class FlowAdapter(LogicAdapter):
     """
     A logic adapter that returns a response based on known responses to
@@ -50,7 +51,15 @@ class FlowAdapter(LogicAdapter):
             similarity = CT.Similarity(self.glove,self.tags)
             return similarity.get_tags(statement)
 
-    def __voting_results(self,tags_input_statement,tag_results):
+    def __filter_results_according_tagging(self,input_statement ,search_results ,ratio = 1):
+        tag_results = []
+        for result in search_results:
+            tags = self.__get_tags(str(result))
+
+            tag_results.append({'result':result , 'tags':tags , 'vote':0})
+
+        tags_input_statement = self.__get_tags(str(input_statement))
+
         for tag_input_statement in tags_input_statement:
             for tag_result in tag_results:
                 for tag in tag_result['tags']:
@@ -60,6 +69,8 @@ class FlowAdapter(LogicAdapter):
                 if len(tag_input_statement) == 0 and len(tag_result) == 0 :
                     tag_result['vote']+=1
 
+        tag_results.sort(key=lambda tag_result: tag_result['vote'],reverse=True)
+        return [tag_result['result']  for tag_result in tag_results[:int(math.ceil(len(tag_results)*ratio))] ]
 
 
 
@@ -77,27 +88,21 @@ class FlowAdapter(LogicAdapter):
         children_questions = []
 
 
+
+        # Filter results according tags
+        results = self.__filter_results_according_tagging(input_statement,search_results)
+
         # Search for the closest match to the input statement
-        tag_results = []
-        for result in search_results:
-            tags = self.__get_tags(str(result))
-            tag_results.append({'result':result , 'tags':tags , 'vote':0})
-
-        tags_input_statement = self.__get_tags(str(input_statement))
-
-        self.__voting_results(tags_input_statement,tag_results)
-
-
-        for tag_result in tag_results:
+        for result in results:
 
             # Stop searching if a match that is close enough is found
-            if tag_result['result'].confidence >= self.maximum_similarity_threshold or not closest_match:
-                closest_match = tag_result['result']
+            if result.confidence >= self.maximum_similarity_threshold or not closest_match:
+                closest_match = result
                 story_id = self.DBManager.get_value(table_name=FAQ_TABLE_NAME, column_name=STORY_ID_COLUMN,
-                                                    conditions={QUESTION_SUBJECT_COLUMN: str(tag_result['result'])}, like=True)
+                                                    conditions={QUESTION_SUBJECT_COLUMN: str(result)}, like=True)
                 if story_id > 0:
                     closest_match_story_id = story_id
-                accepted_results.append(tag_result['result'])
+                accepted_results.append(result)
 
 
         if not closest_match :

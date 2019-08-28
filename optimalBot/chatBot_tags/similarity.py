@@ -27,7 +27,8 @@ class Similarity :
                 score = self.similarity(tag,keyword[0])
                 if score > highestTag[1]:
                     highestTag = (tag,score)
-            statement_tags.append(highestTag[0])
+            if not highestTag[0]:
+                statement_tags.append(highestTag[0])
 
         return statement_tags
 

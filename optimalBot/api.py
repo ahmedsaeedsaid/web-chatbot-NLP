@@ -8,12 +8,13 @@ app = Flask(__name__)
 CORS(app)
 api = Api(app)
 
-#glove = RequirementData.loadGlove()
+glove = RequirementData.loadGlove()
 tags = RequirementData.loadTags()
+
 
 @app.route('/', methods=['POST', 'OPTIONS'])
 def root():
-    api_bot = ApiBot([],tags)
+    api_bot = ApiBot(glove,tags)
     return api_bot.processApi()
 
 
