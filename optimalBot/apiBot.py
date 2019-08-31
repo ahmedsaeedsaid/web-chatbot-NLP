@@ -45,7 +45,8 @@ class ApiBot(WS.Rest):
                                      [{
                                          "import_path": "optimal_chatterbot.FlowAdapter.FlowAdapter",
                                          "statement_comparison_function": comp.SentimentComparison,
-                                         "response_selection_method": resp.get_flow_response
+                                         "response_selection_method": resp.get_flow_response,
+                                         "maximum_similarity_threshold":0.75
                                      }],
                                      filters=[get_recent_repeated_responsesCustomized],
                                      Story_ID=Story_ID,

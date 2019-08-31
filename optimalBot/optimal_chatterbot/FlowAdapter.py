@@ -5,6 +5,8 @@ from optimalBot.db_manager import *
 from optimalBot.settings import *
 import optimalBot.chatBot_tags as CT
 import math
+from chatterbot.conversation import Statement
+import itertools
 class FlowAdapter(LogicAdapter):
     """
     A logic adapter that returns a response based on known responses to
@@ -35,9 +37,29 @@ class FlowAdapter(LogicAdapter):
                                    host=db_server,
                                    database=db_name)
 
-    def __get_tags(self, statement):
+
+
+
+    def __select_similar_question(self,statement , threshold_similar = 0.75):
+
+        questions = self.DBManager.get_value(table_name=FAQ_TABLE_NAME, column_name=QUESTION_SUBJECT_COLUMN,multiple_values=True)
+        max_question = {'question':'','confidence':0}
+        for question in questions:
+            question_statement = Statement(text=question[0])
+
+            confidence = self.search_algorithm.compare_statements(question_statement, statement)
+            if  confidence > max_question['confidence'] and confidence >= threshold_similar:
+                max_question['confidence'] = confidence
+                max_question['question'] = question[0]
+
+        return max_question['question']
+
+
+    def __get_tags(self, statement,threshold_similar):
+        question_suggest = self.__select_similar_question(statement,threshold_similar)
+        print("question_suggest : "+question_suggest+" with : "+str(statement))
         statement_id = self.DBManager.get_value(table_name=FAQ_TABLE_NAME, column_name='id',
-                                 conditions={QUESTION_SUBJECT_COLUMN: str(statement)}, like=True)
+                                 conditions={QUESTION_SUBJECT_COLUMN: question_suggest})
         if statement_id:
             tag_ids = self.DBManager.get_value(table_name=JOIN_TAGS_TABLE_NAME, column_name=JOIN_TAGS_TAG_ID_COLUMN_NAME,
                                     conditions={JOIN_TAGS_Q_A_ID_COLUMN_NAME: str(statement_id)},multiple_values=True)
@@ -49,17 +71,17 @@ class FlowAdapter(LogicAdapter):
             return tags
         else:
             similarity = CT.Similarity(self.glove,self.tags)
-            return similarity.get_tags(statement)
+            return similarity.get_tags(statement.text)
 
-    def __filter_results_according_tagging(self,input_statement ,search_results ,ratio = 1):
+    def __filter_results_according_tagging(self,input_statement ,search_results ,threshold_similar ,ratio = 0.5 ):
         tag_results = []
         for result in search_results:
-            tags = self.__get_tags(str(result))
+            tags = self.__get_tags(result,threshold_similar)
 
             tag_results.append({'result':result , 'tags':tags , 'vote':0})
-
-        tags_input_statement = self.__get_tags(str(input_statement))
-
+        print("search_results : "+str(tag_results))
+        tags_input_statement = self.__get_tags(input_statement,threshold_similar)
+        print("tags_input_statement : "+str(tags_input_statement))
         for tag_input_statement in tags_input_statement:
             for tag_result in tag_results:
                 for tag in tag_result['tags']:
@@ -70,7 +92,13 @@ class FlowAdapter(LogicAdapter):
                     tag_result['vote']+=1
 
         tag_results.sort(key=lambda tag_result: tag_result['vote'],reverse=True)
-        return [tag_result['result']  for tag_result in tag_results[:int(math.ceil(len(tag_results)*ratio))] ]
+
+        unique_votes = list(set([tag_result['vote'] for tag_result in tag_results]))
+        unique_votes.sort(reverse=True)
+        chooses_votes = unique_votes[:int(math.ceil(len(unique_votes)*ratio))]
+        print("results_according_tagging : "+str(tag_results))
+        return [tag_result['result']  for tag_result in tag_results if tag_result['vote'] in chooses_votes]
+
 
 
 
@@ -79,9 +107,10 @@ class FlowAdapter(LogicAdapter):
 
         search_results = self.search_algorithm.search(input_statement)
 
+
         # Use the input statement as the closest match if no other results are found
 
-        closest_match = None
+
         accepted_results = []
         story_id_changed = True
         closest_match_story_id = self.Story_ID
@@ -90,44 +119,55 @@ class FlowAdapter(LogicAdapter):
 
 
         # Filter results according tags
-        results = self.__filter_results_according_tagging(input_statement,search_results)
+        results = self.__filter_results_according_tagging(input_statement,search_results,self.maximum_similarity_threshold)
 
+        closest_match = {'result':input_statement ,'question_suggest':'' }
         # Search for the closest match to the input statement
         for result in results:
-
+            print("result.confidence" + str(result.confidence) +" with closest_match.confidence" + str(closest_match['result'].confidence))
             # Stop searching if a match that is close enough is found
-            if result.confidence >= self.maximum_similarity_threshold or not closest_match:
-                closest_match = result
+
+            if result.confidence >= self.maximum_similarity_threshold :
+                question_suggest = self.__select_similar_question(result,self.maximum_similarity_threshold)
+
+                if result.confidence > closest_match['result'].confidence :
+                    closest_match = {'result':result ,'question_suggest':question_suggest}
                 story_id = self.DBManager.get_value(table_name=FAQ_TABLE_NAME, column_name=STORY_ID_COLUMN,
-                                                    conditions={QUESTION_SUBJECT_COLUMN: str(result)}, like=True)
+                                                    conditions={QUESTION_SUBJECT_COLUMN: question_suggest})
                 if story_id > 0:
                     closest_match_story_id = story_id
-                accepted_results.append(result)
+                accepted_results.append(closest_match)
 
 
-        if not closest_match :
-            closest_match = input_statement
+
         for result in accepted_results:
             story_id = self.DBManager.get_value(table_name=FAQ_TABLE_NAME, column_name=STORY_ID_COLUMN,
-                                                conditions={QUESTION_SUBJECT_COLUMN: str(result)}, like=True)
+                                                conditions={QUESTION_SUBJECT_COLUMN: result['question_suggest']})
             if story_id == self.Story_ID:
-                story_id_changed = False
-                closest_match = result
+                if story_id_changed:
+                    closest_match = result
+                    story_id_changed = False
+                elif result['result'].confidence > closest_match['result'].confidence:
+                    closest_match = result
 
 
         if accepted_results and story_id_changed:
             self.Story_ID = closest_match_story_id
 
+
+
+
         # Suggested questions
         question_id = self.DBManager.get_value(table_name=FAQ_TABLE_NAME, column_name=QUESTION_ID_COLUMN,
-                                               conditions={QUESTION_SUBJECT_COLUMN: str(closest_match)}, like=True)
+                                               conditions={QUESTION_SUBJECT_COLUMN: closest_match['question_suggest']})
         if question_id != 0:
             children_questions = self.DBManager.get_value(table_name=FAQ_TABLE_NAME, column_name=QUESTION_SUBJECT_COLUMN,
                                                           conditions={PARENT_ID_COLUMN: str(question_id)}, multiple_values=True)
             
         answer = self.DBManager.get_value(table_name=FAQ_TABLE_NAME, column_name=ANSWER_COLUMN_NAME,
-                                                    conditions={QUESTION_SUBJECT_COLUMN: str(closest_match)}, like=True)
+                                                    conditions={QUESTION_SUBJECT_COLUMN: closest_match['question_suggest']})
 
+        closest_match = closest_match['result']
 
 
         self.chatbot.logger.info('Using "{}" as a close match to "{}" with a confidence of {}'.format(
