@@ -146,7 +146,6 @@ class ApiBot(WS.Rest):
         except:
              return WS.Response.throwError(JWT_PROCESSING_ERROR, "Sorry, Server is down, please contact the administrators")
 
-
     def suggestionTags(self):
         try:
             statement = WS.Validation.validateParameter('statement', self.param['statement'], STRING)

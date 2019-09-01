@@ -77,8 +77,8 @@ class FlowAdapter(LogicAdapter):
         tag_results = []
         for result in search_results:
             tags = self.__get_tags(result,threshold_similar)
-
             tag_results.append({'result':result , 'tags':tags , 'vote':0})
+
         print("search_results : "+str(tag_results))
         tags_input_statement = self.__get_tags(input_statement,threshold_similar)
         print("tags_input_statement : "+str(tags_input_statement))
@@ -91,7 +91,6 @@ class FlowAdapter(LogicAdapter):
                 if len(tag_input_statement) == 0 and len(tag_result) == 0 :
                     tag_result['vote']+=1
 
-        tag_results.sort(key=lambda tag_result: tag_result['vote'],reverse=True)
 
         unique_votes = list(set([tag_result['vote'] for tag_result in tag_results]))
         unique_votes.sort(reverse=True)
