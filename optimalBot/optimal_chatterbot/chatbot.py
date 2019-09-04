@@ -1,5 +1,6 @@
 import chatterbot.chatterbot as chatterbot
 import re
+from DataCleaning import DataCleaning
 
 
 class chatBot(chatterbot.ChatBot):
@@ -85,7 +86,9 @@ class chatBot(chatterbot.ChatBot):
 
             # Save the response generated for the input
             res = response.serialize()
-            res['text'] = re.sub(u"(\u2018|\u2019)", "'", res['text'])
+            # Filter User Query
+            dt = DataCleaning()
+            res['text'] = dt.clean(res['text'])
             self.storage.create(**res)
 
         return response, Story_ID ,children_questions,means_questions

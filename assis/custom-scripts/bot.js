@@ -516,6 +516,7 @@ function get_bot_reply(user_query, token) {
             'Content-Type': 'application/json',
         },
         success: function (data) {
+            console.log(data);
             if ('error' in data) {
                 document.write(data.error.message);
                 return;

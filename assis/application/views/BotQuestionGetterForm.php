@@ -182,7 +182,8 @@
                     var param = JSON.stringify({
                         name: 'suggestionTags',
                         param: {
-                            statement: Question_value
+                            //statement: Question_value
+                            statement: Question_value + " " + Answer_value
                         }
                     });
                     $.ajax({
@@ -199,8 +200,11 @@
                                 document.write(data.error.message);
                                 return;
                             }
-                            console.log(data);
-                            /*if (Question_value != "" && Answer_value != "") {
+                            var tags = data.response.result.tags;
+                            tags.forEach(function(tag){
+                                tags_html += "<span class='tag-span badge badge-info'>" + tag + "</span>";
+                            });
+                            if (Question_value != "" && Answer_value != "") {
                                 var rowNode = myTable.row.add([
                                     "",
                                     Question_value,
@@ -219,7 +223,7 @@
                                 $("#question").val("");
                                 $("#answer").val("");
                                 $("#tags").val("");
-                            }*/
+                            }
                             $('#addRow').attr('disabled', false);
                         }
                     });
@@ -255,6 +259,7 @@
                     $("#parent_question").val("0");
                 }
                 $('#addRow').text("Add Question");
+                $('#addRow').attr('disabled', false);
             }
         });
 

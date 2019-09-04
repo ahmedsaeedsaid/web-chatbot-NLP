@@ -14,7 +14,7 @@ tags = RequirementData.loadTags()
 
 @app.route('/', methods=['POST', 'OPTIONS'])
 def root():
-    api_bot = ApiBot(glove,tags)
+    api_bot = ApiBot(glove, tags)
     return api_bot.processApi()
 
 
