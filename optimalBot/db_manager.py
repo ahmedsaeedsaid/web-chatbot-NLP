@@ -45,11 +45,14 @@ class DBManager:
         where = self.__build_query_condition(conditions, like)
         self.db.where_(where)
         results = self.db.fetch_all_()
+
         if results and not multiple_values:
             return results[0][0]
         elif results:
             return results
         else:
+            if multiple_values:
+                return []
             return 0
 
     def authenticate_user(self, token):

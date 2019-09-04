@@ -1,4 +1,4 @@
-from .response import *
+from optimalBot.requirementData import *
 from .validation import *
 import sys
 
@@ -9,17 +9,20 @@ from settings import *
 
 
 class Rest:
-    def __init__(self):
+    def __init__(self,*args):
         self.error = ""
         self.serviceName = ""
         self.param = ""
         self.token = ""
         self.bot_information = ""
         self.flagError = False
+        self.glove = args[0]
+        self.tags = args[1]
         self.db = DBManager(user=DB_USERNAME,
                             password=DB_PASSWORD,
                             host=DB_SERVER,
                             database=DB_NAME)
+
 
         request_result = Validation.validateRequest()
         if not request_result['valid']:

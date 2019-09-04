@@ -42,7 +42,7 @@ class KeywordsExtractor:
         return candidates
 
     # update docstrings
-    def score_keyphrases_by_textrank(self, statement, n_keywords=0.5):
+    def score_keyphrases_by_textrank(self, statement, n_keywords=1):
         """ Construct weighted & undirected graph with key phrases, ranked by the score of each key phrase.
 
             This function takes the output of the extract_candidate_words, then it represents
@@ -88,7 +88,7 @@ class KeywordsExtractor:
         # score nodes using default pagerank algorithm,
         # sort by score, keep top n_keywords
         ranks = networkx.pagerank(graph)
-        if 0 < n_keywords < 1:
+        if 0 < n_keywords <= 1:
             n_keywords = int(round(len(candidates) * n_keywords))
 
         # word_ranks={'keywords':rank value},
