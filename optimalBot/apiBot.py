@@ -46,7 +46,7 @@ class ApiBot(WS.Rest):
                                          "import_path": "optimal_chatterbot.FlowAdapter.FlowAdapter",
                                          "statement_comparison_function": comp.SentimentComparison,
                                          "response_selection_method": resp.get_flow_response,
-                                         "maximum_similarity_threshold":0.75
+                                         "maximum_similarity_threshold":0.45
                                      }],
                                      filters=[get_recent_repeated_responsesCustomized],
                                      Story_ID=Story_ID,
@@ -61,16 +61,16 @@ class ApiBot(WS.Rest):
                 #escaped_query = re.escape(query)
                 #tokenized_query = " ".join(nltk.word_tokenize(escaped_query))
                 #cleaned_query = re.sub(u"(\u2018|\u2019)", "'", tokenized_query)
-                response, Story_ID, children_questions = chatbot.get_response(cleaned_query)
+                response, Story_ID, children_questions,means_questions = chatbot.get_response(cleaned_query)
 
-                return WS.Response.returnResponse(HTTP_SUCCESS_RESPONSE, {'bot_reply': str(response), 'story_id': Story_ID, 'suggested_actions': children_questions})
+                return WS.Response.returnResponse(HTTP_SUCCESS_RESPONSE, {'bot_reply': str(response), 'story_id': Story_ID, 'suggested_actions': children_questions,'means_questions': means_questions})
             else:
                 return WS.Response.throwError(DATABASE_TYPE_ERROR, "Database type is not supported.")
         #except:
             #return WS.Response.throwError(JWT_PROCESSING_ERROR, "Sorry, Server is down, please contact the administrators")
 
     def createBot(self):
-        try:
+     #   try:
             bot_name, db_server, db_name, db_username, db_password, db_driver, _, domain, db_verified, first_train = self.bot_information
             if db_driver == 'mysqli' or db_driver == 'mysql':
                 db = DBManager(user=db_username,
@@ -115,8 +115,8 @@ class ApiBot(WS.Rest):
                 return WS.Response.returnResponse(HTTP_SUCCESS_RESPONSE, 'success')
             else:
                 return WS.Response.throwError(DATABASE_TYPE_ERROR, "Database type is not supported.")
-        except:
-             return WS.Response.throwError(JWT_PROCESSING_ERROR, "Sorry, Server is down, please contact the administrators")
+       # except:
+        #     return WS.Response.throwError(JWT_PROCESSING_ERROR, "Sorry, Server is down, please contact the administrators")
 
     def checkMetaValidity(self):
         try:

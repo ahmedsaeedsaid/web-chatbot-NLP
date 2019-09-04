@@ -5,7 +5,7 @@ the event that multiple responses are generated within a logic adapter.
 import logging
 
 
-def get_flow_response(input_statement, response_list, Story_ID, storage=None):
+def get_flow_response(input_statement, response_list, storage=None):
     """
     :param input_statement: A statement, that closely matches an input to the chat bot.
     :type input_statement: Statement

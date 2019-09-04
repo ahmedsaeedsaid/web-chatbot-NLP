@@ -71,4 +71,4 @@ class DataCleaning:
         return expanded_text
 
     def filter_symbols(self, filtered_text):
-        return re.sub(u"(\u2018|\u2019)", "'", filtered_text)
+        return re.sub(u"(\u2018|\u2019|\u201d|\u201c)", "'", filtered_text)
