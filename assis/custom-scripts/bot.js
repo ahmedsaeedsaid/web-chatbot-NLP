@@ -499,7 +499,6 @@ var story_id = 0;
 // CHAT BOOT MESSENGER////////////////////////
 
 function get_bot_reply(user_query, token) {
-    console.log("Old: " + story_id);
     var param = JSON.stringify({
         name: 'askBot',
         param: {
@@ -510,7 +509,7 @@ function get_bot_reply(user_query, token) {
     $.ajax({
         type: "POST",
         dataType: "json",
-        url: "https://207.180.195.64:5002/",
+        url: "https://localhost:5002/",
         data: param,
         headers: {
             'Authorization': "Bearer " + token,

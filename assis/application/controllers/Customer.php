@@ -61,6 +61,8 @@ class Customer extends CI_Controller {
         $config['title'] = 'Bot Question ChatBot';
         $data['scenario_id'] = $scenario_id;
         $data['QAs'] = $this->CM->getQASC($scenario_id);
+        $company = $this->subscribeFormMod->getCompanyById($this->session->userdata('assis_companyid'));
+        $data['token'] = $company->token;
         $this->load->view('customer/common', $config);
         $this->load->view('BotQuestionGetterForm', $data);
     }
@@ -111,8 +113,9 @@ class Customer extends CI_Controller {
         // check loggedIn
         $this->authentication->IsLoggedInCustomer('any');
         $Questions_generated = $this->input->post('Questions_generated');
+        $tags = $this->input->post('Tags');
         $scenario = $this->input->post('scenario');
-        $this->CM->saveQASC($Questions_generated,$scenario);
+        $this->CM->saveQASC($Questions_generated,$scenario ,$tags);
     }
     
     private function sendEmail ($subject, $body, $to){
