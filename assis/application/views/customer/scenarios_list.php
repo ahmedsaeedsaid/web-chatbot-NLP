@@ -1,3 +1,10 @@
+<?php
+if(!isset($_SESSION['show_tutorial_scenarios_list'])){
+    $_SESSION['show_tutorial_scenarios_list'] = 1;
+} else {
+    $_SESSION['show_tutorial_scenarios_list'] = 0;
+}
+?>
 <style>
     .Support {
         background-color: #ed0b0b;
@@ -48,7 +55,7 @@
                             <tr id="scenario-<?= $scenario['id'] ?>" <?php if (!$scenario['active']) { ?>class="danger" <?php } ?>>
                                 <td><?= $i ?></td>
                                 <td><?= $scenario['name'] ?></td>
-                                <td style="text-align:center">
+                                <td style="text-align:center" id="tour-scenario-list-step-1">
                                     <?php if ($scenario['active']) { ?>
                                     <a href="javascript:ToggleActive(0,<?= $scenario['id'] ?>)" title="Deactivate" id="status-<?= $scenario['id'] ?>"><img src="<?= base_url() ?>styles/icons/action_active.gif" alt="Status"></a>
                                     <?php } else { ?>
@@ -132,6 +139,42 @@
     }*/
 
     $(document).ready(function() {
+        <?php if ($_SESSION['show_tutorial_scenarios_list']) { ?>
+        let tourOptions = {
+            options: {
+                darkLayerPersistence: true,
+            },
+            tips: [{
+                title: '<span class="tour-title-icon">😁</span>Here we go!',
+                description: 'Here you can Acitvate/Deactivate scenario and add Q&A Pairs.',
+                image: "https://picsum.photos/300/200/?random",
+                selector: '#tour-scenario-list-step-1',
+                x: 30,
+                y: 30,
+                offx: 11,
+                offy: 0,
+                position: 'top',
+                onSelected: false
+            },{
+                title: '<span class="tour-title-icon">😁</span>Training!',
+                description: 'Here you can train your bot on the added scenarios and their questions.',
+                image: "https://picsum.photos/300/200/?random",
+                selector: '#train',
+                x: -40,
+                y: 50,
+                offx: 11,
+                offy: 0,
+                position: 'left',
+                onSelected: false
+            }]
+        };
+
+        let tour = window.ProductTourJS;
+        tour.init(tourOptions);
+
+        tour.start();
+        <?php } ?>
+        
         $('#clients').DataTable({
             "scrollX": true
         });
@@ -146,10 +189,10 @@
                 data: param,
                 headers: {
                     'Authorization': "Bearer " + "<?= $token ?>",
-                    'Content-Type':'application/json',
+                    'Content-Type': 'application/json',
                 },
                 success: function(data) {
-                    if('error' in data){
+                    if ('error' in data) {
                         document.write(data.error.message);
                         return;
                     }
@@ -158,9 +201,9 @@
                         text: 'Training Was Successfull, An email with further instruction has been sent to you!',
                         icon: 'success'
                     });
-                    setTimeout(function(){
+                    setTimeout(function() {
                         window.location = "<?= base_url("customer/sendBotScriptEmail") ?>";
-                     }, 4000);
+                    }, 4000);
                 }
             });
         });

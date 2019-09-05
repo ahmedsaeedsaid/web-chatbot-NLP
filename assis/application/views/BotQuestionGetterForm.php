@@ -1,3 +1,10 @@
+<?php
+if(!isset($_SESSION['show_tutorial_qa'])){
+    $_SESSION['show_tutorial_qa'] = 1;
+} else {
+    $_SESSION['show_tutorial_qa'] = 0;
+}
+?>
 <meta name="optimal-bot-verification" content="<?= $token ?>" />
 <link href="<?php echo base_url(); ?>styles/css/BotQuestionGetterForm.css" rel="stylesheet" />
 <div id="wrapper">
@@ -17,7 +24,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row" id="tour-qa-step-1">
                 <div class="col-lg-12">
                     <div class="col-lg-8">
                         <table class="table table-responsive table-hover table-bordered display" width="100%" cellspacing="0" id="questionsTable">
@@ -98,10 +105,78 @@
         </div>
     </div>
 </div>
-
+<script src="<?php echo base_url(); ?>styles/js/tour.js"></script>
 <script>
     $(document).ready(function() {
+        <?php if ($_SESSION['show_tutorial_qa']) { ?>
+        let tourOptions = {
+            options: {
+                darkLayerPersistence: true,
+            },
+            tips: [{
+                title: '<span class="tour-title-icon">😁</span>Here we go!',
+                description: 'You can add a question and its answer.',
+                image: "https://picsum.photos/300/200/?random",
+                selector: '#question',
+                x: 0,
+                y: 120,
+                offx: 11,
+                offy: 0,
+                position: 'left',
+                onSelected: false
+            },{
+                title: '<span class="tour-title-icon">😁</span>Keywords!',
+                description: 'You can add keywords that are related to your question. <a href="#">more</a>',
+                image: "https://picsum.photos/300/200/?random",
+                selector: '#tags-textarea',
+                x: 0,
+                y: 30,
+                offx: 11,
+                offy: 0,
+                position: 'left',
+                onSelected: false
+            },{
+                title: '<span class="tour-title-icon">😁</span>Adding Parent!',
+                description: 'Choose a question from previously added ones and relate it to your question.',
+                image: "https://picsum.photos/300/200/?random",
+                selector: '#tags-textarea',
+                x: 0,
+                y: 160,
+                offx: 11,
+                offy: 0,
+                position: 'left',
+                onSelected: false
+            },{
+                title: '<span class="tour-title-icon">😁</span>Appending Questions!',
+                description: 'Click here to append the question to the table when you are done.',
+                image: "https://picsum.photos/300/200/?random",
+                selector: '#addRow',
+                x: 50,
+                y: 140,
+                offx: 11,
+                offy: 0,
+                position: 'bottom',
+                onSelected: false
+            },{
+                title: '<span class="tour-title-icon">😁</span>Saving Questions!',
+                description: 'When you are done adding all of your questions, click here to save your questions.',
+                image: "https://picsum.photos/300/200/?random",
+                selector: '#submit_question',
+                x: 50,
+                y: 140,
+                offx: 11,
+                offy: 0,
+                position: 'top',
+                onSelected: false
+            }]
+        };
 
+        let tour = window.ProductTourJS;
+        tour.init(tourOptions);
+
+        tour.start();
+        <?php } ?>
+        
         redrowSelect();
         $('#parent_question').select2()
             .on('select2-open', function() {
@@ -200,8 +275,9 @@
                                 document.write(data.error.message);
                                 return;
                             }
+                            console.log(data);
                             var tags = data.response.result.tags;
-                            tags.forEach(function(tag){
+                            tags.forEach(function(tag) {
                                 tags_html += "<span class='tag-span badge badge-info'>" + tag + "</span>";
                             });
                             if (Question_value != "" && Answer_value != "") {

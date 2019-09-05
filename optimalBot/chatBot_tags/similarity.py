@@ -82,6 +82,7 @@ class Similarity (SynsetDistance):
         keywords_extractor = KeywordsExtractor()
         keyphrases_sorted  = keywords_extractor.score_keyphrases_by_textrank(statement)
         statement_tags = []
+        statement_keywords = []
         for keyword in keyphrases_sorted :
             highestTag = (None,0)
             for tag in self.tags:
@@ -93,9 +94,10 @@ class Similarity (SynsetDistance):
 
             if highestTag[0] and highestTag[1]>threshold_similar:
                 statement_tags.append(highestTag[0])
-            statement_tags.append(keyword[0])
-        statement_tags = list( set(statement_tags) )
-        return statement_tags
+            statement_keywords.append(keyword[0])
+        statement_tags = list(set(statement_tags))
+        statement_keywords = list(set(statement_keywords))
+        return statement_tags, statement_keywords
 
 
 

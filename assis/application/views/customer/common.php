@@ -1,3 +1,10 @@
+<?php
+if(!isset($_SESSION['show_tutorial_dash'])){
+    $_SESSION['show_tutorial_dash'] = 1;
+} else {
+    $_SESSION['show_tutorial_dash'] = 0;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -68,25 +75,29 @@
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>styles/select2/select2.min.css">
     <!--===============================================================================================-->
 
+    <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+    <link href="<?php echo base_url(); ?>styles/css/tour.css" rel="stylesheet" type="text/css">
+
 
     <!-- jQuery library -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 
     <!-- bootstrap library -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>
-    
+
     <!-- select2 UI library  -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js"></script>
-    
+
     <!-- JQuery UI library -->
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous">
-    
-    
+
+
 
     </script>
 
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+    <script src="<?php echo base_url(); ?>styles/js/tour.js"></script>
     <!-- Pre-defined Functions to use across website -->
     <script>
         function showErrorMsg(title, body) {
@@ -275,8 +286,8 @@
                             <img class="profile-pic" src="https://pbs.twimg.com/profile_images/711000557742395396/jzm8hqwW.jpg">
                             <h2 class="hvr-underline-from-center"><?= $this->session->userdata('assis_customername') ?></h2>
                             <?php if($this->session->userdata('assis_customeremail') != ''){ ?>
-                                <input value="<?= $this->session->userdata('assis_customeremail') ?>" id="email" type="hidden">
-                                <a href="" id="email-link"><i class="fa fa-envelope-o fa-2x"></i></a>
+                            <input value="<?= $this->session->userdata('assis_customeremail') ?>" id="email" type="hidden">
+                            <a href="" id="email-link"><i class="fa fa-envelope-o fa-2x"></i></a>
                             <?php } ?>
                         </div>
                         <button style="margin-left: 80%;margin-bottom: 3%;margin-right: 3%;" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -292,11 +303,11 @@
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
             <a class="navbar-brand" href="<?= base_url() ?>customer/main">
                 <p id="geeks_word_p">CUSTOMER PORTAL</p>
             </a>
@@ -310,8 +321,8 @@
                         <a href="#">
                             <div class="media">
                                 <span class="pull-left">
-                                        <img class="media-object" src="http://placehold.it/50x50" alt="">
-                                    </span>
+                                    <img class="media-object" src="http://placehold.it/50x50" alt="">
+                                </span>
                                 <div class="media-body">
                                     <h5 class="media-heading"><strong>John Smith</strong>
                                     </h5>
@@ -325,8 +336,8 @@
                         <a href="#">
                             <div class="media">
                                 <span class="pull-left">
-                                        <img class="media-object" src="http://placehold.it/50x50" alt="">
-                                    </span>
+                                    <img class="media-object" src="http://placehold.it/50x50" alt="">
+                                </span>
                                 <div class="media-body">
                                     <h5 class="media-heading"><strong>John Smith</strong>
                                     </h5>
@@ -340,8 +351,8 @@
                         <a href="#">
                             <div class="media">
                                 <span class="pull-left">
-                                        <img class="media-object" src="http://placehold.it/50x50" alt="">
-                                    </span>
+                                    <img class="media-object" src="http://placehold.it/50x50" alt="">
+                                </span>
                                 <div class="media-body">
                                     <h5 class="media-heading"><strong>John Smith</strong>
                                     </h5>
@@ -406,16 +417,16 @@
         <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav side-nav">
-                <li class="active">
-                    <a href="<?= base_url() ?>support/main"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
+                <li class="active" id="tour-step-1">
+                    <a href="<?= base_url() ?>customer/main"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
                 </li>
                 <li>
                     <a href="javascript:;" data-toggle="collapse" data-target="#user-drop-down"><i class="fa fa-fw fa-arrows-v"></i> Bot <i class="fa fa-fw fa-caret-down"></i></a>
-                    <ul id="user-drop-down" class="collapse">
-                        <li>
+                    <ul id="user-drop-down" class="collapse in" aria-expanded="true">
+                        <li id="tour-step-2">
                             <a class="active" href="<?php echo base_url() ?>customer/addScenario">Add Scenario</a>
                         </li>
-                        <li>
+                        <li id="tour-step-3">
                             <a href="<?php echo base_url() ?>customer/scenariosList">Scenario List</a>
                         </li>
                     </ul>
@@ -435,16 +446,63 @@
     </nav>
     <script type="text/javascript">
         function copyToClipboard() {
-          /* Get the text field */
-          var copyText = document.getElementById("email");
+            /* Get the text field */
+            var copyText = document.getElementById("email");
 
-          /* Select the text field */
-          copyText.select();
+            /* Select the text field */
+            copyText.select();
 
-          /* Copy the text inside the text field */
-          document.execCommand("copy");
-        } 
+            /* Copy the text inside the text field */
+            document.execCommand("copy");
+        }
         $(document).ready(function() {
+            <?php if (isset($page) && $page == 'main' && $_SESSION['show_tutorial_dash']) { ?>
+            let tourOptions = {
+                options: {
+                    darkLayerPersistence: true,
+                },
+                tips: [{
+                    title: '<span class="tour-title-icon">😁</span>Here we go!',
+                    description: 'The Dashboard allows you to preview your bot staistics',
+                    image: "https://picsum.photos/300/200/?random",
+                    selector: '#tour-step-1',
+                    x: 90,
+                    y: 0,
+                    offx: 11,
+                    offy: 50,
+                    position: 'right',
+                    onSelected: false
+                }, {
+                    title: '<span class="tour-title-icon">😁</span>Scenarios!',
+                    description: 'From here you can add scenarios. <a href="#">more</a>',
+                    image: "https://picsum.photos/300/200/?random",
+                    selector: '#tour-step-2',
+                    x: 90,
+                    y: 0,
+                    offx: 11,
+                    offy: 20,
+                    position: 'right',
+                    onSelected: false
+                }, {
+                    title: '<span class="tour-title-icon">😁</span>List!',
+                    description: 'From here you can view & manage scenarios and Q&A Pairs.',
+                    image: "https://picsum.photos/300/200/?random",
+                    selector: '#tour-step-3',
+                    x: 90,
+                    y: 0,
+                    offx: 11,
+                    offy: 20,
+                    position: 'right',
+                    onSelected: false
+                }]
+            };
+
+            let tour = window.ProductTourJS;
+            tour.init(tourOptions);
+
+            tour.start();
+            <?php } ?>
+
             $("#email-link").on('click', function(e) {
                 e.preventDefault();
                 copyToClipboard();

@@ -74,19 +74,21 @@ class FlowAdapter(LogicAdapter):
         print(statement.text)
 
         statement_id = self.DBManager.get_value(table_name=FAQ_TABLE_NAME, column_name='id',
-                                 conditions={QUESTION_SUBJECT_COLUMN: statement.text})
+                                                conditions={QUESTION_SUBJECT_COLUMN: statement.text})
         if statement_id:
             tag_ids = self.DBManager.get_value(table_name=JOIN_TAGS_TABLE_NAME, column_name=JOIN_TAGS_TAG_ID_COLUMN_NAME,
-                                    conditions={JOIN_TAGS_Q_A_ID_COLUMN_NAME: str(statement_id)},multiple_values=True)
+                                               conditions={JOIN_TAGS_Q_A_ID_COLUMN_NAME: str(statement_id)},multiple_values=True)
             tags = []
             for tag_id in tag_ids:
                 tag = self.DBManager.get_value(table_name=TAGS_TABLE_NAME, column_name='tag',
-                                    conditions={'id': str(tag_id[0])})
+                                               conditions={'id': str(tag_id[0])})
                 tags.append(tag)
             return tags
         else:
             similarity = CT.Similarity(self.glove,self.tags)
-            return similarity.get_tags(statement.text)
+            tags, keywords = similarity.get_tags(statement.text)
+            tags = list(set(tags + keywords))
+            return tags
 
     def __filter_results_according_tagging(self,input_statement ,search_results ,threshold_similar):
         # get tags for all search_results
@@ -98,6 +100,9 @@ class FlowAdapter(LogicAdapter):
         # get tags for input_statement
         max_input_statement , _ = self.__select_similar_question(input_statement,threshold_similar)
         tags_input_statement = self.__get_tags(max_input_statement)
+        print("tags_input_statement")
+        print()
+        print(tags_input_statement)
 
         # voting results according tags
         for tag_input_statement in tags_input_statement:
@@ -187,9 +192,13 @@ class FlowAdapter(LogicAdapter):
         if question_id != 0:
             children_questions = self.DBManager.get_value(table_name=FAQ_TABLE_NAME, column_name=QUESTION_SUBJECT_COLUMN,
                                                           conditions={PARENT_ID_COLUMN: str(question_id)}, multiple_values=True)
-        answer = closest_match.in_response_to
+        #answer = closest_match.in_response_to
+        answer = self.DBManager.get_value(table_name=TABLE_BOT_1, column_name="text",
+                                          conditions={"in_response_to": closest_match.text, "conversation": "training"})
+        if answer == 0:
+            answer = None
 
-        if not answer and closest_match.conversation !='training':
+        if not answer and closest_match.conversation != 'training':
             answer = "i can't reply"
             closest_match.text = "i can't reply"
             for faq_result in faq_results:

@@ -95,6 +95,9 @@ class ApiBot(WS.Rest):
 
                 faq_table_name = FAQ_TABLE_NAME
                 Q_A = get_faq_Q_A_Pairs(faq_table_name, db)
+                print("QA:")
+                print()
+                print(Q_A)
 
                 dt = DataCleaning()
 
@@ -102,7 +105,6 @@ class ApiBot(WS.Rest):
                 for key, value in Q_A.items():
                     conversation.append(dt.clean(key))
                     conversation.append(dt.clean(value))
-
                 trainer = ChatterBotCorpusTrainerOverridden(chatbot)
                 trainer.train(
                     "chatterbot.corpus.english.greetings",
@@ -155,9 +157,9 @@ class ApiBot(WS.Rest):
                 return statement['data']
 
             similarity = CT.Similarity(self.glove,self.tags)
-            statement_tags = similarity.get_tags(statement)
+            statement_tags, statement_keywords = similarity.get_tags(statement)
 
-            return WS.Response.returnResponse(HTTP_SUCCESS_RESPONSE, {'tags':statement_tags})
+            return WS.Response.returnResponse(HTTP_SUCCESS_RESPONSE, {'tags': list(set(statement_tags + statement_keywords))})
 
         except:
              return WS.Response.throwError(JWT_PROCESSING_ERROR, "Sorry, Server is down, please contact the administrators")

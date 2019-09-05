@@ -552,6 +552,26 @@ function get_bot_reply(user_query, token) {
     });
 }
 
+function handleMessage(content) {
+    var query = $("#user_query").val();
+    query = query.trim();
+    if (query) {
+        var current_date = moment().format('h:mm a | MMMM D YYYY');
+        var send_to_bot = `
+        <div class="outgoing_msg">
+              <div class="sent_msg">
+                <p>` + query + `</p>
+                <span class="time_date">` + current_date + `</span> </div>
+        </div>`;
+        $("#user_query").val('');
+        $(".Messages_list").append(send_to_bot);
+        $("#msg-list").animate({
+            scrollTop: $("#msg-list").prop('scrollHeight')
+        }, 500);
+        get_bot_reply(query, content);
+    }
+}
+
 (function () {
     // Load the script
     var script = document.createElement("SCRIPT");
@@ -621,20 +641,17 @@ function get_bot_reply(user_query, token) {
                                 });
 
                                 $("#send").on('click', function () {
-                                    var query = $("#user_query").val();
-                                    var current_date = moment().format('h:mm a | MMMM D YYYY');
-                                    var send_to_bot = `
-                            <div class="outgoing_msg">
-                                  <div class="sent_msg">
-                                    <p>` + query + `</p>
-                                    <span class="time_date">` + current_date + `</span> </div>
-                            </div>`;
-                                    $("#user_query").val('');
-                                    $(".Messages_list").append(send_to_bot);
-                                    $("#msg-list").animate({
-                                        scrollTop: $("#msg-list").prop('scrollHeight')
-                                    }, 500);
-                                    get_bot_reply(query, content);
+                                    handleMessage(content);
+                                });
+
+                                // Handling Enter key pressed on user_query text area
+                                $('#user_query').keypress(function (event) {
+                                    var keycode = (event.keyCode ? event.keyCode : event.which);
+                                    // If enter key is pressed
+                                    if (keycode == '13') {
+                                        event.preventDefault();
+                                        handleMessage(content);
+                                    }
                                 });
                             } else {
                                 document.write("Forbidden, Access is denied!");
@@ -673,7 +690,7 @@ function get_bot_reply(user_query, token) {
                             speechRecognitionList.addFromString(grammar, 1);
                             recognition.grammars = speechRecognitionList;
 
-                            recognition.lang = 'en-US'; 
+                            recognition.lang = 'en-US';
                             // 'ar-EG';
                             // 'ar-SA';
                             // 'ar-LB';

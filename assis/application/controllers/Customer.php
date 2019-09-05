@@ -51,6 +51,7 @@ class Customer extends CI_Controller {
         // check loggedIn
         $this->authentication->IsLoggedInCustomer('any');
         $config['title'] = 'Administration';
+        $config['page'] = 'main';
         $this->load->view('customer/common', $config);
         $this->load->view('customer/main', $this->data);
     }
