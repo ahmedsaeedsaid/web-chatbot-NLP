@@ -78,7 +78,7 @@ class Similarity (SynsetDistance):
 
         return max_similarity / max_possible_similarity
 
-    def get_tags(self,statement):
+    def get_tags(self,statement , threshold_similar = 0.4):
         keywords_extractor = KeywordsExtractor()
         keyphrases_sorted  = keywords_extractor.score_keyphrases_by_textrank(statement)
         statement_tags = []
@@ -91,8 +91,10 @@ class Similarity (SynsetDistance):
                 if score > highestTag[1] :
                     highestTag = (tag,score)
 
-            if highestTag[0]:
+            if highestTag[0] and highestTag[1]>threshold_similar:
                 statement_tags.append(highestTag[0])
+            statement_tags.append(keyword[0])
+        statement_tags = list( set(statement_tags) )
         return statement_tags
 
 

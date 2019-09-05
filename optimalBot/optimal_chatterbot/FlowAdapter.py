@@ -111,7 +111,7 @@ class FlowAdapter(LogicAdapter):
         # choose max vote
         max_vote = max([tag_result['vote'] for tag_result in tag_results])
         print(tag_results)
-        return [tag_result['result']  for tag_result in tag_results if tag_result['vote'] == max_vote and max_vote >0]
+        return [tag_result['result']  for tag_result in tag_results if tag_result['vote'] == max_vote and max_vote >=0]
 
 
 
@@ -133,7 +133,6 @@ class FlowAdapter(LogicAdapter):
         faq_results = self.__getResultsFromFAQ(input_statement)
         search_results = self.search_algorithm.search(input_statement)
         results = faq_results + list(search_results)
-
         # Use the input statement as the closest match if no other results are found
 
 
@@ -153,7 +152,8 @@ class FlowAdapter(LogicAdapter):
             print("result.text "+result.text+" result.confidence" + str(result.confidence) +" with closest_match.confidence" + str(closest_match.confidence))
             # Stop searching if a match that is close enough is found
             print(result.conversation)
-            if result.confidence >= self.maximum_similarity_threshold :
+            print(result.in_response_to)
+            if result.confidence >= self.maximum_similarity_threshold and result.conversation == 'training':
                 if result.confidence > closest_match.confidence :
                     closest_match = result
                 story_id = self.DBManager.get_value(table_name=FAQ_TABLE_NAME, column_name=STORY_ID_COLUMN,
@@ -189,7 +189,7 @@ class FlowAdapter(LogicAdapter):
                                                           conditions={PARENT_ID_COLUMN: str(question_id)}, multiple_values=True)
         answer = closest_match.in_response_to
 
-        if not answer :
+        if not answer and closest_match.conversation !='training':
             answer = "i can't reply"
             closest_match.text = "i can't reply"
             for faq_result in faq_results:
