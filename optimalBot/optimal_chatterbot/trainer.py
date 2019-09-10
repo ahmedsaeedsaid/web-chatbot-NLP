@@ -42,7 +42,8 @@ class ChatterBotCorpusTrainerOverridden(ChatterBotCorpusTrainer):
                         search_text=statement_search_text,
                         in_response_to=previous_statement_text,
                         search_in_response_to=previous_statement_search_text,
-                        conversation='training'
+                        conversation='training',
+
                     )
 
                     statement.add_tags(*categories)
@@ -53,8 +54,7 @@ class ChatterBotCorpusTrainerOverridden(ChatterBotCorpusTrainer):
                     previous_statement_search_text = statement_search_text
 
                     statements_to_create.append(statement)
-
-            self.chatbot.storage.create_many(statements_to_create)
+            self.chatbot.storage.create_many_customized(statements_to_create,client_id=0)
 
 class ListTrainerOverridden(ListTrainer):
     """
@@ -62,11 +62,14 @@ class ListTrainerOverridden(ListTrainer):
     where the list represents a conversation.
     """
 
-    def train(self, conversation):
+    def train(self, conversation_dict):
         """
         Train the chat bot based on the provided list of
         statements that represents a single conversation.
         """
+        conversation = conversation_dict['conversation']
+        client_id = conversation_dict['client_id']
+
         previous_statement_text = None
         previous_statement_search_text = ''
 
@@ -96,4 +99,4 @@ class ListTrainerOverridden(ListTrainer):
 
             statements_to_create.append(statement)
 
-        self.chatbot.storage.create_many(statements_to_create)
+        self.chatbot.storage.create_many_customized(statements_to_create,client_id=client_id)

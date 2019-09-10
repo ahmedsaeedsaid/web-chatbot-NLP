@@ -26,7 +26,7 @@ class ApiBot(WS.Rest):
             else:
                 return Story_ID['data']
 
-            bot_name, db_server, db_name, db_username, db_password, db_driver, _, domain, db_verified, first_train = self.bot_information
+            bot_name, db_server, db_name, db_username, db_password, db_driver, client_id, domain, db_verified, first_train = self.bot_information
 
             if not db_verified:
                 return WS.Response.throwError(HTTP_FORBIDDEN_RESPONSE, "Sorry, Database is not verified yet.")
@@ -39,8 +39,9 @@ class ApiBot(WS.Rest):
 
                 uri = "mysql://" + db_username + ":" + db_password + "@" + db_server + ":3306/" + db_name
                 chatbot = optimalbot(name=bot_name,
-                                     storage_adapter="chatterbot.storage.SQLStorageAdapter",
+                                     storage_adapter="optimal_chatterbot.SQLStorageAdapter",
                                      database_uri=uri,
+                                     read_only=True,
                                      logic_adapters=
                                      [{
                                          "import_path": "optimal_chatterbot.FlowAdapter.FlowAdapter",
@@ -52,7 +53,8 @@ class ApiBot(WS.Rest):
                                      Story_ID=Story_ID,
                                      bot_information=self.bot_information,
                                      glove = self.glove,
-                                     tags = self.tags)
+                                     tags = self.tags
+                                     )
 
                 # Filter User Query
                 dt = DataCleaning()
@@ -71,7 +73,7 @@ class ApiBot(WS.Rest):
 
     def createBot(self):
      #   try:
-            bot_name, db_server, db_name, db_username, db_password, db_driver, _, domain, db_verified, first_train = self.bot_information
+            bot_name, db_server, db_name, db_username, db_password, db_driver, client_id, domain, db_verified, first_train = self.bot_information
             if db_driver == 'mysqli' or db_driver == 'mysql':
                 db = DBManager(user=db_username,
                             password=db_password,
@@ -80,8 +82,9 @@ class ApiBot(WS.Rest):
 
                 uri = "mysql://" + db_username + ":" + db_password + "@" + db_server + ":3306/" + db_name
                 chatbot = optimalbot(name=bot_name,
-                                    storage_adapter="chatterbot.storage.SQLStorageAdapter",
-                                    database_uri=uri,)
+                                    storage_adapter="optimal_chatterbot.SQLStorageAdapter",
+                                    database_uri=uri,
+                                    read_only=True)
 
                 db.change_column_datatype('statement', 'text', 'text')
                 db.change_column_datatype('statement', 'search_text', 'text')
@@ -95,9 +98,7 @@ class ApiBot(WS.Rest):
 
                 faq_table_name = FAQ_TABLE_NAME
                 Q_A = get_faq_Q_A_Pairs(faq_table_name, db)
-                print("QA:")
-                print()
-                print(Q_A)
+
 
                 dt = DataCleaning()
 
@@ -112,7 +113,7 @@ class ApiBot(WS.Rest):
                 )
 
                 trainer = ListTrainerOverridden(chatbot)
-                trainer.train(conversation)
+                trainer.train({'conversation':conversation , 'client_id': client_id})
 
                 return WS.Response.returnResponse(HTTP_SUCCESS_RESPONSE, 'success')
             else:
