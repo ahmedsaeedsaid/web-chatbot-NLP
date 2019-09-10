@@ -63,7 +63,7 @@ class DBManager:
         if company:
             # Retrieve Bot Name, server, name, username, password, driver, client_id , domain
             return (company[0][15], company[0][4], company[0][5], company[0][6],
-                    company[0][7], company[0][8], company[0][1],
+                    company[0][7], company[0][8], company[0][0],
                     company[0][10], company[0][16], company[0][17])
         return False
 
