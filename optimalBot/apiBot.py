@@ -37,7 +37,7 @@ class ApiBot(WS.Rest):
             if db_driver == 'mysqli' or db_driver == 'mysql':
                 # TODO: configure db_port
 
-                uri = "mysql://" + db_username + ":" + db_password + "@" + db_server + ":3306/" + db_name
+                uri = "mysql://" + DB_USERNAME + ":" + DB_PASSWORD + "@" + DB_SERVER + ":3306/" + DB_NAME
                 chatbot = optimalbot(name=bot_name,
                                      storage_adapter="optimal_chatterbot.SQLStorageAdapter",
                                      database_uri=uri,
@@ -80,7 +80,7 @@ class ApiBot(WS.Rest):
                             host=db_server,
                             database=db_name)
 
-                uri = "mysql://" + db_username + ":" + db_password + "@" + db_server + ":3306/" + db_name
+                uri = "mysql://" + DB_USERNAME + ":" + DB_PASSWORD + "@" + DB_SERVER + ":3306/" + DB_NAME
                 chatbot = optimalbot(name=bot_name,
                                     storage_adapter="optimal_chatterbot.SQLStorageAdapter",
                                     database_uri=uri,
