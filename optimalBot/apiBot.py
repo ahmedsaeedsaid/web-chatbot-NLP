@@ -94,7 +94,7 @@ class ApiBot(WS.Rest):
 
                 tables = [TABLE_BOT_1, TABLE_BOT_2, TABLE_BOT_3]
                 for table in tables:
-                    db.delete_table_data(table)
+                    db.delete_table_data(table,conditions = {CLIENT_ID_COLUMN : str(client_id)})
 
                 faq_table_name = FAQ_TABLE_NAME
                 Q_A = get_faq_Q_A_Pairs(faq_table_name, db)
@@ -106,11 +106,11 @@ class ApiBot(WS.Rest):
                 for key, value in Q_A.items():
                     conversation.append(dt.clean(key))
                     conversation.append(dt.clean(value))
-                trainer = ChatterBotCorpusTrainerOverridden(chatbot)
+                '''trainer = ChatterBotCorpusTrainerOverridden(chatbot)
                 trainer.train(
                     "chatterbot.corpus.english.greetings",
                     "chatterbot.corpus.english.conversations"
-                )
+                )'''
 
                 trainer = ListTrainerOverridden(chatbot)
                 trainer.train({'conversation':conversation , 'client_id': client_id})

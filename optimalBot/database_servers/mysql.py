@@ -77,7 +77,7 @@ class MySQL:
         cr = con.cursor(buffered=True)
         try:
             cr.execute(self.query)
-            cr.commit()
+            con.commit()
             self._save_last_query()
             self._reset_buffer()
             return True
