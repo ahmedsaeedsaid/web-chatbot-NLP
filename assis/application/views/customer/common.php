@@ -423,11 +423,8 @@ if(!isset($_SESSION['show_tutorial_dash'])){
                 <li>
                     <a href="javascript:;" data-toggle="collapse" data-target="#user-drop-down"><i class="fa fa-fw fa-arrows-v"></i> Bot <i class="fa fa-fw fa-caret-down"></i></a>
                     <ul id="user-drop-down" class="collapse in" aria-expanded="true">
-                        <li id="tour-step-2">
-                            <a class="active" href="<?php echo base_url() ?>customer/addScenario">Add Scenario</a>
-                        </li>
                         <li id="tour-step-3">
-                            <a href="<?php echo base_url() ?>customer/scenariosList">Scenario List</a>
+                            <a href="<?php echo base_url() ?>customer/questions">Train Your Bot</a>
                         </li>
                     </ul>
                 </li>

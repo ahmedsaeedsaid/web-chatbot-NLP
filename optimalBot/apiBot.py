@@ -73,12 +73,13 @@ class ApiBot(WS.Rest):
 
     def createBot(self):
      #   try:
+            # client_id: is actually company id but name is used to avoid doing huge changes in code
             bot_name, db_server, db_name, db_username, db_password, db_driver, client_id, domain, db_verified, first_train = self.bot_information
             if db_driver == 'mysqli' or db_driver == 'mysql':
-                db = DBManager(user=db_username,
-                            password=db_password,
-                            host=db_server,
-                            database=db_name)
+                db = DBManager(user=DB_USERNAME,
+                            password=DB_PASSWORD,
+                            host=DB_SERVER,
+                            database=DB_NAME)
 
                 uri = "mysql://" + DB_USERNAME + ":" + DB_PASSWORD + "@" + DB_SERVER + ":3306/" + DB_NAME
                 chatbot = optimalbot(name=bot_name,
@@ -94,11 +95,10 @@ class ApiBot(WS.Rest):
 
                 tables = [TABLE_BOT_1, TABLE_BOT_2, TABLE_BOT_3]
                 for table in tables:
-                    db.delete_table_data(table,conditions = {CLIENT_ID_COLUMN : str(client_id)})
+                    db.delete_table_data(table, conditions={CLIENT_ID_COLUMN: str(client_id)})
 
                 faq_table_name = FAQ_TABLE_NAME
                 Q_A = get_faq_Q_A_Pairs(faq_table_name, db)
-
 
                 dt = DataCleaning()
 
@@ -113,7 +113,7 @@ class ApiBot(WS.Rest):
                 )'''
 
                 trainer = ListTrainerOverridden(chatbot)
-                trainer.train({'conversation':conversation , 'client_id': client_id})
+                trainer.train({'conversation': conversation, 'client_id': client_id})
 
                 return WS.Response.returnResponse(HTTP_SUCCESS_RESPONSE, 'success')
             else:

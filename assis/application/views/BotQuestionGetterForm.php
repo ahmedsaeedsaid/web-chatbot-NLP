@@ -6,7 +6,7 @@ if(!isset($_SESSION['show_tutorial_qa'])){
 }
 ?>
 <meta name="optimal-bot-verification" content="<?= $token ?>" />
-<link href="<?php echo base_url(); ?>styles/css/BotQuestionGetterForm.css" rel="stylesheet" />
+<link href="<?php echo base_url(); ?>styles/css/qa.css" rel="stylesheet" />
 <div id="wrapper">
     <div id="page-wrapper">
         <div class="container-fluid">

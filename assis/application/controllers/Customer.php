@@ -32,7 +32,6 @@ class Customer extends CI_Controller {
         $cust->password = strip_tags(addslashes(stripslashes($this->input->post('dpass'))));
         $res = $this->loginMod->authenticateCustomer($cust);
         if ($res) {
-            $this->CM->createScenariosTable();
             redirect('customer/main');
         } else {
             $this->data['err'] = 'normal_login_auth_error';
@@ -56,31 +55,30 @@ class Customer extends CI_Controller {
         $this->load->view('customer/main', $this->data);
     }
     
-    public function questions($scenario_id){
+    public function questions(){
         // check loggedIn
         $this->authentication->IsLoggedInCustomer('any');
         $config['title'] = 'Bot Question ChatBot';
-        $data['scenario_id'] = $scenario_id;
-        $data['QAs'] = $this->CM->getQASC($scenario_id);
+        $data['tree_nodes'] = $this->CM->getQASC();
+        $this->load->model('subscribeFormMod');
         $company = $this->subscribeFormMod->getCompanyById($this->session->userdata('assis_companyid'));
         $data['token'] = $company->token;
         $this->load->view('customer/common', $config);
-        $this->load->view('BotQuestionGetterForm', $data);
+        $this->load->view('customer/qa', $data);
     }
     
-    public function scenariosList(){
+    /*public function scenariosList(){
         // check loggedIn
         $this->authentication->IsLoggedInCustomer('any');
         $scenarios = $this->CM->getAllScenarios();
         $data['scenarios'] = $scenarios;
         $this->load->model('subscribeFormMod');
-        
         $company = $this->subscribeFormMod->getCompanyById($this->session->userdata('assis_companyid'));
         $data['token'] = $company->token;
         $config['title'] = 'Bot Scenarios';
         $this->load->view('customer/common', $config);
         $this->load->view('customer/scenarios_list', $data);
-    }
+    }*/
     
     public function addScenario(){
         // check loggedIn
@@ -94,29 +92,70 @@ class Customer extends CI_Controller {
         // check loggedIn
         $this->authentication->IsLoggedInCustomer('any');
         $name = $this->input->post('name');
+        $action = $this->input->post('sc-action');
+        $scenario_id = $this->input->post('scenario');
         $data = array(
-            "name" => $name,
-            "companyId" => $this->session->userdata('assis_companyid')
+            "name" => $name
         );
-        $this->CM->addScenario($data);
-        redirect('customer/scenariosList');
+        $this->CM->saveScenario($data, $scenario_id, $action);
+        redirect('customer/questions');
     }
     
-    public function toggleScenarioActive(){
+    /*public function toggleScenarioActive(){
         // check loggedIn
         $this->authentication->IsLoggedInCustomer('any');
         $active = $this->input->post('active');
         $id = $this->input->post('id');
         $this->CM->toggleActive($active, $id);
+    }*/
+    
+    public function deleteScenario(){
+        // check loggedIn
+        $this->authentication->IsLoggedInCustomer('any');
+        $id = $this->input->post('id');
+        $this->CM->deleteScenario($id);
     }
     
     public function saveQASC(){
         // check loggedIn
         $this->authentication->IsLoggedInCustomer('any');
-        $Questions_generated = $this->input->post('Questions_generated');
+        $Question = $this->input->post('Question');
+        $answer = $this->input->post('Answer');
         $tags = $this->input->post('Tags');
+        if(!$tags){
+            $tags = array();
+        }
         $scenario = $this->input->post('scenario');
-        $this->CM->saveQASC($Questions_generated,$scenario ,$tags);
+        $parent = $this->input->post('parent');
+        $action = $this->input->post('action');
+        $question_id = $this->input->post('question_id');
+        $data = array(
+            "question" => $Question,
+            "answer" => $answer,
+            "parent" => $parent,
+            "scenario" => $scenario
+        );
+        $this->CM->saveQASC($data, $scenario ,$tags, $action, $question_id);
+    }
+    
+    public function deleteQA(){
+        // check loggedIn
+        $this->authentication->IsLoggedInCustomer('any');
+        $parent = $this->input->post('parent');
+        $current_question_id = $this->input->post('current_question_id');
+        $childs_question_ids = $this->input->post('childs_question_ids');
+        if(!$childs_question_ids){
+            $childs_question_ids = array();
+        }
+        $this->CM->deleteQA($parent, $current_question_id, $childs_question_ids);
+    }
+    
+    public function getQA(){
+        // check loggedIn
+        $this->authentication->IsLoggedInCustomer('any');
+        $id = $this->input->post('id');
+        $ques = $this->CM->getQA($id);
+        echo json_encode($ques);
     }
     
     private function sendEmail ($subject, $body, $to){
