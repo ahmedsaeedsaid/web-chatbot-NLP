@@ -496,8 +496,7 @@ var html = `<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.
 
 var story_id = 0;
 
-// CHAT BOOT MESSENGER////////////////////////
-
+/* START CUSTOM FUNCTIONS */
 function get_bot_reply(user_query, token) {
     var param = JSON.stringify({
         name: 'askBot',
@@ -516,11 +515,11 @@ function get_bot_reply(user_query, token) {
             'Content-Type': 'application/json',
         },
         success: function (data) {
-            console.log(data);
             if ('error' in data) {
                 document.write(data.error.message);
                 return;
             }
+            var bot_reply = data.response.result.bot_reply;
             var current_date = moment().format('h:mm a | MMMM D YYYY');
             var suggested_answers = data.response.result.suggested_actions;
             var suggested_text = ``;
@@ -536,7 +535,7 @@ function get_bot_reply(user_query, token) {
                 <div class="incoming_msg">
                       <div class="received_msg">
                         <div class="received_withd_msg">
-                            <p>` + data.response.result.bot_reply + `</p>
+                            <p>` + bot_reply + `</p>
                             <span class="time_date">` + current_date + `</span>
                         </div>
                         ` + suggested_text + `
@@ -546,8 +545,38 @@ function get_bot_reply(user_query, token) {
             $("#msg-list").animate({
                 scrollTop: $("#msg-list").prop('scrollHeight')
             }, 500);
-            console.log("New: " + data.response.result.story_id);
             story_id = data.response.result.story_id;
+            saveLog(user_query, bot_reply, token, current_date);
+        }
+    });
+}
+
+function getCurrentSessionId() {
+    return /SESS\w*ID=([^;]+)/i.test(document.cookie) ? RegExp.$1 : false;
+}
+
+function saveLog(user_query, bot_reply, token, current_date) {
+    var session_id = getCurrentSessionId();
+    if(session_id == false){
+       session_id = "";
+    }
+    var param = JSON.stringify({
+        name: 'saveLog',
+        param: {
+            user_query: user_query,
+            bot_reply: bot_reply,
+            session_id: session_id,
+            date: current_date
+        }
+    });
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: "https://localhost:5002/",
+        data: param,
+        headers: {
+            'Authorization': "Bearer " + token,
+            'Content-Type': 'application/json',
         }
     });
 }
@@ -571,6 +600,8 @@ function handleMessage(content) {
         get_bot_reply(query, content);
     }
 }
+
+/* END CUSTOM FUNCTIONS */
 
 (function () {
     // Load the script

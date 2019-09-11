@@ -88,4 +88,10 @@ class DBManager:
     def change_column_datatype(self, table, column, datatype):
         self.db.alter_(table, column, datatype)
 
-
+    def saveLog(self, user_query, bot_reply, session_id, date):
+        data = dict()
+        data['user_query'] = user_query
+        data['bot_reply'] = bot_reply
+        data['session_id'] = session_id
+        data['msgdatetime'] = date
+        self.db.insert_('logs', data)

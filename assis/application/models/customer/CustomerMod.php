@@ -344,5 +344,23 @@ class customerMod extends CI_Model {
         $question->tags = $tags;
         return $question;
     }
+    
+    public function getLogs()
+    {
+        $this->db->select('session_id');
+        $this->db->from('logs');
+        $this->db->group_by('session_id');
+        $res = $this->db->get();
+        return $res->result_array();
+    }
+    
+    public function getLogDetails($session_id)
+    {
+        $this->db->select('*');
+        $this->db->from('logs');
+        $this->db->where('session_id', $session_id);
+        $res = $this->db->get();
+        return $res->result_array();
+    }
 
 }

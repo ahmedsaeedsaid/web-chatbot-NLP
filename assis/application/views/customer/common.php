@@ -429,6 +429,14 @@ if(!isset($_SESSION['show_tutorial_dash'])){
                     </ul>
                 </li>
                 <li>
+                    <a href="javascript:;" data-toggle="collapse" data-target="#user-drop-down"><i class="fa fa-fw fa-arrows-v"></i> Logs <i class="fa fa-fw fa-caret-down"></i></a>
+                    <ul id="user-drop-down" class="collapse in" aria-expanded="true">
+                        <li id="tour-step-3">
+                            <a href="<?php echo base_url() ?>customer/userlogs">User Logs</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
                     <a href="#"><i class="fa fa-fw fa-bar-chart-o"></i> Charts</a>
                 </li>
                 <li>

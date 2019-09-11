@@ -184,5 +184,30 @@ class Customer extends CI_Controller {
         }
         redirect('customer');
     } 
+    
+    public function userlogs(){
+        // check loggedIn
+        $this->authentication->IsLoggedInCustomer('any');
+        $config['title'] = 'User Logs';
+        $data['logs'] = $this->CM->getLogs();
+        $this->load->model('subscribeFormMod');
+        $company = $this->subscribeFormMod->getCompanyById($this->session->userdata('assis_companyid'));
+        $data['token'] = $company->token;
+        $this->load->view('customer/common', $config);
+        $this->load->view('customer/logs', $data);
+    } 
+    
+    public function logview($session_id){
+        // check loggedIn
+        $this->authentication->IsLoggedInCustomer('any');
+        $config['title'] = 'View Log';
+        $data['log_details'] = $this->CM->getLogDetails($session_id);
+        $data['session_id'] = $session_id;
+        $this->load->model('subscribeFormMod');
+        $company = $this->subscribeFormMod->getCompanyById($this->session->userdata('assis_companyid'));
+        $data['token'] = $company->token;
+        $this->load->view('customer/common', $config);
+        $this->load->view('customer/logview', $data);
+    } 
 
 }

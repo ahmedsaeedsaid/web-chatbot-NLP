@@ -164,3 +164,40 @@ class ApiBot(WS.Rest):
 
         except:
              return WS.Response.throwError(JWT_PROCESSING_ERROR, "Sorry, Server is down, please contact the administrators")
+
+    def saveLog(self):
+        # try:
+        user_query = WS.Validation.validateParameter('user_query', self.param['user_query'], STRING)
+        bot_reply = WS.Validation.validateParameter('bot_reply', self.param['bot_reply'], STRING)
+        session_id = WS.Validation.validateParameter('session_id', self.param['session_id'], STRING)
+        date = WS.Validation.validateParameter('date', self.param['date'], STRING)
+
+        if user_query['valid']:
+            user_query = user_query['data']
+        else:
+            return user_query['data']
+
+        if bot_reply['valid']:
+            bot_reply = bot_reply['data']
+        else:
+            return bot_reply['data']
+
+        if session_id['valid']:
+            session_id = session_id['data']
+        else:
+            return session_id['data']
+
+        if date['valid']:
+            date = date['data']
+        else:
+            return date['data']
+
+        db = DBManager(user=DB_USERNAME,
+                       password=DB_PASSWORD,
+                       host=DB_SERVER,
+                       database=DB_NAME)
+
+        db.saveLog(user_query, bot_reply, session_id, date)
+        return WS.Response.returnResponse(HTTP_SUCCESS_RESPONSE, 'success')
+        # except:
+        # return WS.Response.throwError(JWT_PROCESSING_ERROR, "Sorry, Server is down, please contact the administrators")

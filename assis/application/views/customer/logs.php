@@ -27,12 +27,11 @@ if(!isset($_SESSION['show_tutorial_scenarios_list'])){
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">
-                        Scenarios Management <small>Scenarios List</small>
-                        <button class="btn btn-primary" style="float:right" id="train">Train</button>
+                        Logs Management <small>Logs List</small>
                     </h1>
                     <ol class="breadcrumb">
                         <li class="active">
-                            <i class="fa fa-dashboard"></i> Dashboard / <i class="fa fa-user"></i> Scenarios
+                            <i class="fa fa-dashboard"></i> Dashboard / <i class="fa fa-user"></i> Logs
                         </li>
                     </ol>
                 </div>
@@ -44,25 +43,19 @@ if(!isset($_SESSION['show_tutorial_scenarios_list'])){
                         <thead>
                             <tr>
                                 <th>SN</th>
-                                <th>Scenario Name</th>
+                                <th>Session ID</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php if($scenarios){
+                            <?php if($logs){
                             $i = 1;
-                             foreach ($scenarios as $scenario) { ?>
-                            <tr id="scenario-<?= $scenario['id'] ?>" <?php if (!$scenario['active']) { ?>class="danger" <?php } ?>>
+                             foreach ($logs as $log) { ?>
+                            <tr id="log-<?= $log['session_id'] ?>">
                                 <td><?= $i ?></td>
-                                <td><?= $scenario['name'] ?></td>
+                                <td><?= $log['session_id'] ?></td>
                                 <td style="text-align:center" id="tour-scenario-list-step-1">
-                                    <?php if ($scenario['active']) { ?>
-                                    <a href="javascript:ToggleActive(0,<?= $scenario['id'] ?>)" title="Deactivate" id="status-<?= $scenario['id'] ?>"><img src="<?= base_url() ?>styles/icons/action_active.gif" alt="Status"></a>
-                                    <?php } else { ?>
-                                    <a href="javascript:ToggleActive(1,<?= $scenario['id'] ?>)" title="Activate" id="status-<?= $scenario['id'] ?>"><img src="<?= base_url() ?>styles/icons/action_purge.gif" alt="Status"></a>
-                                    <?php } ?>
-                                    <a href="<?= base_url(); ?>customer/questions/<?= $scenario['id'] ?>" title="Questions"><img src="<?= base_url() ?>styles/icons/Q&A.png" width="23" height="23" alt="Questions"></a>
-                                    <!--<a href="javascript:DeleteUser(<?= $client['id'] ?>)" title="Delete"><img src="<?= base_url() ?>styles/icons/action_delete.gif" alt="Delete"></a>-->
+                                    <a href="<?= base_url(); ?>customer/logview/<?= $log['session_id'] ?>" title="Questions"><img src="<?= base_url() ?>styles/icons/view.png" width="23" height="23" alt="View"></a>
                                 </td>
                             </tr>
                             <?php $i += 1; }}

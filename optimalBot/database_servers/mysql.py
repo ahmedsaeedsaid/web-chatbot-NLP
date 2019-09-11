@@ -38,9 +38,10 @@ class MySQL:
         cr = self.__execute()
 
     def insert_(self, table_name, data):
-        self.query += 'insert into ' + table_name + ' values('
-        self.query += ",".join(dict.keys()) + ") " + ",".join(dict.values())
-        return self.query
+        self.query += 'insert into ' + table_name + ' ('
+        self.query += ",".join(data.keys()) + ") values(" + '"{0}"'.format('", "'.join(data.values())) + ")"
+        cr = self.__execute()
+        return cr.rowcount
 
     def update_(self, table_name, data, where):
         self.query += 'update ' + table_name + ' set '
