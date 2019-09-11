@@ -33,10 +33,10 @@ class FlowAdapter(LogicAdapter):
         self.glove = kwargs.get('glove')
         self.tags = kwargs.get('tags')
         bot_name, db_server, db_name, db_username, db_password, db_driver, client_id, _, _, _ = kwargs.get('bot_information')
-        self.DBManager = DBManager(user=db_username,
-                                   password=db_password,
-                                   host=db_server,
-                                   database=db_name)
+        self.DBManager =    DBManager(user=DB_USERNAME,
+                                      password=DB_PASSWORD,
+                                      host=DB_SERVER,
+                                      database=DB_NAME)
         self.client_id = client_id
 
 
@@ -137,6 +137,7 @@ class FlowAdapter(LogicAdapter):
         search_results_general = self.search_algorithm.search(input_statement,client_id=0)
         search_results = self.search_algorithm.search(input_statement,client_id= self.client_id)
 
+
         results = faq_results + list(search_results_general) + list(search_results)
         # Use the input statement as the closest match if no other results are found
 
@@ -191,11 +192,14 @@ class FlowAdapter(LogicAdapter):
         if question_id != 0:
             children_questions = self.DBManager.get_value(table_name=FAQ_TABLE_NAME, column_name=QUESTION_SUBJECT_COLUMN,
                                                           conditions={PARENT_ID_COLUMN: str(question_id) , CLIENT_ID_COLUMN : str(self.client_id)}, multiple_values=True)
-        #answer = closest_match.in_response_to
-        answer = self.DBManager.get_value(table_name=TABLE_BOT_1, column_name="text",
-                                          conditions={"in_response_to": closest_match.text , CLIENT_ID_COLUMN : str(self.client_id)})
-        if answer == 0:
-            answer = None
+        answer = closest_match.in_response_to
+        if not closest_match.in_response_to:
+            answer = self.DBManager.get_value(table_name=TABLE_BOT_1, column_name="text",
+                                              conditions={"in_response_to": closest_match.text , CLIENT_ID_COLUMN : str(self.client_id)})
+            if answer == 0:
+                answer = self.DBManager.get_value(table_name=TABLE_BOT_1, column_name="text",
+                                                  conditions={"in_response_to": closest_match.text , CLIENT_ID_COLUMN : str(0)})
+
 
         if not answer :
             answer = "i can't reply"
