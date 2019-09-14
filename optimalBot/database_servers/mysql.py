@@ -11,11 +11,12 @@ class MySQL:
         self.database = database
 
     def connection(self):
-        con = mysql.connector.connect(user=self.user,
-                                      password=self.password,
-                                      host=self.host,
-                                      database=self.database)
-        con.set_charset_collation('utf8')
+        con = mysql.connector.MySQLConnection(user=self.user,
+                                        password=self.password,
+                                        host=self.host,
+                                        database=self.database,
+                                        charset='utf8mb4')
+        con.set_charset_collation('utf8', 'utf8_general_ci')
         return con
 
     def select_(self, select):

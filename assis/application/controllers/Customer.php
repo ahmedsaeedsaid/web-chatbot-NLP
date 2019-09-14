@@ -129,13 +129,15 @@ class Customer extends CI_Controller {
         $parent = $this->input->post('parent');
         $action = $this->input->post('action');
         $question_id = $this->input->post('question_id');
+        $suggested_text = $this->input->post('suggested_text');
         $data = array(
             "question" => $Question,
             "answer" => $answer,
             "parent" => $parent,
-            "scenario" => $scenario
+            "scenario" => $scenario,
+            "suggested_text" => $suggested_text
         );
-        $this->CM->saveQASC($data, $scenario ,$tags, $action, $question_id);
+        $res = $this->CM->saveQASC($data, $scenario ,$tags, $action, $question_id);
     }
     
     public function deleteQA(){

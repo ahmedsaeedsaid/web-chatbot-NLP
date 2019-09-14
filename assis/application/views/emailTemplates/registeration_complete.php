@@ -356,9 +356,9 @@
 
     </style>
 </head>
-<?php $step = 1; ?>
+
 <body class="">
-    <span class="preheader">Welcome to Optimal Bot, We're glad to have you here</span>
+    <span class="preheader">Welcome to Optimal Bot, We're glad to have you here!</span>
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body">
         <tr>
             <td>&nbsp;</td>
@@ -375,27 +375,17 @@
                                     <tr>
                                         <td>
                                             <p>Dear <?= $username ?>,<br>
-                                                Thank you for subsribing to our bot. You registered with this email: <?= $email ?><br>To complete your setup, we need you to do:<br><?php if (!$db_verified) { ?><b>Step <?= $step ?>: </b>Donwload this script and run it on your server so we can verify your database credentials.<br></p>
-                                            <?php $step +=1; ?>
-                                            <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
-                                                <tbody>
-                                                    <tr>
-                                                        <td align="left">
-                                                            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <a href="<?= base_url("Subscribe/downloadScript/" . $bot_name) ?>" target="_blank">Donwload Script</a>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            <?php } ?>
-                                            <p><b>Step <?= $step ?>: </b> Go to our customer portal and sign-in with your email and password, then follow the tutorial to add user story, train your bot and use it as soon as possible.</p>
+                                                Thank you for subsribing to our bot. You registered with this email: <?= $email ?><br>Now you can deploy your bot by including these two tags in your website.<br></p>
+                                            <code>&lt;meta name=&quot;optimal-bot-verification&quot; content=&quot;<?= $token ?>&quot; /&gt;<br><br>&lt;script src=&quot;<?= base_url() ?>custom-scripts/bot.js&quot;&gt;&lt;/script&gt;
+                                                <br><br>
+                                            </code>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                                    <tr>
+                                        <td>
+                                            <p>Now you can access our customer portal and sign-in with your email and password, then follow the tutorial to add user story, train your bot.</p>
                                             <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
                                                 <tbody>
                                                     <tr>
@@ -431,7 +421,7 @@
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                            <p>Thank you for choosing us, We are looking forward to seeing you up and running soon.</p>
+                                            <p>Thank you for choosing Optimal Bot, We are looking forward to seeing you up and running soon.</p>
                                         </td>
                                     </tr>
                                 </table>

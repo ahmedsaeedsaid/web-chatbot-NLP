@@ -11,9 +11,6 @@ if($this->session->flashdata('db_connection') == 'failed'){
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>-->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
     <link href="<?php echo base_url(); ?>styles/css/subscribeForm.css" rel="stylesheet" />
     <style>
@@ -78,12 +75,12 @@ if($this->session->flashdata('db_connection') == 'failed'){
                 <li class="nav-item">
                     <a class="nav-link inactive_tab1" id="list_general_details" style="border:1px solid #ccc">Company Details</a>
                 </li>
-                <li class="nav-item">
+                <!--<li class="nav-item">
                     <a class="nav-link inactive_tab1" id="list_Database_details" style="border:1px solid #ccc">Database Details</a>
-                </li>
+                </li>-->
 
             </ul>
-            <div class="tab-content" style="margin-top:16px;">
+            <div class="tab-content">
                 <div class="tab-pane active" id="personal_details">
                     <div class="panel panel-default">
                         <div class="panel-heading" style="color: #fff;background-color: #042532;">Personal Details</div>
@@ -191,7 +188,7 @@ if($this->session->flashdata('db_connection') == 'failed'){
                                 </div>
                                 <br>
 
-                                <div class="row">
+                                <!--<div class="row">
                                     <div class="col-lg-6">
                                         <label>Bot Name</label>
                                         <input type="text" name="bot_name" id="bot_name" class="form-control" />
@@ -207,14 +204,15 @@ if($this->session->flashdata('db_connection') == 'failed'){
                                         <span id="error_description" class="text-danger"></span>
                                     </div>
 
-                                </div>
+                                </div>-->
 
                             </div>
 
                             <br />
                             <div align="center">
                                 <button type="button" name="previous_btn_personal_details" id="previous_btn_personal_details" class="btn btn-default btn-lg">Previous</button>
-                                <button type="button" name="btn_general_details" id="btn_general_details" class="btn btn-info btn-lg">Next</button>
+                                <!--<button type="button" name="btn_general_details" id="btn_general_details" class="btn btn-info btn-lg">Next</button>-->
+                                <button type="button" name="btn_action_details" id="btn_action_details" class="btn btn-info btn-lg">Submit</button>
                             </div>
                             <br />
                         </div>
@@ -288,9 +286,9 @@ if($this->session->flashdata('db_connection') == 'failed'){
         $('#btn_general_details').click(function() {
 
             var error_company = '';
-            var error_bot_name = '';
+            //var error_bot_name = '';
             var error_domain = '';
-            var error_description = '';
+            //var error_description = '';
             var filter = new RegExp(/^((?:(?:(?:\w[\.\-\+]?)*)\w)+)((?:(?:(?:\w[\.\-\+]?){0,62})\w)+)\.(\w{2,6})$/);
 
             if ($.trim($('#company').val()).length == 0) {
@@ -305,7 +303,7 @@ if($this->session->flashdata('db_connection') == 'failed'){
 
             }
 
-            if ($.trim($('#bot_name').val()).length == 0) {
+            /*if ($.trim($('#bot_name').val()).length == 0) {
                 error_bot_name = 'company name is required';
                 $('#error_bot_name').text(error_bot_name);
                 $('#bot_name').addClass('has-error');
@@ -314,9 +312,9 @@ if($this->session->flashdata('db_connection') == 'failed'){
                 $('#error_bot_name').text(error_bot_name);
                 $('#bot_name').removeClass('has-error');
 
-            }
+            }*/
 
-            if ($.trim($('#description').val()).length == 0) {
+            /*if ($.trim($('#description').val()).length == 0) {
                 error_description = 'description is required';
                 $('#error_description').text(error_description);
                 $('#description').addClass('has-error');
@@ -326,7 +324,7 @@ if($this->session->flashdata('db_connection') == 'failed'){
                 $('#error_description').text(error_description);
                 $('#description').removeClass('has-error');
 
-            }
+            }*/
 
             if ($.trim($('#domain').val()).length == 0) {
                 error_domain = 'domain is required';
@@ -360,18 +358,18 @@ if($this->session->flashdata('db_connection') == 'failed'){
                                 $('#error_domain').text(error_domain);
                                 $('#company').removeClass('has-error');
                             }
-                            if ($('#error_description').text() != '' || $('#error_domain').text() != '' || $('#error_company').text() != '' || $('#error_bot_name').text() != '') {
+                            if ($('#error_domain').text() != '' || $('#error_company').text() != '') {
                                 return false;
                             } else {
                                 $('#list_general_details').removeClass('active active_tab1');
                                 $('#list_general_details').removeAttr('href data-toggle');
                                 $('#general_details').removeClass('active');
-                                $('#list_general_details').addClass('inactive_tab1');
+                                $/*('#list_general_details').addClass('inactive_tab1');
                                 $('#list_Database_details').removeClass('inactive_tab1');
                                 $('#list_Database_details').addClass('active_tab1 active');
                                 $('#list_Database_details').attr('href', '#personal_details');
                                 $('#list_Database_details').attr('data-toggle', 'tab');
-                                $('#Database_details').addClass('active in');
+                                $('#Database_details').addClass('active in');*/
                             }
 
                         }
@@ -460,12 +458,16 @@ if($this->session->flashdata('db_connection') == 'failed'){
                 $('#list_general_details').attr('href', '#login_details');
                 $('#list_general_details').attr('data-toggle', 'tab');
                 $('#general_details').addClass('active in');
+                $('#general_details').removeClass('fade');
             }
 
         });
 
         $('#btn_action_details').click(function() {
-            var error_server = '';
+            $('#btn_action_details').attr("disabled", "disabled");
+            $(document).css('cursor', 'prgress');
+            $("#register_form").submit();
+            /*var error_server = '';
             var error_username = '';
             var error_password = '';
             var error_cpassword = '';
@@ -500,7 +502,7 @@ if($this->session->flashdata('db_connection') == 'failed'){
                 error_password = '';
                 $('#error_password').text(error_password);
                 $('#password').removeClass('has-error');
-            }*/
+            }
 
 
             if ($.trim($('#cpassword').val()).length == 0) {
@@ -530,7 +532,7 @@ if($this->session->flashdata('db_connection') == 'failed'){
                 $('#btn_action_details').attr("disabled", "disabled");
                 $(document).css('cursor', 'prgress');
                 $("#register_form").submit();
-            }
+            }*/
 
         });
 

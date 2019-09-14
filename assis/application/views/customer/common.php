@@ -423,7 +423,7 @@ if(!isset($_SESSION['show_tutorial_dash'])){
                 <li>
                     <a href="javascript:;" data-toggle="collapse" data-target="#user-drop-down"><i class="fa fa-fw fa-arrows-v"></i> Bot <i class="fa fa-fw fa-caret-down"></i></a>
                     <ul id="user-drop-down" class="collapse in" aria-expanded="true">
-                        <li id="tour-step-3">
+                        <li id="tour-step-2">
                             <a href="<?php echo base_url() ?>customer/questions">Train Your Bot</a>
                         </li>
                     </ul>
@@ -432,7 +432,7 @@ if(!isset($_SESSION['show_tutorial_dash'])){
                     <a href="javascript:;" data-toggle="collapse" data-target="#user-drop-down"><i class="fa fa-fw fa-arrows-v"></i> Logs <i class="fa fa-fw fa-caret-down"></i></a>
                     <ul id="user-drop-down" class="collapse in" aria-expanded="true">
                         <li id="tour-step-3">
-                            <a href="<?php echo base_url() ?>customer/userlogs">User Logs</a>
+                            <a href="<?php echo base_url() ?>customer/userlogs">Chat Logs</a>
                         </li>
                     </ul>
                 </li>
@@ -468,8 +468,7 @@ if(!isset($_SESSION['show_tutorial_dash'])){
                 },
                 tips: [{
                     title: '<span class="tour-title-icon">😁</span>Here we go!',
-                    description: 'The Dashboard allows you to preview your bot staistics',
-                    image: "https://picsum.photos/300/200/?random",
+                    description: 'The Dashboard allows you to preview your bot staistics.',
                     selector: '#tour-step-1',
                     x: 90,
                     y: 0,
@@ -479,8 +478,7 @@ if(!isset($_SESSION['show_tutorial_dash'])){
                     onSelected: false
                 }, {
                     title: '<span class="tour-title-icon">😁</span>Scenarios!',
-                    description: 'From here you can add scenarios. <a href="#">more</a>',
-                    image: "https://picsum.photos/300/200/?random",
+                    description: 'From here you can view & manage scenarios and Q&A Pairs.',
                     selector: '#tour-step-2',
                     x: 90,
                     y: 0,
@@ -490,8 +488,7 @@ if(!isset($_SESSION['show_tutorial_dash'])){
                     onSelected: false
                 }, {
                     title: '<span class="tour-title-icon">😁</span>List!',
-                    description: 'From here you can view & manage scenarios and Q&A Pairs.',
-                    image: "https://picsum.photos/300/200/?random",
+                    description: 'From here you can view chat logs.',
                     selector: '#tour-step-3',
                     x: 90,
                     y: 0,

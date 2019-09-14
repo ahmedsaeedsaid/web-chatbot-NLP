@@ -78,11 +78,13 @@ class Subscribe extends CI_Controller {
             "dbdriver" => "",
             "db_debug" => false
         );
-        $db_driver = $this->testConnection($this->db_drivers, $config);
-        $db_verified = 0;
+        //$db_driver = $this->testConnection($this->db_drivers, $config);
+        $db_driver = 'mysql';
+        $db_verified = 1;
+        /*$db_verified = 0;
         if($db_driver){
             $db_verified = 1;
-        }
+        }*/
         
         $data_client = array(
             'name' => $this->input->post('name'),
@@ -105,14 +107,18 @@ class Subscribe extends CI_Controller {
         //$this->load->library('encrypt');
         // Encrypt bot name
         //$bot_name = $this->encrypt->encode($this->input->post('bot_name') . "_" . $new_company_id);
-        $bot_name = $this->input->post('bot_name') . "_" . $new_company_id;
+        $bot_name = $this->input->post('company') . "_" . $new_company_id;
         $data_company= array(
             'client_id' => $insert_id,
             'name'  => $this->input->post('company'),
-            'db_server'  => $this->input->post('server'),
+            /*'db_server'  => $this->input->post('server'),
             'db_name'  => $this->input->post('DB_name'),
             'db_username'  => $this->input->post('username'),
-            'db_password'  => $this->input->post('password'),
+            'db_password'  => $this->input->post('password'),*/
+            'db_server'  => '',
+            'db_name'  => '',
+            'db_username'  => '',
+            'db_password'  => '',
             'db_driver'  => $db_driver,
             'platform_id'  => $this->input->post('platform'),
             'domain'  => $this->input->post('domain'),
@@ -121,7 +127,8 @@ class Subscribe extends CI_Controller {
             'bot_name'  => $bot_name,
             'token'  => $token,
             'db_verified'  => $db_verified,
-            'status'  => 'pending'
+            'status'  => 'pending',
+            'first_train'  => '1'
         );
         
         $this->subscribeFormMod->addCompany($data_company);
@@ -136,7 +143,7 @@ class Subscribe extends CI_Controller {
         ); 
     
         $insert_id = $this->subscribeFormMod->addSubscription($data_subscriptions);
-        $this->sendFirstStepEmail($bot_name, $data_client['email'], $data_client['name'], $db_verified);
+        $this->sendFirstStepEmail($data_client['email'], $data_client['name'], $token);
         $data['order_id']=$insert_id;
         $data['description_order']='Bot chat';
         $data['price']=50;
@@ -145,6 +152,7 @@ class Subscribe extends CI_Controller {
     }
     
     public function validateDomain() {
+                echo 'yes';exit;
         $url_http = 'http://'. $_POST['domain'].'/';
         $url_https= 'https://'. $_POST['domain'].'/';
         $ch = curl_init($url_http);
@@ -213,9 +221,9 @@ class Subscribe extends CI_Controller {
             ->send();
     }
     
-    public function sendFirstStepEmail($bot_name, $email, $username, $db_verified){
-        $info = array("bot_name" => $bot_name, "username" => $username, "email" => $email, "db_verified" => $db_verified);
-        $data = $this->load->view('emailTemplates/db_verification', $info, TRUE);
+    public function sendFirstStepEmail($email, $username, $token){
+        $info = array("username" => $username, "email" => $email, "token" => $token);
+        $data = $this->load->view('emailTemplates/registeration_complete', $info, TRUE);
         $this->sendEmail('Welcome to Optimal Bot', $data, $email);
     } 
     

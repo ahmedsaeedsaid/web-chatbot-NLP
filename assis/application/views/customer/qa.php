@@ -61,20 +61,25 @@ $scenario_id = 0;
                         <input type="hidden" name="<?=$csrf['name']?>" value="<?=$csrf['hash']?>" />
                         <input type="hidden" id="question_id" name="question_id" value="" />
                         <div class="form-group">
-                            <label for="question">Question:</label>
-                            <textarea required name="question" id="question" class="form-control" style="resize: none;    height: 90px;"></textarea>
+                            <label for="question">User Query:</label>
+                            <textarea required name="question" id="question" class="form-control" style="resize: none;    height: 90px;" placeholder="Add what a user might ask"></textarea>
                             <!--<input type="question" class="form-control" id="question">-->
                         </div>
 
                         <div class="form-group">
-                            <label for="answer">Answer:</label>
-                            <textarea required name="answer" id="answer" class="form-control" style="resize: none;height: 90px;"></textarea>
+                            <label for="answer">Bot Answer:</label>
+                            <textarea required name="answer" id="answer" class="form-control" style="resize: none;height: 90px;" placeholder="Add what a bot should answer with"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="answer">Suggested Text</label>
+                            <input type="text" class="form-control" id="suggested_text" name="suggested_text" placeholder="Add a text to represent the question in bot suggested actions">
                         </div>
 
                         <div class="form-group">
                             <label for="answer">Tags:&nbsp;&nbsp;&nbsp;</label>
                             <button type="button" id="generate-tags" class="blue">Generate Tags</button>
-                            <input type="text" class="form-control" id="tags" name="tags" placeholder="Add a tag"><br />
+                            <input type="text" class="form-control" id="tags" name="tags" placeholder="Add specific keywords that is related to your question"><br />
                             <div id="tags-textarea" class="form-control">
                             </div>
                         </div>
@@ -135,7 +140,7 @@ $scenario_id = 0;
                     return;
                 }
                 $('#addRow').attr('disabled', false);
-                if(action == 'save'){
+                if (action == 'save') {
                     Swal.fire(
                         'Success!',
                         'Question Saved Successfully!',
@@ -164,18 +169,42 @@ $scenario_id = 0;
         });
         return childs_question_ids;
     }
+    // unique array
+    function unique_array(a) {
+        var seen = {};
+        var out = [];
+        var len = a.length;
+        var j = 0;
+        for (var i = 0; i < len; i++) {
+            var item = a[i];
+            if (seen[item] !== 1) {
+                seen[item] = 1;
+                out[j++] = item;
+            }
+        }
+        return out;
+    }
     /* END Predefined Functions */
 
     /* START TOUR */
     <?php if ($_SESSION['show_tutorial_qa']) { ?>
-    /*let tourOptions = {
+    let tourOptions = {
         options: {
             darkLayerPersistence: true,
         },
         tips: [{
-            title: '<span class="tour-title-icon">😁</span>Here we go!',
-            description: 'You can add a question and its answer.',
-            image: "https://picsum.photos/300/200/?random",
+            title: '<span class="tour-title-icon">😁</span>Adding a Scenario!',
+            description: 'Here you can add a new scenario. Scenarios are the top level node of the tree that contain all your related question under it. <a href="#">more</a>',
+            selector: '#add-sc',
+            x: 50,
+            y: 30,
+            offx: 11,
+            offy: 0,
+            position: 'top',
+            onSelected: false
+        }, {
+            title: '<span class="tour-title-icon">😁</span>Training Bot!',
+            description: 'You can add a user query and the corresponding bot answer.',
             selector: '#question',
             x: 0,
             y: 120,
@@ -186,7 +215,6 @@ $scenario_id = 0;
         }, {
             title: '<span class="tour-title-icon">😁</span>Keywords!',
             description: 'You can add keywords that are related to your question. <a href="#">more</a>',
-            image: "https://picsum.photos/300/200/?random",
             selector: '#tags-textarea',
             x: 0,
             y: 30,
@@ -195,20 +223,8 @@ $scenario_id = 0;
             position: 'left',
             onSelected: false
         }, {
-            title: '<span class="tour-title-icon">😁</span>Adding Parent!',
-            description: 'Choose a question from previously added ones and relate it to your question.',
-            image: "https://picsum.photos/300/200/?random",
-            selector: '#tags-textarea',
-            x: 0,
-            y: 160,
-            offx: 11,
-            offy: 0,
-            position: 'left',
-            onSelected: false
-        }, {
-            title: '<span class="tour-title-icon">😁</span>Appending Questions!',
-            description: 'Click here to append the question to the table when you are done.',
-            image: "https://picsum.photos/300/200/?random",
+            title: '<span class="tour-title-icon">😁</span>Adding Questions!',
+            description: 'Click here to add the question.',
             selector: '#addRow',
             x: 50,
             y: 140,
@@ -216,24 +232,13 @@ $scenario_id = 0;
             offy: 0,
             position: 'bottom',
             onSelected: false
-        }, {
-            title: '<span class="tour-title-icon">😁</span>Saving Questions!',
-            description: 'When you are done adding all of your questions, click here to save your questions.',
-            image: "https://picsum.photos/300/200/?random",
-            selector: '#submit_question',
-            x: 50,
-            y: 140,
-            offx: 11,
-            offy: 0,
-            position: 'top',
-            onSelected: false
         }]
     };
 
     let tour = window.ProductTourJS;
     tour.init(tourOptions);
 
-    tour.start();*/
+    tour.start();
     <?php } ?>
 
     /* END TOUR */
@@ -381,6 +386,7 @@ $scenario_id = 0;
                         data = JSON.parse(data);
                         $("#question").val(data.question);
                         $("#answer").val(data.answer);
+                        $("#suggested_text").val(data.suggested_text);
                         var tags = data.tags;
                         var length = tags.length;
                         var tags_html = "";
@@ -401,6 +407,7 @@ $scenario_id = 0;
             $('#addRow').text("Add Question");
             $("#question").val("");
             $("#answer").val("");
+            $("#suggested_text").val("");
             $("#tags-textarea").html("");
             $('#cancel-adding-row').css('display', 'none');
             $('#delete-question').css('display', 'none');
@@ -528,7 +535,7 @@ $scenario_id = 0;
                                 document.write(data.error.message);
                                 return;
                             }
-                            var tags = data.response.result.tags;
+                            var tags = unique_array(data.response.result.tags);
                             var tags_html = "";
                             tags.forEach(function(tag) {
                                 tags_html += "<span class='tag-span badge badge-info'>" + tag + "<a class='remove-tag' href=''>&nbsp;&nbsp;×</a></span>";
@@ -554,6 +561,7 @@ $scenario_id = 0;
             var Question_value = $("#question").val().trim();
             var Answer_value = $("#answer").val().trim();
             var parent_question = $("#parent_question").val();
+            var suggested_text = $("#suggested_text").val();
             var checked = $('#default-tree').treeview('getChecked');
             if (LastNode == null || checked.length == 0) {
                 Swal.fire(
@@ -590,6 +598,7 @@ $scenario_id = 0;
                 if (question_id == "") {
                     question_id = 0;
                 }
+                console.log(Tags_final_array);
                 $('#addRow').attr('disabled', true);
                 $.ajax({
                     url: "<?= base_url("customer/saveQASC") ?>",
@@ -602,6 +611,7 @@ $scenario_id = 0;
                         parent: parent,
                         scenario: scenario,
                         question_id: question_id,
+                        suggested_text: suggested_text,
                         '<?= $this->security->get_csrf_token_name() ?>': '<?= $this->security->get_csrf_hash() ?>'
                     },
                     success: function() {

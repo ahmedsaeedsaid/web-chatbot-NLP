@@ -143,7 +143,7 @@ class customerMod extends CI_Model {
         foreach($tags as $tag){
             $this->db->select('id');
             $this->db->from('q_a_tags');
-            $this->db->like('tag', $tag, 'both');
+            $this->db->where('tag', $tag);
             $res = $this->db->get();
             $tag_id = 0;
             if(!$res->num_rows()){
@@ -328,6 +328,7 @@ class customerMod extends CI_Model {
         $this->db->select('*');
         $this->db->from('optimal_bot_q_a');
         $this->db->where('id', $question_id);
+        $this->db->where('client_id', $this->session->userdata('assis_companyid'));
         $res = $this->db->get();
         $question = $res->row();
         $tags = [];
@@ -349,6 +350,7 @@ class customerMod extends CI_Model {
     {
         $this->db->select('session_id');
         $this->db->from('logs');
+        $this->db->where('companyId', $this->session->userdata('assis_companyid'));
         $this->db->group_by('session_id');
         $res = $this->db->get();
         return $res->result_array();
@@ -359,6 +361,7 @@ class customerMod extends CI_Model {
         $this->db->select('*');
         $this->db->from('logs');
         $this->db->where('session_id', $session_id);
+        $this->db->where('companyId', $this->session->userdata('assis_companyid'));
         $res = $this->db->get();
         return $res->result_array();
     }

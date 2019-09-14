@@ -92,6 +92,8 @@ class FlowAdapter(LogicAdapter):
 
     def __filter_results_according_tagging(self,input_statement ,search_results ,threshold_similar):
         # get tags for all search_results
+        if not search_results:
+            return []
         tag_results = []
         for result in search_results:
             tags = self.__get_tags(result)

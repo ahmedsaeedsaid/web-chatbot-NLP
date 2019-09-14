@@ -522,15 +522,22 @@ function get_bot_reply(user_query, token) {
             var bot_reply = data.response.result.bot_reply;
             var current_date = moment().format('h:mm a | MMMM D YYYY');
             var suggested_answers = data.response.result.suggested_actions;
-            var suggested_text = ``;
-            suggested_answers.forEach(function (answer) {
-                suggested_text += `
+            var suggested_text = data.response.result.suggested_text;
+            var suggested_questions_html = "";
+            var answer = '';
+            for(var i = 0 ; i < suggested_answers.length ; i++) {
+                if(suggested_text[i] == 0 || suggested_text[i] == ""){
+                   answer = suggested_answers[i];
+                } else{
+                    answer = suggested_text[i];
+                }
+                suggested_questions_html += `
                         <div class="received_msg">
                             <div class="row msg-btns">
-                                <button class="btn btn-primary copyAnswer">` + answer[0] + `</button>
+                                <button class="btn btn-primary copyAnswer" true_answer="` + suggested_answers[i] + `">` + answer + `</button>
                             </div>
                         </div><br>`;
-            });
+            }
             var send_to_user = `
                 <div class="incoming_msg">
                       <div class="received_msg">
@@ -538,7 +545,7 @@ function get_bot_reply(user_query, token) {
                             <p>` + bot_reply + `</p>
                             <span class="time_date">` + current_date + `</span>
                         </div>
-                        ` + suggested_text + `
+                        ` + suggested_questions_html + `
                     </div>
                 </div>`;
             $(".Messages_list").append(send_to_user);
@@ -599,6 +606,10 @@ function handleMessage(content) {
         }, 500);
         get_bot_reply(query, content);
     }
+}
+
+function addslashes(str) {
+    return (str + '').replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
 }
 
 /* END CUSTOM FUNCTIONS */
@@ -665,9 +676,9 @@ function handleMessage(content) {
 
 
                                 $("body").on('click', '.copyAnswer', function () {
-                                    var msg = $(this).html();
+                                    var msg = $(this).attr('true_answer');
                                     $("#user_query").val('');
-                                    $("#user_query").val(msg);
+                                    $("#user_query").val(addslashes(msg));
                                     $("#send").trigger('click');
                                 });
 

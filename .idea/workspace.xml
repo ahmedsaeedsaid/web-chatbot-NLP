@@ -2,16 +2,23 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7d280b8a-435b-4fb6-bafa-8b6d5d811cdf" name="Default" comment="handel multiple training">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/assis/application/views/customer/scenarios_list.php" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assis/styles/images/bot.png" afterPath="$PROJECT_DIR$/assis/styles/images/bot.png" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/assis/application/views/emailTemplates/db_verification.php" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.env" afterPath="$PROJECT_DIR$/.env" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assis/application/controllers/Customer.php" afterPath="$PROJECT_DIR$/assis/application/controllers/Customer.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assis/application/controllers/subscribe.php" afterPath="$PROJECT_DIR$/assis/application/controllers/subscribe.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assis/application/models/customer/CustomerMod.php" afterPath="$PROJECT_DIR$/assis/application/models/customer/CustomerMod.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assis/application/views/customer/common.php" afterPath="$PROJECT_DIR$/assis/application/views/customer/common.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assis/application/views/customer/logs.php" afterPath="$PROJECT_DIR$/assis/application/views/customer/logs.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assis/application/views/customer/qa.php" afterPath="$PROJECT_DIR$/assis/application/views/customer/qa.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assis/application/views/subscribeForm.php" afterPath="$PROJECT_DIR$/assis/application/views/subscribeForm.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assis/custom-scripts/bot.js" afterPath="$PROJECT_DIR$/assis/custom-scripts/bot.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/optimalBot/DataCleaning.py" afterPath="$PROJECT_DIR$/optimalBot/DataCleaning.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/optimalBot/apiBot.py" afterPath="$PROJECT_DIR$/optimalBot/apiBot.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/optimalBot/database_servers/mysql.py" afterPath="$PROJECT_DIR$/optimalBot/database_servers/mysql.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/optimalBot/db_manager.py" afterPath="$PROJECT_DIR$/optimalBot/db_manager.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/optimalBot/optimal_chatterbot/FlowAdapter.py" afterPath="$PROJECT_DIR$/optimalBot/optimal_chatterbot/FlowAdapter.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/optimalBot/settings.py" afterPath="$PROJECT_DIR$/optimalBot/settings.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -22,65 +29,58 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="FlowAdapter.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/optimalBot/optimal_chatterbot/FlowAdapter.py">
+      <file leaf-file-name="db_manager.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/optimalBot/db_manager.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3275">
-              <caret line="140" column="83" lean-forward="false" selection-start-line="140" selection-start-column="83" selection-end-line="140" selection-end-column="83" />
+            <state relative-caret-position="174">
+              <caret line="43" column="82" lean-forward="false" selection-start-line="43" selection-start-column="82" selection-end-line="43" selection-end-column="82" />
               <folding>
-                <marker date="1568231815004" expanded="true" signature="936:1243" ph="..." />
-                <marker date="1568231815004" expanded="true" signature="936:1319" ph="..." />
-                <marker date="1568231815004" expanded="true" signature="8987:12594" ph="..." />
-                <marker date="1568231815004" expanded="true" signature="9011:12594" ph="..." />
+                <marker date="1568322696929" expanded="true" signature="125:3154" ph="..." />
+                <marker date="1568322696929" expanded="true" signature="125:3156" ph="..." />
+                <marker date="1568322696929" expanded="true" signature="1511:1715" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="sql_storage.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/optimalBot/optimal_chatterbot/sql_storage.py">
+      <file leaf-file-name="apiBot.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/optimalBot/apiBot.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3150">
-              <caret line="126" column="69" lean-forward="false" selection-start-line="126" selection-start-column="69" selection-end-line="126" selection-end-column="69" />
+            <state relative-caret-position="0">
+              <caret line="73" column="49" lean-forward="false" selection-start-line="73" selection-start-column="49" selection-end-line="73" selection-end-column="49" />
+              <folding>
+                <marker date="1568322907350" expanded="true" signature="525:8830" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="settings.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/optimalBot/settings.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="182">
+              <caret line="32" column="44" lean-forward="true" selection-start-line="32" selection-start-column="44" selection-end-line="32" selection-end-column="44" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="api.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/optimalBot/api.py">
+      <file leaf-file-name=".env" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.env">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="575">
-              <caret line="23" column="0" lean-forward="false" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#23#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="190">
+              <caret line="29" column="0" lean-forward="false" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="db_manager.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/optimalBot/db_manager.py">
+      <file leaf-file-name="DataCleaning.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/optimalBot/DataCleaning.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-708">
-              <caret line="38" column="33" lean-forward="false" selection-start-line="38" selection-start-column="33" selection-end-line="38" selection-end-column="33" />
-              <folding>
-                <marker date="1568232022284" expanded="true" signature="125:3056" ph="..." />
-                <marker date="1568232022284" expanded="true" signature="125:3058" ph="..." />
-                <marker date="1568232022284" expanded="true" signature="1413:1617" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="apiBot.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/optimalBot/apiBot.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="203">
-              <caret line="166" column="0" lean-forward="false" selection-start-line="166" selection-start-column="0" selection-end-line="166" selection-end-column="0" />
-              <folding>
-                <marker date="1568232048521" expanded="true" signature="525:8296" ph="..." />
-              </folding>
+            <state relative-caret-position="159">
+              <caret line="74" column="8" lean-forward="true" selection-start-line="74" selection-start-column="8" selection-end-line="74" selection-end-column="8" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -88,8 +88,8 @@
       <file leaf-file-name="mysql.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/optimalBot/database_servers/mysql.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="43" column="26" lean-forward="false" selection-start-line="43" selection-start-column="26" selection-end-line="43" selection-end-column="26" />
+            <state relative-caret-position="300">
+              <caret line="62" column="31" lean-forward="true" selection-start-line="62" selection-start-column="31" selection-end-line="62" selection-end-column="31" />
               <folding />
             </state>
           </provider>
@@ -106,14 +106,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>validate_db</find>
-      <find>update_</find>
-      <find>.settings</find>
-      <find>This Domain has been used, restricted access.</find>
-      <find>_use_unicode</find>
-      <find>charset</find>
-      <find>database_uri</find>
-      <find>storage</find>
       <find>statement</find>
       <find>ListTrainerOverridden</find>
       <find>SQLStorageAdapter</find>
@@ -134,8 +126,16 @@
       <find>insert_</find>
       <find>fetch_all_</find>
       <find>DBManager</find>
-      <find>print</find>
       <find>session_id</find>
+      <find>set_character_set</find>
+      <find>con</find>
+      <find>charset</find>
+      <find>db.get_value</find>
+      <find>init_command</find>
+      <find>connection</find>
+      <find>connect</find>
+      <find>get_value</find>
+      <find>print</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -164,19 +164,19 @@
         <option value="$PROJECT_DIR$/optimalBot/optimal_chatterbot/__init__.py" />
         <option value="$PROJECT_DIR$/optimalBot/optimal_chatterbot/Filters.py" />
         <option value="$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/chatterbot/ext/sqlalchemy_app/models.py" />
-        <option value="$PROJECT_DIR$/optimalBot/DataCleaning.py" />
         <option value="$PROJECT_DIR$/optimalBot/optimal_chatterbot/chatbot.py" />
         <option value="$PROJECT_DIR$/optimalBot/api.py" />
-        <option value="$PROJECT_DIR$/optimalBot/settings.py" />
         <option value="$PROJECT_DIR$/optimalBot/chatBot_tags/similarity.py" />
-        <option value="$PROJECT_DIR$/.env" />
         <option value="C:/Anaconda3/envs/chatbot/Lib/site-packages/chatterbot/search.py" />
         <option value="C:/Anaconda3/envs/chatbot/Lib/site-packages/chatterbot/conversation.py" />
         <option value="$PROJECT_DIR$/optimalBot/optimal_chatterbot/sql_storage.py" />
+        <option value="$PROJECT_DIR$/optimalBot/DataCleaning.py" />
+        <option value="$PROJECT_DIR$/optimalBot/settings.py" />
+        <option value="$PROJECT_DIR$/.env" />
         <option value="$PROJECT_DIR$/optimalBot/optimal_chatterbot/FlowAdapter.py" />
-        <option value="$PROJECT_DIR$/optimalBot/database_servers/mysql.py" />
         <option value="$PROJECT_DIR$/optimalBot/db_manager.py" />
         <option value="$PROJECT_DIR$/optimalBot/apiBot.py" />
+        <option value="$PROJECT_DIR$/optimalBot/database_servers/mysql.py" />
       </list>
     </option>
   </component>
@@ -201,7 +201,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -224,7 +224,7 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="Course" />
     </panes>
   </component>
@@ -337,9 +337,10 @@
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25611246" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2591687" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.718925" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32922733" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -353,7 +354,6 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -386,8 +386,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/chatterbot/utils.py" />
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/nltk/parse/malt.py" />
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/nltk/corpus/reader/propbank.py" />
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/chatterbot/storage/storage_adapter.py" />
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/chatterbot/tagging.py" />
@@ -423,9 +421,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/mysql/connector/connection.py" />
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/mysql/connector/__init__.py" />
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/MySQLdb/connections.py" />
     <entry file="file://$PROJECT_DIR$/optimalBot/optimal_chatterbot/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -450,13 +445,6 @@
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/chatterbot/ext/sqlalchemy_app/models.py" />
     <entry file="file://$USER_HOME$/.PyCharmCE2017.2/system/python_stubs/677148698/MySQLdb/_mysql.py" />
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/chatterbot/storage/sql_storage.py" />
-    <entry file="file://$PROJECT_DIR$/optimalBot/DataCleaning.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="7" column="6" lean-forward="false" selection-start-line="7" selection-start-column="6" selection-end-line="7" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Anaconda3/envs/chatbot/Lib/site-packages/chatterbot/filters.py" />
     <entry file="file://$PROJECT_DIR$/optimalBot/optimal_chatterbot/response_selection.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -497,13 +485,6 @@
       </provider>
     </entry>
     <entry file="file://C:/Anaconda3/envs/chatbot/Lib/site-packages/chatterbot/logic/logic_adapter.py" />
-    <entry file="file://$PROJECT_DIR$/optimalBot/web_services/rest.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1025">
-          <caret line="43" column="17" lean-forward="false" selection-start-line="43" selection-start-column="17" selection-end-line="43" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/mysql/connector/cursor_cext.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="190">
@@ -525,77 +506,135 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/optimalBot/web_services/rest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="182">
+          <caret line="43" column="17" lean-forward="false" selection-start-line="43" selection-start-column="17" selection-end-line="43" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/optimalBot/optimal_chatterbot/sql_storage.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3150">
+        <state relative-caret-position="25">
           <caret line="126" column="69" lean-forward="false" selection-start-line="126" selection-start-column="69" selection-end-line="126" selection-end-column="69" />
           <folding />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/optimalBot/api.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="398">
+          <caret line="23" column="0" lean-forward="false" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#23#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/mysql/connector/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-753">
+          <caret line="132" column="4" lean-forward="false" selection-start-line="132" selection-start-column="4" selection-end-line="132" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/mysql/connector/abstracts.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="638" column="8" lean-forward="false" selection-start-line="638" selection-start-column="8" selection-end-line="638" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/optimalBot/optimal_chatterbot/FlowAdapter.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="94" column="30" lean-forward="true" selection-start-line="94" selection-start-column="30" selection-end-line="94" selection-end-column="30" />
+          <folding>
+            <marker date="1568313300248" expanded="true" signature="936:1243" ph="..." />
+            <marker date="1568313300248" expanded="true" signature="936:1319" ph="..." />
+            <marker date="1568313300248" expanded="true" signature="9040:12647" ph="..." />
+            <marker date="1568313300248" expanded="true" signature="9064:12647" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/.env">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="8" column="15" lean-forward="false" selection-start-line="8" selection-start-column="10" selection-end-line="8" selection-end-column="15" />
+        <state relative-caret-position="190">
+          <caret line="29" column="0" lean-forward="false" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/optimalBot/settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="182">
-          <caret line="22" column="30" lean-forward="true" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="30" />
+          <caret line="32" column="44" lean-forward="true" selection-start-line="32" selection-start-column="44" selection-end-line="32" selection-end-column="44" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/optimalBot/optimal_chatterbot/FlowAdapter.py">
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/MySQLdb/connections.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3275">
-          <caret line="140" column="83" lean-forward="false" selection-start-line="140" selection-start-column="83" selection-end-line="140" selection-end-column="83" />
+        <state relative-caret-position="474">
+          <caret line="290" column="29" lean-forward="false" selection-start-line="290" selection-start-column="22" selection-end-line="290" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/optimalBot/DataCleaning.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="159">
+          <caret line="74" column="8" lean-forward="true" selection-start-line="74" selection-start-column="8" selection-end-line="74" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/mysql/connector/connection.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="24">
+          <caret line="57" column="8" lean-forward="false" selection-start-line="57" selection-start-column="8" selection-end-line="57" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharmCE2017.2/system/python_stubs/677148698/builtins.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="290">
+          <caret line="3608" column="49" lean-forward="false" selection-start-line="3608" selection-start-column="49" selection-end-line="3608" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/optimalBot/db_manager.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="174">
+          <caret line="43" column="82" lean-forward="false" selection-start-line="43" selection-start-column="82" selection-end-line="43" selection-end-column="82" />
           <folding>
-            <marker date="1568231815004" expanded="true" signature="936:1243" ph="..." />
-            <marker date="1568231815004" expanded="true" signature="936:1319" ph="..." />
-            <marker date="1568231815004" expanded="true" signature="8987:12594" ph="..." />
-            <marker date="1568231815004" expanded="true" signature="9011:12594" ph="..." />
+            <marker date="1568322696929" expanded="true" signature="125:3154" ph="..." />
+            <marker date="1568322696929" expanded="true" signature="125:3156" ph="..." />
+            <marker date="1568322696929" expanded="true" signature="1511:1715" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/optimalBot/database_servers/mysql.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="43" column="26" lean-forward="false" selection-start-line="43" selection-start-column="26" selection-end-line="43" selection-end-column="26" />
+        <state relative-caret-position="300">
+          <caret line="62" column="31" lean-forward="true" selection-start-line="62" selection-start-column="31" selection-end-line="62" selection-end-column="31" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/optimalBot/apiBot.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
-          <caret line="166" column="0" lean-forward="false" selection-start-line="166" selection-start-column="0" selection-end-line="166" selection-end-column="0" />
+        <state relative-caret-position="0">
+          <caret line="73" column="49" lean-forward="false" selection-start-line="73" selection-start-column="49" selection-end-line="73" selection-end-column="49" />
           <folding>
-            <marker date="1568232048521" expanded="true" signature="525:8296" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/optimalBot/db_manager.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-708">
-          <caret line="38" column="33" lean-forward="false" selection-start-line="38" selection-start-column="33" selection-end-line="38" selection-end-column="33" />
-          <folding>
-            <marker date="1568232022284" expanded="true" signature="125:3056" ph="..." />
-            <marker date="1568232022284" expanded="true" signature="125:3058" ph="..." />
-            <marker date="1568232022284" expanded="true" signature="1413:1617" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/optimalBot/api.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="575">
-          <caret line="23" column="0" lean-forward="false" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
+            <marker date="1568322907350" expanded="true" signature="525:8830" ph="..." />
           </folding>
         </state>
       </provider>

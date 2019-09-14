@@ -12,12 +12,14 @@ class DBManager:
 
     def __build_query_condition(self, conditions, like=False):
         where = ''
-        if conditions :
+        if conditions:
             for key, value in conditions.items():
+                if isinstance(value, str):
+                    value = value.replace('"', '\\"')
                 if like:
                     where += key + " like '%" + value + "%' and  "
                 else:
-                    where += key + " = '" + value + "' and "
+                    where += key + " = \"" + value + "\" and "
         where += " 1"
         return where
 
@@ -88,10 +90,11 @@ class DBManager:
     def change_column_datatype(self, table, column, datatype):
         self.db.alter_(table, column, datatype)
 
-    def saveLog(self, user_query, bot_reply, session_id, date):
+    def saveLog(self, user_query, bot_reply, session_id, date, companyId):
         data = dict()
         data['user_query'] = user_query
         data['bot_reply'] = bot_reply
         data['session_id'] = session_id
         data['msgdatetime'] = date
+        data['companyId'] = str(companyId)
         self.db.insert_('logs', data)

@@ -73,3 +73,12 @@ class DataCleaning:
     def filter_symbols(self, filtered_text):
         filtered_text = re.sub(u"(\u2018|\u2019)", "'", filtered_text)
         return re.sub(u"(\u201d|\u201c)", '"', filtered_text)
+
+    def borked_utf8_decode(data):
+        """
+        Work around input with unpaired surrogates or surrogate pairs,
+        replacing by XML char refs: look for "&#\d+;" after.
+        """
+        return data.decode("utf-8", "surrogatepass") \
+            .encode("utf-8", "xmlcharrefreplace") \
+            .decode("utf-8")

@@ -35,6 +35,10 @@ class ApiBot(WS.Rest):
                 return WS.Response.throwError(HTTP_FORBIDDEN_RESPONSE, "Please train the bot at least one time using our customer portal.")
 
             if db_driver == 'mysqli' or db_driver == 'mysql':
+                db = DBManager(user=DB_USERNAME,
+                            password=DB_PASSWORD,
+                            host=DB_SERVER,
+                            database=DB_NAME)
                 # TODO: configure db_port
 
                 uri = "mysql://" + DB_USERNAME + ":" + DB_PASSWORD + "@" + DB_SERVER + ":3306/" + DB_NAME
@@ -63,9 +67,12 @@ class ApiBot(WS.Rest):
                 #escaped_query = re.escape(query)
                 #tokenized_query = " ".join(nltk.word_tokenize(escaped_query))
                 #cleaned_query = re.sub(u"(\u2018|\u2019)", "'", tokenized_query)
-                response, Story_ID, children_questions,means_questions = chatbot.get_response(cleaned_query)
-
-                return WS.Response.returnResponse(HTTP_SUCCESS_RESPONSE, {'bot_reply': str(response), 'story_id': Story_ID, 'suggested_actions': children_questions,'means_questions': means_questions})
+                response, Story_ID, children_questions, means_questions = chatbot.get_response(cleaned_query)
+                # Get suggested Text for question
+                suggested_text = []
+                for child in children_questions:
+                    suggested_text.append(db.get_value(table_name=FAQ_TABLE_NAME, column_name=QUESTION_SUGGESTED_TEXT_COLUMN, conditions={QUESTION_SUBJECT_COLUMN: child[0]}))
+                return WS.Response.returnResponse(HTTP_SUCCESS_RESPONSE, {'bot_reply': str(response), 'story_id': Story_ID, 'suggested_actions': children_questions,'means_questions': means_questions, 'suggested_text': suggested_text})
             else:
                 return WS.Response.throwError(DATABASE_TYPE_ERROR, "Database type is not supported.")
         #except:
@@ -87,7 +94,7 @@ class ApiBot(WS.Rest):
                                     database_uri=uri,
                                     read_only=True)
 
-                db.change_column_datatype('statement', 'text', 'text')
+                #db.change_column_datatype('statement', 'text', 'text')
                 db.change_column_datatype('statement', 'search_text', 'text')
                 db.change_column_datatype('statement', 'in_response_to', 'text')
                 db.change_column_datatype('statement', 'search_in_response_to', 'text')
@@ -171,6 +178,7 @@ class ApiBot(WS.Rest):
         bot_reply = WS.Validation.validateParameter('bot_reply', self.param['bot_reply'], STRING)
         session_id = WS.Validation.validateParameter('session_id', self.param['session_id'], STRING)
         date = WS.Validation.validateParameter('date', self.param['date'], STRING)
+        _, _, _, _, _, _, companyId, _, _, _ = self.bot_information
 
         if user_query['valid']:
             user_query = user_query['data']
@@ -197,7 +205,7 @@ class ApiBot(WS.Rest):
                        host=DB_SERVER,
                        database=DB_NAME)
 
-        db.saveLog(user_query, bot_reply, session_id, date)
+        db.saveLog(user_query, bot_reply, session_id, date, companyId)
         return WS.Response.returnResponse(HTTP_SUCCESS_RESPONSE, 'success')
         # except:
         # return WS.Response.throwError(JWT_PROCESSING_ERROR, "Sorry, Server is down, please contact the administrators")
