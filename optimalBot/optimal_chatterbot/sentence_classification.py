@@ -27,8 +27,8 @@ classifier = pickle.load(f)
 f.close()"""
 
 
-def get_faq_Q_A_Pairs(faq_table_name, db):
-    faq_table_data = db.get_table_data(faq_table_name)
+def get_faq_Q_A_Pairs(faq_table_name, db, client_id):
+    faq_table_data = db.get_table_data(faq_table_name, client_id)
     Q_A = dict()
     for item in faq_table_data:
         question = item[1]

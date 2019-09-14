@@ -105,7 +105,7 @@ class ApiBot(WS.Rest):
                     db.delete_table_data(table, conditions={CLIENT_ID_COLUMN: str(client_id)})
 
                 faq_table_name = FAQ_TABLE_NAME
-                Q_A = get_faq_Q_A_Pairs(faq_table_name, db)
+                Q_A = get_faq_Q_A_Pairs(faq_table_name, db, client_id)
 
                 dt = DataCleaning()
 

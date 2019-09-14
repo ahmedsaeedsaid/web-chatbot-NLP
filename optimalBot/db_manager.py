@@ -36,9 +36,10 @@ class DBManager:
         self.db.where_(where)
         return self.db.commit_()
 
-    def get_table_data(self, table_name):
+    def get_table_data(self, table_name, client_id):
         self.db.select_('*')
         self.db.from_(table_name)
+        self.db.where_('client_id=' + client_id)
         return self.db.fetch_all_()
 
     def get_value(self, table_name, column_name, conditions={}, like=False, multiple_values=False):
