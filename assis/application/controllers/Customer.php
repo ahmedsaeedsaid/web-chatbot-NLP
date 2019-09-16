@@ -191,7 +191,7 @@ class Customer extends CI_Controller {
         // check loggedIn
         $this->authentication->IsLoggedInCustomer('any');
         $config['title'] = 'User Logs';
-        $data['logs'] = $this->CM->getLogs();
+        $data['company_users'] = $this->CM->getCompanyUsers();
         $this->load->model('subscribeFormMod');
         $company = $this->subscribeFormMod->getCompanyById($this->session->userdata('assis_companyid'));
         $data['token'] = $company->token;
@@ -199,12 +199,13 @@ class Customer extends CI_Controller {
         $this->load->view('customer/logs', $data);
     } 
     
-    public function logview($session_id){
+    public function logview($user_id){
         // check loggedIn
         $this->authentication->IsLoggedInCustomer('any');
         $config['title'] = 'View Log';
-        $data['log_details'] = $this->CM->getLogDetails($session_id);
-        $data['session_id'] = $session_id;
+        $data['log_details'] = $this->CM->getLogDetails($user_id);
+        $user = $this->CM->getCompanyUser($user_id);
+        $data['user_email'] = $user->email;
         $this->load->model('subscribeFormMod');
         $company = $this->subscribeFormMod->getCompanyById($this->session->userdata('assis_companyid'));
         $data['token'] = $company->token;

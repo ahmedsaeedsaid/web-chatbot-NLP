@@ -375,12 +375,8 @@
                                     <tr>
                                         <td>
                                             <p>Dear <?= $username ?>,<br>
-                                                Thank you for subsribing to our bot. You registered with this email: <?= $email ?><br>Now you can deploy your bot by including these tags <span style="color:red"><b>at the top</b></span> of the php file in your website.<br></p>
-                                            <code>&lt;?php
-                                                if(isset($_GET['get_php_session_id_via_ajax'])){
-                                                echo session_id();exit;
-                                                }
-                                                ?&gt;<br><br>&lt;meta name=&quot;optimal-bot-verification&quot; content=&quot;<?= $token ?>&quot; /&gt;<br><br>&lt;script src=&quot;<?= base_url() ?>custom-scripts/bot.js&quot;&gt;&lt;/script&gt;
+                                                Thank you for subsribing to our bot. You registered with this email: <?= $email ?><br>Now you can deploy your bot by including these two tags in your website.<br></p>
+                                            <code>&lt;meta name=&quot;optimal-bot-verification&quot; content=&quot;<?= $token ?>&quot; /&gt;<br><br>&lt;script src=&quot;<?= base_url() ?>custom-scripts/bot.js&quot;&gt;&lt;/script&gt;
                                                 <br><br>
                                             </code>
                                         </td>

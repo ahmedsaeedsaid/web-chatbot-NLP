@@ -42,7 +42,7 @@ class MySQL:
         self.query += 'insert into ' + table_name + ' ('
         self.query += ",".join(data.keys()) + ") values(" + '"{0}"'.format('", "'.join(data.values())) + ")"
         cr = self.__execute()
-        return cr.rowcount
+        return cr.lastrowid
 
     def update_(self, table_name, data, where):
         self.query += 'update ' + table_name + ' set '

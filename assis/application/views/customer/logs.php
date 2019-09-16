@@ -43,22 +43,33 @@ if(!isset($_SESSION['show_tutorial_scenarios_list'])){
                         <thead>
                             <tr>
                                 <th>SN</th>
-                                <th>Session ID</th>
+                                <th>User Email</th>
+                                <th>User Phone</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php if($logs){
-                            $i = 1;
-                             foreach ($logs as $log) { ?>
-                            <tr id="log-<?= $log['session_id'] ?>">
+                            <?php
+                            if($company_users){
+                                $i = 1;
+                                foreach ($company_users as $user) { ?>
+                            <tr>
                                 <td><?= $i ?></td>
-                                <td><?= $log['session_id'] ?></td>
+                                <td><?= $user['email'] ?></td>
+                                <td><?= $user['phone'] ?></td>
                                 <td style="text-align:center" id="tour-scenario-list-step-1">
-                                    <a href="<?= base_url(); ?>customer/logview/<?= $log['session_id'] ?>" title="Questions"><img src="<?= base_url() ?>styles/icons/view.png" width="23" height="23" alt="View"></a>
+                                    <a href="<?= base_url(); ?>customer/logview/<?= $user['id'] ?>" title="Questions"><img src="<?= base_url() ?>styles/icons/view.png" width="23" height="23" alt="View"></a>
                                 </td>
                             </tr>
-                            <?php $i += 1; }}
+                            <?php
+                                 $i += 1;
+                               }
+                            } else { ?>
+                                <tr>
+                                    <td colspan="4" style="text-align:center;">No Logs Available Yet</td>
+                                </tr>
+                            <?php
+                               }
                             ?>
                         </tbody>
                     </table>

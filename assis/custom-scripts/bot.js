@@ -1,6 +1,7 @@
-var html = `<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+var html = `
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 <!------ Include the above in your HEAD tag ---------->
 <style>
 
@@ -426,8 +427,64 @@ var html = `<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.
   height: 516px;
   overflow-y: auto;
 }
+.modal-notify .modal-header {
+    border-radius: 3px 3px 0 0;
+}
+.modal-notify .modal-content {
+    border-radius: 3px;
+}
+#orangeModalSubscription{
+    display:none;
+}
+.modal-header .close {
+    margin-top: -24px!important;
+}
+#form-errors{
+    color:red;
+}
+#email-div{
+    margin-bottom: 5%;
+}
 </style>
 <div class="container">
+    <div class="modal fade" id="orangeModalSubscription" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-notify modal-warning" role="document">
+        <!--Content-->
+        <div class="modal-content">
+          <!--Header-->
+          <div class="modal-header text-center">
+            <h4 class="modal-title white-text w-100 font-weight-bold py-2">Chat with the Bot</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true" class="white-text">&times;</span>
+            </button>
+          </div>
+
+          <!--Body-->
+          <div class="modal-body">
+                <form action="" id="form-submit" method="GET">
+                    <div class="md-form" id="email-div">
+                      <label data-error="wrong" data-success="right" for="email">Your email</label>
+                      <i class="fa fa-envelope prefix grey-text"></i>
+                      <input type="email" id="email" class="form-control validate">
+                    </div>
+                    <div class="md-form">
+                      <label data-error="wrong" data-success="right" for="phone">Your phone number</label>
+                      <i class="fa fa-phone prefix grey-text"></i>
+                      <input type="text" id="phone" class="form-control validate">
+                    </div>
+                </form>
+                <div id="form-errors"></div>
+          </div>
+
+          <!--Footer-->
+          <div class="modal-footer justify-content-center">
+            <button type="submit" form="form-submit" class="btn btn-outline-warning waves-effect">Start Chatting <i class="fa fa-paper-plane-o ml-1"></i></button>
+          </div>
+        </div>
+        <!--/.Content-->
+      </div>
+    </div>
 	<div class="row">
 
     <span id='message'></span>
@@ -435,7 +492,7 @@ var html = `<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.
     <div class="Layout Layout-open Layout-expand Layout-right" style="background-color: #3F51B5;color: rgb(255, 255, 255);opacity: 5;border-radius: 10px;">
       <div class="Messenger_messenger">
         <div class="Messenger_header" style="background-color: rgb(22, 46, 98); color: rgb(255, 255, 255);">
-          <h4 class="Messenger_prompt">How can we help you?</h4> <span class="chat_close_icon"><i class="fa fa-window-close" aria-hidden="true"></i></span> </div>
+          <h4 class="Messenger_prompt">How can we help you?</h4><span class="chat_close_icon"><i class="fa fa-window-close" aria-hidden="true"></i></span> </div>
         <div class="Messenger_content">
           <div class="Messages" id="msg-list">
             <div class="Messages_list">
@@ -450,7 +507,7 @@ var html = `<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.
 
             </div>
           </div>
-          <div class="Input Input-blank">
+          <div class="Input Input-blank" id="msg-btns">
             <textarea class="Input_field" id="user_query" placeholder="Send a message..." style="height: 20px;"></textarea>
             <button class="Input_button Input_button-emoji">
               <div class="Icon" style="width: 18px; height: 18px;">
@@ -487,14 +544,20 @@ var html = `<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.
       </div>
     </div>
     <!--===============CHAT ON BUTTON STRART===============-->
-    <div class="chat_on"> <span class="chat_on_icon"><i class="fa fa-comments" aria-hidden="true"></i></span> </div>
+    <div class="chat_on" data-toggle="modal" data-target="#orangeModalSubscription"> <span class="chat_on_icon"><i class="fa fa-comments" aria-hidden="true"></i></span> </div>
     <!--===============CHAT ON BUTTON END===============-->
   </div>
 	</div>
 </div>
 `;
 
+/* START GLOBAL VARIABLES */
+
 var story_id = 0;
+var global_phone = '';
+var global_email = '';
+
+/* END GLOBAL VARIABLES */
 
 /* START CUSTOM FUNCTIONS */
 function get_bot_reply(user_query, token) {
@@ -558,21 +621,14 @@ function get_bot_reply(user_query, token) {
     });
 }
 
-function getCurrentSessionId() {
-    return /SESS\w*ID=([^;]+)/i.test(document.cookie) ? RegExp.$1 : false;
-}
-
 function saveLog(user_query, bot_reply, token, current_date) {
-    var session_id = getCurrentSessionId();
-    if(session_id == false){
-       session_id = "";
-    }
     var param = JSON.stringify({
         name: 'saveLog',
         param: {
             user_query: user_query,
             bot_reply: bot_reply,
-            session_id: session_id,
+            user_email: global_email,
+            user_phone: global_phone,
             date: current_date
         }
     });
@@ -657,6 +713,8 @@ function addslashes(str) {
                 checkReady(function ($) {
                     $(function () {
                         $(document).ready(function () {
+                            // unhide Modal
+                            $("#orangeModalSubscription").css('display', 'block');
                             // Check for Meta Tag
                             if (document.querySelector("meta[name=optimal-bot-verification]")) {
                                 var content = document.querySelector("meta[name=optimal-bot-verification]").getAttribute("content");
@@ -664,10 +722,10 @@ function addslashes(str) {
 
                                 // Set Default welcome message time now
                                 $("#welcome_msg-time").html(moment().format('h:mm a | MMMM D YYYY'));
-                                $(".chat_on").click(function () {
+                                /*$(".chat_on").click(function () {
                                     $(".Layout").toggle();
                                     $(".chat_on").hide(300);
-                                });
+                                });*/
 
                                 $(".chat_close_icon").click(function () {
                                     $(".Layout").hide();
@@ -693,6 +751,46 @@ function addslashes(str) {
                                     if (keycode == '13') {
                                         event.preventDefault();
                                         handleMessage(content);
+                                    }
+                                });
+                                // handling user name and phone
+                                $("#form-submit").on('submit', function(e){
+                                    e.preventDefault();
+                                    var phone = $("#phone").val();
+                                    var email = $("#email").val();
+                                    phone = phone.trim();
+                                    email = email.trim();
+                                    if(phone != "" && email != ""){
+                                        global_email = email;
+                                        global_phone = phone;
+                                        // Hide Modal & Show Chat
+                                        $(".chat_on").removeAttr('data-toggle');
+                                        $(".chat_on").removeAttr('data-target');
+                                        $(".chat_on").bind( "click", function() {
+                                            $(".Layout").toggle();
+                                            $(".chat_on").hide(300);
+                                        });
+                                        $("#orangeModalSubscription").modal('hide');
+                                        $(".chat_on").trigger('click');
+                                    } else {
+                                        if(phone == ""){
+                                           $("#form-errors").append(
+                                               $('<span>Phone is missing</span><br>')
+                                                .hide()
+                                                .fadeIn(2000)
+                                                .delay(3000)
+                                                .fadeOut(2000)
+                                            );
+                                        }
+                                        if(email == ""){
+                                           $("#form-errors").append(
+                                               $('<span>Email is missing</span>')
+                                                .hide()
+                                                .fadeIn(2000)
+                                                .delay(3000)
+                                                .fadeOut(2000)
+                                            );
+                                        }
                                     }
                                 });
                             } else {

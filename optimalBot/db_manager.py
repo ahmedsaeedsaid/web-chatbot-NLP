@@ -39,7 +39,7 @@ class DBManager:
     def get_table_data(self, table_name, client_id):
         self.db.select_('*')
         self.db.from_(table_name)
-        self.db.where_('client_id=' + client_id)
+        self.db.where_('client_id=' + str(client_id))
         return self.db.fetch_all_()
 
     def get_value(self, table_name, column_name, conditions={}, like=False, multiple_values=False):
@@ -91,11 +91,20 @@ class DBManager:
     def change_column_datatype(self, table, column, datatype):
         self.db.alter_(table, column, datatype)
 
-    def saveLog(self, user_query, bot_reply, session_id, date, companyId):
+    def saveLog(self, user_query, bot_reply, user_email, user_phone, date, companyId):
+        # Get Company User Id
+        userId = self.get_value(table_name=COMAPNY_USERS_TABLE_NAME, column_name='id',
+                     conditions={COMAPNY_USERS_EMAIL_COLUMN_NAME: str(user_email)})
+        if userId == 0:
+            #Create User and Return newly inserted Id
+            user_data = dict()
+            user_data['email'] = str(user_email)
+            user_data['phone'] = str(user_phone)
+            user_data['companyId'] = str(companyId)
+            userId = self.db.insert_('company_users', user_data)
         data = dict()
         data['user_query'] = user_query
         data['bot_reply'] = bot_reply
-        data['session_id'] = session_id
         data['msgdatetime'] = date
-        data['companyId'] = str(companyId)
+        data['company_userId'] = str(userId)
         self.db.insert_('logs', data)

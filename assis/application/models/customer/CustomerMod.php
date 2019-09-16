@@ -346,22 +346,29 @@ class customerMod extends CI_Model {
         return $question;
     }
     
-    public function getLogs()
+    public function getCompanyUsers()
     {
-        $this->db->select('session_id');
-        $this->db->from('logs');
+        $this->db->select('*');
+        $this->db->from('company_users');
         $this->db->where('companyId', $this->session->userdata('assis_companyid'));
-        $this->db->group_by('session_id');
         $res = $this->db->get();
         return $res->result_array();
     }
     
-    public function getLogDetails($session_id)
+    public function getCompanyUser($user_id)
+    {
+        $this->db->select('*');
+        $this->db->from('company_users');
+        $this->db->where('id', $user_id);
+        $res = $this->db->get();
+        return $res->row();
+    }
+    
+    public function getLogDetails($user_id)
     {
         $this->db->select('*');
         $this->db->from('logs');
-        $this->db->where('session_id', $session_id);
-        $this->db->where('companyId', $this->session->userdata('assis_companyid'));
+        $this->db->where('company_userId', $user_id);
         $res = $this->db->get();
         return $res->result_array();
     }

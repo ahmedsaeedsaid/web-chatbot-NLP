@@ -176,7 +176,8 @@ class ApiBot(WS.Rest):
         # try:
         user_query = WS.Validation.validateParameter('user_query', self.param['user_query'], STRING)
         bot_reply = WS.Validation.validateParameter('bot_reply', self.param['bot_reply'], STRING)
-        session_id = WS.Validation.validateParameter('session_id', self.param['session_id'], STRING)
+        user_email = WS.Validation.validateParameter('user_email', self.param['user_email'], STRING)
+        user_phone = WS.Validation.validateParameter('user_phone', self.param['user_phone'], STRING)
         date = WS.Validation.validateParameter('date', self.param['date'], STRING)
         _, _, _, _, _, _, companyId, _, _, _ = self.bot_information
 
@@ -190,10 +191,15 @@ class ApiBot(WS.Rest):
         else:
             return bot_reply['data']
 
-        if session_id['valid']:
-            session_id = session_id['data']
+        if user_email['valid']:
+            user_email = user_email['data']
         else:
-            return session_id['data']
+            return user_email['data']
+
+        if user_phone['valid']:
+            user_phone = user_phone['data']
+        else:
+            return user_phone['data']
 
         if date['valid']:
             date = date['data']
@@ -205,7 +211,7 @@ class ApiBot(WS.Rest):
                        host=DB_SERVER,
                        database=DB_NAME)
 
-        db.saveLog(user_query, bot_reply, session_id, date, companyId)
+        db.saveLog(user_query, bot_reply, user_email, user_phone, date, companyId)
         return WS.Response.returnResponse(HTTP_SUCCESS_RESPONSE, 'success')
         # except:
         # return WS.Response.throwError(JWT_PROCESSING_ERROR, "Sorry, Server is down, please contact the administrators")

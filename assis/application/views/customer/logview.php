@@ -26,7 +26,7 @@ if(!isset($_SESSION['show_tutorial_scenarios_list'])){
             <div class="row">
                 <div class="container">
                     <div class="row">
-                        <label>Session Number: <?= $session_id ?></label>
+                        <label>User Email: <?= $user_email ?></label>
                         <div class="Messenger_messenger">
                             <div class="Messenger_content">
                                 <div class="Messages" id="msg-list">
