@@ -77,6 +77,7 @@ if(!isset($_SESSION['show_tutorial_dash'])){
 
     <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
     <link href="<?php echo base_url(); ?>styles/css/tour.css" rel="stylesheet" type="text/css">
+    <link href="<?php echo base_url(); ?>styles/css/percircle.css" rel="stylesheet" type="text/css">
 
 
     <!-- jQuery library -->
@@ -89,15 +90,16 @@ if(!isset($_SESSION['show_tutorial_dash'])){
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js"></script>
 
     <!-- JQuery UI library -->
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous">
-
-
-
-    </script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
 
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
     <script src="<?php echo base_url(); ?>styles/js/tour.js"></script>
+    <script src="<?php echo base_url(); ?>styles/js/percircle.js"></script>
+        
+    <script src="https://unpkg.com/popper.js@1"></script>
+    <script src="https://unpkg.com/tippy.js@4"></script>
+    
     <!-- Pre-defined Functions to use across website -->
     <script>
         function showErrorMsg(title, body) {

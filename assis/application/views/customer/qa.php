@@ -245,7 +245,13 @@ $scenario_id = 0;
 
     $(document).ajaxStart(function() {
         $.blockUI({
-            message: '<img src="<?= base_url() ?>styles/images/loading.gif" />'
+            message: '<img src="<?= base_url() ?>styles/icons/loading.gif" />',
+            baseZ: 2000,
+            css: {
+                border: 'none',
+                backgroundColor: 'transparent',
+                cursor: 'wait'
+            }
         });
     }).ajaxStop($.unblockUI);
     $(document).ready(function() {
@@ -598,7 +604,6 @@ $scenario_id = 0;
                 if (question_id == "") {
                     question_id = 0;
                 }
-                console.log(Tags_final_array);
                 $('#addRow').attr('disabled', true);
                 $.ajax({
                     url: "<?= base_url("customer/saveQASC") ?>",

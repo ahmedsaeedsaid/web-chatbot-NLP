@@ -209,6 +209,7 @@ class Customer extends CI_Controller {
         $this->load->model('subscribeFormMod');
         $company = $this->subscribeFormMod->getCompanyById($this->session->userdata('assis_companyid'));
         $data['token'] = $company->token;
+        $data['scenarios'] = $this->CM->getScenarios($this->session->userdata('assis_companyid'));
         $this->load->view('customer/common', $config);
         $this->load->view('customer/logview', $data);
     } 

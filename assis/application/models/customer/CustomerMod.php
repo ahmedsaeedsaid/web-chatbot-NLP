@@ -130,11 +130,15 @@ class customerMod extends CI_Model {
             $this->db->where('id', $question_id);
             $this->db->where('client_id', $this->session->userdata('assis_companyid'));
             $this->db->update('optimal_bot_q_a', $Question);
-            $this->insertQuestionTags($tags, $scenario, $question_id);
+            if($tags){
+                $this->insertQuestionTags($tags, $scenario, $question_id);
+            }
         } else {
             $Question["client_id"] = $this->session->userdata('assis_companyid');
             $this->db->insert('optimal_bot_q_a', $Question);
-            $this->insertQuestionTags($tags, $scenario, $this->db->insert_id());
+            if($tags){
+                $this->insertQuestionTags($tags, $scenario, $this->db->insert_id());
+            }
         }
     }
     
@@ -369,6 +373,15 @@ class customerMod extends CI_Model {
         $this->db->select('*');
         $this->db->from('logs');
         $this->db->where('company_userId', $user_id);
+        $res = $this->db->get();
+        return $res->result_array();
+    }
+    
+    public function getScenarios($companyId)
+    {
+        $this->db->select('*');
+        $this->db->from('scenarios');
+        $this->db->where('companyId', $companyId);
         $res = $this->db->get();
         return $res->result_array();
     }
