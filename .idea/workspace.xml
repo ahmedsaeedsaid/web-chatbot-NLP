@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7d280b8a-435b-4fb6-bafa-8b6d5d811cdf" name="Default" comment="handel multiple training">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/assis/styles/images/loading.gif" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assis/application/controllers/Customer.php" afterPath="$PROJECT_DIR$/assis/application/controllers/Customer.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assis/application/models/customer/CustomerMod.php" afterPath="$PROJECT_DIR$/assis/application/models/customer/CustomerMod.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assis/application/views/customer/common.php" afterPath="$PROJECT_DIR$/assis/application/views/customer/common.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assis/application/views/customer/logview.php" afterPath="$PROJECT_DIR$/assis/application/views/customer/logview.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assis/application/views/customer/qa.php" afterPath="$PROJECT_DIR$/assis/application/views/customer/qa.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assis/styles/css/logview.css" afterPath="$PROJECT_DIR$/assis/styles/css/logview.css" />
@@ -23,7 +21,7 @@
       <file leaf-file-name="db_manager.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/optimalBot/db_manager.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="25">
+            <state relative-caret-position="900">
               <caret line="38" column="50" lean-forward="false" selection-start-line="38" selection-start-column="41" selection-end-line="38" selection-end-column="50" />
               <folding>
                 <marker date="1568651010982" expanded="true" signature="125:3219" ph="..." />
@@ -227,7 +225,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -256,7 +254,7 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="Course" />
     </panes>
   </component>
@@ -369,7 +367,7 @@
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25892857" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21071428" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.718925" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -645,7 +643,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/optimalBot/db_manager.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="25">
+        <state relative-caret-position="900">
           <caret line="38" column="50" lean-forward="false" selection-start-line="38" selection-start-column="41" selection-end-line="38" selection-end-column="50" />
           <folding>
             <marker date="1568651010982" expanded="true" signature="125:3219" ph="..." />

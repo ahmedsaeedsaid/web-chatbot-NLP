@@ -374,7 +374,15 @@ class customerMod extends CI_Model {
         $this->db->from('logs');
         $this->db->where('company_userId', $user_id);
         $res = $this->db->get();
-        return $res->result_array();
+        $logs = $res->result_array();
+        for($i = 0 ; $i < count($logs) ; $i++){
+            $this->db->select('*');
+            $this->db->from('logs');
+            $this->db->where('user_query', $logs[$i]['user_query']);
+            $res = $this->db->get();
+            $logs[$i]['num_of_occurences'] = $res->num_rows();
+        }
+        return $logs;
     }
     
     public function getScenarios($companyId)

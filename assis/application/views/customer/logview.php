@@ -7,6 +7,8 @@ if(!isset($_SESSION['show_tutorial_scenarios_list'])){
 ?>
 <link href="<?php echo base_url(); ?>styles/css/logview.css" media="all" rel="stylesheet" type="text/css" />
 <script src="<?php echo base_url(); ?>styles/js/jquery.blockUI.js"></script>
+<link href="<?php echo base_url(); ?>styles/css/bootstrap-treeview.css" rel="stylesheet" />
+<link href="<?php echo base_url(); ?>styles/css/qa.css" rel="stylesheet" />
 <div id="wrapper">
     <!-- Add Question Modal -->
     <div class="modal fade" id="add-question-modal">
@@ -19,23 +21,43 @@ if(!isset($_SESSION['show_tutorial_scenarios_list'])){
                 <div class="modal-body">
                     <form method="POST" id="add-question-form">
                         <input type="hidden" id="question" value="" />
-                        <div class="form-group">
-                            <label for="answer">Bot Answer:</label>
-                            <textarea required name="answer" id="answer" class="form-control" style="resize: none;height: 90px;" placeholder="Add what a bot should answer with"></textarea>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <p><b>Search:</b></p>
+                                <div class="form-group">
+                                    <label for="input-expand-node" class="sr-only">Search Tree:</label>
+                                    <input class="form-control" id="btn-search-tree" placeholder="Enter text to search" value="" type="input">
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="answer">Scenario:</label>
-                            <select id="scenarios-dropdown" class="form-control">
-                                <option></option>
-                                <?php foreach($scenarios as $scenario){ ?>
-                                <option value="<?= $scenario['id'] ?>"><?= $scenario['name'] ?></option>
-                                <?php } ?>
-                            </select>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div id="default-tree"></div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="answer">Bot Answer:</label>
+                                    <textarea required name="answer" id="answer" class="form-control" style="resize: none;height: 90px;" placeholder="Add what a bot should answer with"></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="answer">Suggested Text</label>
+                                    <input type="text" class="form-control" id="suggested_text" name="suggested_text" placeholder="Add a text to represent the question in bot suggested actions">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="answer">Tags:&nbsp;&nbsp;&nbsp;</label>
+                                    <button type="button" id="generate-tags" class="blue">Generate Tags</button>
+                                    <input type="text" class="form-control" id="tags" name="tags" placeholder="Add specific keywords that is related to your question"><br />
+                                    <div id="tags-textarea" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" id='add-ques-btn' form="add-question-form" class="btn btn-primary">Add Question</button>
+                    <button type="button" id='addRow' form="add-question-form" class="btn btn-primary">Add Question</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
 
@@ -82,7 +104,6 @@ if(!isset($_SESSION['show_tutorial_scenarios_list'])){
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
     <div id="page-wrapper">
-
         <div class="container-fluid">
             <!-- Page Heading -->
             <div class="row">
@@ -112,8 +133,9 @@ if(!isset($_SESSION['show_tutorial_scenarios_list'])){
                                             <div class="sent_msg">
                                                 <img src="<?= base_url() ?>styles/images/user.png" width="50" height="50" />
                                                 <p id="user-msg-<?= $details['id'] ?>"><?= $details['user_query'] ?></p>
-                                                <span class="actions actions-similarity"><a href="" class="actions-similarity-href" data-msg-id="<?= $details['id'] ?>"><i class="fa fa-search-plus fa-2x"></i></a></span>
                                                 <span class="actions actions-add-question"><a href="" class="actions-add-href" data-msg-id="<?= $details['id'] ?>"><i class="fa fa-plus fa-2x"></i></a></span>
+                                                <span class="actions actions-similarity"><a href="" class="actions-similarity-href" data-msg-id="<?= $details['id'] ?>"><i class="fa fa-search-plus fa-2x"></i></a></span>
+                                                <span class="actions badge custom-badges"><?= $details['num_of_occurences'] ?></span>
                                                 <span class="time_date"><?= $details['msgdatetime']?></span>
                                             </div>
                                         </div>
@@ -136,6 +158,7 @@ if(!isset($_SESSION['show_tutorial_scenarios_list'])){
             </div>
         </div>
     </div>
+    <script src="<?php echo base_url(); ?>styles/js/bootstrap-treeview.js"></script>
     <script>
         /* START Predefined Functions */
         function trainBot(action) {
@@ -171,10 +194,35 @@ if(!isset($_SESSION['show_tutorial_scenarios_list'])){
                     }
                     setTimeout(function() {
                         $("#add-question-modal").modal('hide');
-                        $('#add-ques-btn').attr('disabled', false);
+                        $('#addRow').attr('disabled', false);
                     }, 1500);
                 }
             });
+        }
+
+        function getAllNodeChilds(mainNode, childs_question_ids) {
+            mainNode.nodes.forEach(function(node) {
+                childs_question_ids.push(node.question_id);
+                if ('nodes' in node) {
+                    getAllNodeChilds(node, childs_question_ids);
+                }
+            });
+            return childs_question_ids;
+        }
+        // unique array
+        function unique_array(a) {
+            var seen = {};
+            var out = [];
+            var len = a.length;
+            var j = 0;
+            for (var i = 0; i < len; i++) {
+                var item = a[i];
+                if (seen[item] !== 1) {
+                    seen[item] = 1;
+                    out[j++] = item;
+                }
+            }
+            return out;
         }
         /* END Predefined Functions */
         $(document).ajaxStart(function() {
@@ -190,139 +238,312 @@ if(!isset($_SESSION['show_tutorial_scenarios_list'])){
         }).ajaxStop($.unblockUI);
 
         $(document).ready(function() {
-            $(".accuracy").percircle();
-            $(".actions-similarity-href").on('click', function(e) {
-                e.preventDefault();
-                var ms_id = $(this).attr('data-msg-id');
-                var msg = $("#user-msg-" + ms_id).html();
-                $("#similarity").modal('show');
+
+            /* START TREEVIEW SECTION */
+            var LastNode = null;
+            var LastSelectedNode = null;
+            // Grapping Tree View from php
+            var myTree = [<?= $tree_nodes ?>];
+            // Initialzing Tree View
+            $('#default-tree').treeview({
+                data: myTree,
+                // custom icons
+                expandIcon: 'glyphicon glyphicon-plus',
+                collapseIcon: 'glyphicon glyphicon-minus',
+                emptyIcon: 'glyphicon',
+                nodeIcon: '',
+                selectedIcon: '',
+                checkedIcon: 'glyphicon glyphicon-check',
+                uncheckedIcon: 'glyphicon glyphicon-unchecked',
+
+                // colors
+                color: undefined, // '#000000',
+                backColor: undefined, // '#FFFFFF',
+                borderColor: undefined, // '#dddddd',
+                onhoverColor: '#F5F5F5',
+                selectedColor: '#FFFFFF',
+                selectedBackColor: '#428bca',
+                searchResultColor: '#D9534F',
+                searchResultBackColor: undefined, //'#FFFFFF',
+
+                // enables links
+                enableLinks: false,
+
+                // highlights selected items
+                highlightSelected: true,
+
+                // highlights search results
+                highlightSearchResults: true,
+
+                // shows borders
+                showBorder: true,
+
+                // shows icons
+                showIcon: true,
+
+                // shows checkboxes
+                showCheckbox: true,
+
+                // shows tags
+                showTags: true,
+
+                // enables multi select
+                multiSelect: false
             });
-            $(".actions-add-href").on('click', function(e) {
-                e.preventDefault();
-                var ms_id = $(this).attr('data-msg-id');
-                var msg = $("#user-msg-" + ms_id).html();
-                $("#question").val(msg);
-                $("#add-question-modal").modal('show');
+
+            // Make tree collapsed by default
+            $('#default-tree').treeview('collapseAll', {
+                silent: true
             });
-            $("#similarity").on('shown.bs.modal', function() {
-                $($.fn.dataTable.tables(true)).DataTable()
-                    .columns.adjust();
+
+            // When a node is checked, uncheck all other nodes
+            $('#default-tree').on('nodeChecked', function(event, data) {
+                $('#default-tree').treeview('uncheckAll', {
+                    silent: true
+                });
+                $(this).treeview('checkNode', [data.nodeId, {
+                    silent: true
+                }]);
+                LastNode = data;
             });
-            $("#add-question-modal").on('shown.bs.modal', function() {
-                $('#scenarios-dropdown:not(.select2-hidden-accessible,:hidden)').select2({
-                    placeholder: 'Select an option',
+
+            // On click event to handle expand nodes of the tree
+            $("#btn-expand-all").on('click', function() {
+                $('#default-tree').treeview('expandAll', {
+                    silent: true
                 });
             });
-            // Form Submission
-            $("#add-question-form").on('submit', function(e) {
-                e.preventDefault();
-                // Disable Adding Question Button
-                $('#add-ques-btn').attr('disabled', true);
-                var Question = $("#question").val().trim();
-                var Answer = $("#answer").val().trim();
-                var scenario = $("#scenarios-dropdown").val();
-                $.ajax({
-                    url: "<?= base_url("customer/saveQASC") ?>",
-                    type: "POST",
-                    data: {
-                        action: 'add',
-                        Question: Question,
-                        Answer: Answer,
-                        parent: 0,
-                        scenario: scenario,
-                        '<?= $this->security->get_csrf_token_name() ?>': '<?= $this->security->get_csrf_hash() ?>'
-                    },
-                    success: function() {
-                        trainBot('save');
-                    }
+
+            // On click event to handle collapse nodes of the tree
+            $("#btn-collapse-all").on('click', function() {
+                $('#default-tree').treeview('collapseAll', {
+                    silent: true
                 });
             });
-            tippy('.actions-similarity', {
-                content: "Similar Questions",
-                placement: 'bottom',
-                arrow: true,
-                arrowType: 'round',
-                animation: "perspective",
-                theme: "light-border",
-                //followCursor: "horizontal",
-            });
-            tippy('.actions-add-question', {
-                content: "Add Question",
-                placement: 'bottom',
-                arrow: true,
-                arrowType: 'round',
-                animation: "perspective",
-                theme: "light-border",
-                //followCursor: "horizontal",
-            });
-            <?php if ($_SESSION['show_tutorial_scenarios_list']) { ?>
-            let tourOptions = {
-                options: {
-                    darkLayerPersistence: true,
-                },
-                tips: [{
-                    title: '<span class="tour-title-icon">😁</span>Here we go!',
-                    description: 'Here you can Acitvate/Deactivate scenario and add Q&A Pairs.',
-                    selector: '#tour-scenario-list-step-1',
-                    x: 30,
-                    y: 30,
-                    offx: 11,
-                    offy: 0,
-                    position: 'top',
-                    onSelected: false
-                }, {
-                    title: '<span class="tour-title-icon">😁</span>Training!',
-                    description: 'Here you can train your bot on the added scenarios and their questions.',
-                    selector: '#train',
-                    x: -40,
-                    y: 50,
-                    offx: 11,
-                    offy: 0,
-                    position: 'left',
-                    onSelected: false
-                }]
-            };
 
-            let tour = window.ProductTourJS;
-            tour.init(tourOptions);
-
-            tour.start();
-            <?php } ?>
-
-            $('#similarity-table').DataTable({
-                "scrollX": true,
-                "autoWidth": false,
-                "ordering": false
+            // On keyup event to handle searching mechanism in the tree
+            $("#btn-search-tree").on('keyup', function() {
+                var search_content = $(this).val();
+                $('#default-tree').treeview('search', [search_content, {
+                    ignoreCase: true, // case insensitive
+                    exactMatch: false, // like or equals
+                    revealResults: true // reveal matching nodes
+                }]);
             });
-            $("#train").on('click', function() {
-                var param = JSON.stringify({
-                    name: 'createBot',
-                    param: {}
-                });
-                $.ajax({
-                    type: "POST",
-                    url: "https://localhost:5002/",
-                    data: param,
-                    headers: {
-                        'Authorization': "Bearer " + "<?= $token ?>",
-                        'Content-Type': 'application/json',
-                    },
-                    success: function(data) {
-                        if ('error' in data) {
-                            document.write(data.error.message);
-                            return;
+
+            /* END TREEVIEW SECTION */
+
+            $("#generate-tags").on('click', function() {
+                var Question_value = $("#question").val().trim();
+                var Answer_value = $("#answer").val().trim();
+                if (Question_value && Answer_value) {
+                    var param = JSON.stringify({
+                        name: 'suggestionTags',
+                        param: {
+                            statement: Question_value + " " + Answer_value
                         }
-                        Swal.fire({
-                            title: 'Success!',
-                            text: 'Training Was Successfull, An email with further instruction has been sent to you!',
-                            icon: 'success'
-                        });
-                        setTimeout(function() {
-                            window.location = "<?= base_url("customer/sendBotScriptEmail") ?>";
-                        }, 4000);
-                    }
-                });
+                    });
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: "https://localhost:5002/",
+                        data: param,
+                        headers: {
+                            'Authorization': "Bearer " + "<?= $token ?>",
+                            'Content-Type': 'application/json',
+                        },
+                        success: function(data) {
+                            if ('error' in data) {
+                                document.write(data.error.message);
+                                return;
+                            }
+                            var tags = unique_array(data.response.result.tags);
+                            var tags_html = "";
+                            tags.forEach(function(tag) {
+                                tags_html += "<span class='tag-span badge badge-info'>" + tag + "<a class='remove-tag' href=''>&nbsp;&nbsp;×</a></span>";
+                            });
+                            $("#tags-textarea").html($("#tags-textarea").html() + tags_html);
+                        }
+                    });
+                } else {
+                    Swal.fire(
+                        'Sorry!',
+                        'Please Enter a Questions and its Answer first',
+                        'error'
+                    );
+                }
             });
+
+            $('#addRow').on('click', function() {
+                var addRowText = $('#addRow').text();
+                var Question_value = $("#question").val().trim();
+                var Answer_value = $("#answer").val().trim();
+                var parent_question = $("#parent_question").val();
+                var suggested_text = $("#suggested_text").val();
+                var checked = $('#default-tree').treeview('getChecked');
+                if (LastNode == null || checked.length == 0) {
+                    Swal.fire(
+                        'Sorry!',
+                        'Please Select a parent question or scenario',
+                        'error'
+                    );
+                    return;
+                }
+                if (Question_value && Answer_value) {
+                    // Get tags
+                    var tags = $("#tags-textarea").children();
+                    // Empty tags area
+                    $("#tags-textarea").empty();
+                    var length = tags.length;
+                    var tags_html = "";
+                    var Tags_final_array = [];
+                    for (var i = 0; i < length; i++) {
+                        $(tags[i]).children('.remove-tag').remove();
+                        Tags_final_array.push($(tags[i]).text());
+                    }
+                    var scenario = LastNode.scenario_id;
+                    var parent = 0;
+                    if (LastNode.is_scenario == 0) {
+                        parent = LastNode.question_id;
+                    }
+                    $('#addRow').attr('disabled', true);
+                    $.ajax({
+                        url: "<?= base_url("customer/saveQASC") ?>",
+                        type: "POST",
+                        data: {
+                            action: 'insert',
+                            Question: Question_value,
+                            Tags: Tags_final_array,
+                            Answer: Answer_value,
+                            parent: parent,
+                            scenario: scenario,
+                            question_id: 0,
+                            suggested_text: suggested_text,
+                            '<?= $this->security->get_csrf_token_name() ?>': '<?= $this->security->get_csrf_hash() ?>'
+                        },
+                        success: function() {
+                            trainBot('save');
+                        }
+                    });
+                } else {
+                    Swal.fire(
+                        'Sorry!',
+                        'Please Enter a Questions and its Answer first',
+                        'error'
+                    );
+                }
+            });
+
+            // Handling Enter key pressed on tags text area
+            $('#tags').keypress(function(event) {
+                var keycode = (event.keyCode ? event.keyCode : event.which);
+                // If enter key is pressed
+                if (keycode == '13') {
+                    event.preventDefault();
+                    // Get Text
+                    var text = $("#tags").val();
+                    text = text.trim();
+                    if (text) {
+                        // Empty Inputfield
+                        $("#tags").val("");
+                        // Append Added tag
+                        $('#tags-textarea').append("<span class='tag-span badge badge-info'>" + text + "<a class='remove-tag' href=''>&nbsp;&nbsp;&times;</a></span>");
+                    }
+                }
+            });
+
+            $("body").on('click', '.remove-tag', function(e) {
+                e.preventDefault();
+                $(this).parent('span').remove();
+            });
+
+        });
+        $(".accuracy").percircle();
+        $(".actions-similarity-href").on('click', function(e) {
+            e.preventDefault();
+            var ms_id = $(this).attr('data-msg-id');
+            var msg = $("#user-msg-" + ms_id).html();
+            $("#similarity").modal('show');
+        });
+        $(".actions-add-href").on('click', function(e) {
+            e.preventDefault();
+            var ms_id = $(this).attr('data-msg-id');
+            var msg = $("#user-msg-" + ms_id).html();
+            $("#question").val(msg);
+            $("#add-question-modal").modal('show');
+        });
+        $("#similarity").on('shown.bs.modal', function() {
+            $($.fn.dataTable.tables(true)).DataTable()
+                .columns.adjust();
+        });
+        $("#add-question-modal").on('shown.bs.modal', function() {
+            $('#scenarios-dropdown:not(.select2-hidden-accessible,:hidden)').select2({
+                placeholder: 'Select an option',
+            });
+        });
+        tippy('.actions-similarity', {
+            content: "Similar Questions",
+            placement: 'bottom',
+            arrow: true,
+            arrowType: 'round',
+            animation: "perspective",
+            theme: "light-border",
+            //followCursor: "horizontal",
+        });
+        tippy('.actions-add-question', {
+            content: "Add Question",
+            placement: 'bottom',
+            arrow: true,
+            arrowType: 'round',
+            animation: "perspective",
+            theme: "light-border",
+            //followCursor: "horizontal",
+        });
+        tippy('.custom-badges', {
+            content: "Number Of Occurences",
+            placement: 'bottom',
+            arrow: true,
+            arrowType: 'round',
+            animation: "perspective",
+            theme: "light-border",
+            //followCursor: "horizontal",
+        });
+        <?php if ($_SESSION['show_tutorial_scenarios_list']) { ?>
+        let tourOptions = {
+            options: {
+                darkLayerPersistence: true,
+            },
+            tips: [{
+                title: '<span class="tour-title-icon">😁</span>Here we go!',
+                description: 'Here you can Acitvate/Deactivate scenario and add Q&A Pairs.',
+                selector: '#tour-scenario-list-step-1',
+                x: 30,
+                y: 30,
+                offx: 11,
+                offy: 0,
+                position: 'top',
+                onSelected: false
+            }, {
+                title: '<span class="tour-title-icon">😁</span>Training!',
+                description: 'Here you can train your bot on the added scenarios and their questions.',
+                selector: '#train',
+                x: -40,
+                y: 50,
+                offx: 11,
+                offy: 0,
+                position: 'left',
+                onSelected: false
+            }]
+        };
+
+        let tour = window.ProductTourJS;
+        tour.init(tourOptions);
+        tour.start();
+        <?php } ?>
+        $('#similarity-table').DataTable({
+            "scrollX": true,
+            "autoWidth": false,
+            "ordering": false
         });
 
     </script>

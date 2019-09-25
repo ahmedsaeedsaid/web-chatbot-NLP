@@ -36,10 +36,10 @@ $scenario_id = 0;
                     </div>
                 </div>
                 <div class="col-sm-2" style="margin-top: 30px;width: auto;">
-                    <button type="button" class="btn btn-success" id="btn-expand-all">Expand All</button>
+                    <button type="button" class="btn btn-success" id="btn-expand-all"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Expand All</button>
                 </div>
                 <div class="col-sm-2" style="margin-top: 30px;width: auto;">
-                    <button type="button" class="btn btn-success" id="btn-collapse-all">Collapse All</button>
+                    <button type="button" class="btn btn-success" id="btn-collapse-all"><i class="fa fa-minus" aria-hidden="true"></i>&nbsp;Collapse All</button>
                 </div>
                 <div class="col-sm-2" style="margin-top: 30px;width: auto;">
                     <button type="button" class="btn btn-success" id="add-sc">Add Scenario</button>
@@ -47,7 +47,7 @@ $scenario_id = 0;
             </div>
             <div class="row">
                 <div class="col-lg-8">
-                    <div id="default-tree" style="width:50%;padding-left:15px;"></div>
+                    <div id="default-tree" style="width:75%;"></div>
                 </div>
                 <div class="col-lg-4">
                     <?php
@@ -345,20 +345,6 @@ $scenario_id = 0;
                 exactMatch: false, // like or equals
                 revealResults: true // reveal matching nodes
             }]);
-        });
-
-        // On submit event to handle edit account
-        $("#form-edit-account").on('submit', function(e) {
-            e.preventDefault();
-            if ($("#bankaccount").prop('checked') == true) {
-                $("#bankaccount").val(1);
-            } else {
-                $("#bankaccount").val(0);
-            }
-            if ($("#fromdate").val() != '') {
-                $("#fromdate").val($("#fromdate-calendar").data("DateTimePicker").date().format('YYYY/MM/DD'));
-            }
-            $(this).off('submit').submit();
         });
 
         // when node is selected, append edit form
