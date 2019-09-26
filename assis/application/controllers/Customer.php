@@ -16,11 +16,11 @@ class Customer extends CI_Controller {
         // loading models
         $this->load->model('customer/LogMod', 'loginMod');
         $this->load->model('customer/CustomerMod', 'CM');
+        $this->load->model('customer/Dashboard', 'dm');
     }
 
     public function index() {
         // check loggedIn
-        
         $this->authentication->IsLoggedInCustomer('login');
         $config['title'] = 'Login';
         $this->load->view('customer/login', $config);
@@ -48,11 +48,13 @@ class Customer extends CI_Controller {
 
     public function main() {
         // check loggedIn
+        $data = array();
         $this->authentication->IsLoggedInCustomer('any');
+        //echo "<pre>";print_r($this->dm->getChatStartEndTime());exit;
         $config['title'] = 'Administration';
         $config['page'] = 'main';
         $this->load->view('customer/common', $config);
-        $this->load->view('customer/main', $this->data);
+        $this->load->view('customer/main', $data);
     }
     
     public function questions(){
@@ -209,6 +211,7 @@ class Customer extends CI_Controller {
         $this->load->model('subscribeFormMod');
         $company = $this->subscribeFormMod->getCompanyById($this->session->userdata('assis_companyid'));
         $data['token'] = $company->token;
+        $data['tree_nodes'] = $this->CM->getQASC();
         $data['scenarios'] = $this->CM->getScenarios($this->session->userdata('assis_companyid'));
         $this->load->view('customer/common', $config);
         $this->load->view('customer/logview', $data);
