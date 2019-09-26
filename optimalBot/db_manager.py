@@ -91,6 +91,10 @@ class DBManager:
     def change_column_datatype(self, table, column, datatype):
         self.db.alter_(table, column, datatype)
 
+    def fetch_query(self, query):
+        self.db.query = query
+        return self.db.fetch_all_()
+
     def saveLog(self, user_query, bot_reply, user_email, user_phone, date, companyId):
         # Get Company User Id
         userId = self.get_value(table_name=COMAPNY_USERS_TABLE_NAME, column_name='id',

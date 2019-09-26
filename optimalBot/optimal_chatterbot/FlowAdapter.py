@@ -41,10 +41,9 @@ class FlowAdapter(LogicAdapter):
 
 
     def __getAllFAQ(self):
-        questions = self.DBManager.get_value(table_name=FAQ_TABLE_NAME, column_name=QUESTION_SUBJECT_COLUMN,conditions={CLIENT_ID_COLUMN : str(self.client_id)},multiple_values=True)
-        answers = self.DBManager.get_value(table_name=FAQ_TABLE_NAME, column_name=ANSWER_COLUMN_NAME,conditions={CLIENT_ID_COLUMN : str(self.client_id)},multiple_values=True)
+        data = self.DBManager.fetch_query('SELECT optimal_bot_q.question as question , answer FROM `optimal_bot_q` , `optimal_bot_q_a` WHERE optimal_bot_q.answer_id = optimal_bot_q_a.id and optimal_bot_q_a.client_id = '+str(self.client_id))
 
-        return zip(questions,answers)
+        return data
 
     def __select_similar_question(self,statement , threshold_similar = 0.75):
         # create statement for all FA questions
@@ -54,8 +53,8 @@ class FlowAdapter(LogicAdapter):
         all_faq_statements = []
         for question,answer in questionsAanswers:
 
-            faq_statement = Statement(text=question[0])
-            faq_statement.in_response_to = answer[0]
+            faq_statement = Statement(text=question)
+            faq_statement.in_response_to = answer
             faq_statement.conversation = 'training'
             all_faq_statements.append(faq_statement)
 
@@ -73,8 +72,8 @@ class FlowAdapter(LogicAdapter):
 
     def __get_tags(self, statement):
 
-        statement_id = self.DBManager.get_value(table_name=FAQ_TABLE_NAME, column_name='id',
-                                                conditions={QUESTION_SUBJECT_COLUMN: statement.text , CLIENT_ID_COLUMN : str(self.client_id)})
+        statement_id = self.DBManager.get_value(table_name=FQ_TABLE_NAME, column_name='answer_id',
+                                                conditions={QUESTION_SUBJECT_COLUMN: statement.text })
         if statement_id:
             tag_ids = self.DBManager.get_value(table_name=JOIN_TAGS_TABLE_NAME, column_name=JOIN_TAGS_TAG_ID_COLUMN_NAME,
                                                conditions={JOIN_TAGS_Q_A_ID_COLUMN_NAME: str(statement_id)},multiple_values=True)
@@ -139,7 +138,6 @@ class FlowAdapter(LogicAdapter):
         search_results_general = self.search_algorithm.search(input_statement,client_id=0)
         search_results = self.search_algorithm.search(input_statement,client_id= self.client_id)
 
-
         results = faq_results + list(search_results_general) + list(search_results)
         # Use the input statement as the closest match if no other results are found
 
@@ -163,8 +161,11 @@ class FlowAdapter(LogicAdapter):
 
                 if result.confidence > closest_match.confidence :
                     closest_match = result
-                story_id = self.DBManager.get_value(table_name=FAQ_TABLE_NAME, column_name=STORY_ID_COLUMN,
-                                                    conditions={QUESTION_SUBJECT_COLUMN: result.text  , CLIENT_ID_COLUMN : str(self.client_id)})
+                if result.in_response_to:
+                    story_id = self.DBManager.get_value(table_name=FAQ_TABLE_NAME, column_name=STORY_ID_COLUMN,
+                                                        conditions={ANSWER_COLUMN_NAME: result.in_response_to  , CLIENT_ID_COLUMN : str(self.client_id)})
+                else:
+                    story_id = 0
                 if story_id > 0:
                     closest_match_story_id = story_id
                 accepted_results.append(closest_match)
@@ -172,8 +173,12 @@ class FlowAdapter(LogicAdapter):
 
 
         for result in accepted_results:
-            story_id = self.DBManager.get_value(table_name=FAQ_TABLE_NAME, column_name=STORY_ID_COLUMN,
-                                                conditions={QUESTION_SUBJECT_COLUMN: result.text  , CLIENT_ID_COLUMN : str(self.client_id)})
+
+            if result.in_response_to:
+                story_id = self.DBManager.get_value(table_name=FAQ_TABLE_NAME, column_name=STORY_ID_COLUMN,
+                                                    conditions={ANSWER_COLUMN_NAME: result.in_response_to  , CLIENT_ID_COLUMN : str(self.client_id)})
+            else:
+                story_id = 0
             if story_id == self.Story_ID:
                 if story_id_changed:
                     closest_match = result
@@ -189,8 +194,12 @@ class FlowAdapter(LogicAdapter):
 
 
         # Suggested questions
-        question_id = self.DBManager.get_value(table_name=FAQ_TABLE_NAME, column_name=QUESTION_ID_COLUMN,
-                                               conditions={QUESTION_SUBJECT_COLUMN: closest_match.text , CLIENT_ID_COLUMN : str(self.client_id)})
+        if closest_match.in_response_to:
+            question_id = self.DBManager.get_value(table_name=FAQ_TABLE_NAME, column_name=QUESTION_ID_COLUMN,
+                                               conditions={ANSWER_COLUMN_NAME: closest_match.in_response_to , CLIENT_ID_COLUMN : str(self.client_id)})
+        else:
+            question_id = 0
+
         if question_id != 0:
             children_questions = self.DBManager.get_value(table_name=FAQ_TABLE_NAME, column_name=QUESTION_SUBJECT_COLUMN,
                                                           conditions={PARENT_ID_COLUMN: str(question_id) , CLIENT_ID_COLUMN : str(self.client_id)}, multiple_values=True)
