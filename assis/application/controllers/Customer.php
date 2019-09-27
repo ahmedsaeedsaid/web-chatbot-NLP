@@ -142,6 +142,14 @@ class Customer extends CI_Controller {
         $res = $this->CM->saveQASC($data, $scenario ,$tags, $action, $question_id);
     }
     
+    public function assignQuestion(){
+        // check loggedIn
+        $this->authentication->IsLoggedInCustomer('any');
+        $to_be_assigned_to = $this->input->post('to_be_assigned_to');
+        $question_id = $this->input->post('question_id');
+        $this->CM->assignQuestion($question_id, $to_be_assigned_to);
+    }
+    
     public function deleteQA(){
         // check loggedIn
         $this->authentication->IsLoggedInCustomer('any');
@@ -159,7 +167,17 @@ class Customer extends CI_Controller {
         $this->authentication->IsLoggedInCustomer('any');
         $id = $this->input->post('id');
         $ques = $this->CM->getQA($id);
-        echo json_encode($ques);
+        $attached_questions = $this->CM->getAttachedQuestions($id, $ques->question);
+        $data['ques'] = $ques;
+        $data['attached_questions'] = $attached_questions;
+        echo json_encode($data);
+    }
+    
+    public function deleteAttachtedQuestion(){
+        // check loggedIn
+        $id = $this->input->post('id');
+        $this->authentication->IsLoggedInCustomer('any');
+        $this->CM->deleteAttachedQuestion($id);
     }
     
     private function sendEmail ($subject, $body, $to){

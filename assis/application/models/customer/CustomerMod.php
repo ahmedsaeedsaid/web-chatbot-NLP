@@ -50,6 +50,20 @@ class customerMod extends CI_Model {
         }
     }
 
+    public function assignQuestion($question_id, $to_be_assigned_to) {
+        // Get Question
+        $this->db->select('*');
+        $this->db->from('optimal_bot_q_a');
+        $this->db->where('id', $question_id);
+        $res = $this->db->get();
+        $ques = $res->row();
+        $data = array(
+            'question' => $ques->question,
+            'answer_id' => $to_be_assigned_to
+        );
+        $this->db->insert('optimal_bot_q', $data);
+    }
+
     public function toggleActive($active, $id) {
         $this->db->where('id', $id);
         $this->db->update('scenarios', array("active" => $active));
@@ -106,6 +120,11 @@ class customerMod extends CI_Model {
         }
     }
     
+    public function deleteAttachedQuestion ($id) {
+        $this->db->where('id', $id);
+        $this->db->delete('optimal_bot_q');
+    }
+    
     public function deleteScenario ($id) {
         $this->db->where('id', $id);
         $this->db->delete('scenarios');
@@ -114,8 +133,19 @@ class customerMod extends CI_Model {
     }
     
     public function deleteQA ($parent, $current_question_id, $childs_question_ids) {
+        // Get Question
+        $this->db->select('*');
+        $this->db->from('optimal_bot_q_a');
+        $this->db->where('id', $current_question_id);
+        $res = $this->db->get();
+        $ques = $res->row();
+        
         $this->db->where('id', $current_question_id);
         $this->db->delete('optimal_bot_q_a');
+        
+        $this->db->where('question', $ques->question);
+        $this->db->where('answer_id', $current_question_id);
+        $this->db->delete('optimal_bot_q');
         foreach($childs_question_ids as $child){
             $data = array(
                 'parent' => $parent
@@ -127,15 +157,35 @@ class customerMod extends CI_Model {
     
     public function saveQASC ($Question, $scenario, $tags, $action, $question_id) {
         if($action == 'update'){
+            // Get Question
+            $this->db->select('*');
+            $this->db->from('optimal_bot_q_a');
+            $this->db->where('id', $question_id);
+            $res = $this->db->get();
+            $ques = $res->row();
+            
             $this->db->where('id', $question_id);
             $this->db->where('client_id', $this->session->userdata('assis_companyid'));
             $this->db->update('optimal_bot_q_a', $Question);
+            
+            $q_data  = array(
+                'question' => $Question['question']
+            );
+            $this->db->where('question', $ques->question);
+            $this->db->where('answer_id', $ques->id);
+            $this->db->update('optimal_bot_q', $q_data);
             if($tags){
                 $this->insertQuestionTags($tags, $scenario, $question_id);
             }
         } else {
             $Question["client_id"] = $this->session->userdata('assis_companyid');
             $this->db->insert('optimal_bot_q_a', $Question);
+            $id = $this->db->insert_id();
+            $q_data  = array(
+                'question' => $Question['question'],
+                'answer_id' => $id
+            );
+            $this->db->insert('optimal_bot_q', $q_data);
             if($tags){
                 $this->insertQuestionTags($tags, $scenario, $this->db->insert_id());
             }
@@ -355,6 +405,16 @@ class customerMod extends CI_Model {
         $this->db->select('*');
         $this->db->from('company_users');
         $this->db->where('companyId', $this->session->userdata('assis_companyid'));
+        $res = $this->db->get();
+        return $res->result_array();
+    }
+    
+    public function getAttachedQuestions($id, $question)
+    {
+        $this->db->select('*');
+        $this->db->from('optimal_bot_q');
+        $this->db->where('answer_id', $id);
+        $this->db->where('question !=', $question);
         $res = $this->db->get();
         return $res->result_array();
     }

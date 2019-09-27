@@ -11,7 +11,7 @@ if(!isset($_SESSION['show_tutorial_scenarios_list'])){
 <link href="<?php echo base_url(); ?>styles/css/qa.css" rel="stylesheet" />
 <div id="wrapper">
     <!-- Add Question Modal -->
-    <div class="modal fade" id="add-question-modal">
+    <div class="modal fade" id="add-question-modal" style="z-index:500;">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -31,7 +31,7 @@ if(!isset($_SESSION['show_tutorial_scenarios_list'])){
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-sm-6" id="tree-body-add">
                                 <div id="default-tree"></div>
                             </div>
                             <div class="col-sm-6">
@@ -57,7 +57,41 @@ if(!isset($_SESSION['show_tutorial_scenarios_list'])){
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id='addRow' form="add-question-form" class="btn btn-primary">Add Question</button>
+                    <button type="button" id='addRow' data-action='add' form="add-question-form" class="btn btn-primary">Add Question</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <!-- Assign Question Modal -->
+    <div class="modal fade" id="assign-question-modal" style="z-index:1000;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h3 class="modal-title">Assign Question</h3>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" id="add-question-form">
+                        <input type="hidden" id="assignQuestionId" value="" />
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <p><b>Search:</b></p>
+                                <div class="form-group">
+                                    <label for="input-expand-node" class="sr-only">Search Tree:</label>
+                                    <input class="form-control" id="btn-search-tree" placeholder="Enter text to search" value="" type="input">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6" id="tree-body-assign">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id='assignRow' data-action='assign' class="btn btn-primary">Assign Question</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
 
@@ -82,7 +116,7 @@ if(!isset($_SESSION['show_tutorial_scenarios_list'])){
                         </thead>
                         <tbody>
                             <tr>
-                                <td>What is Geeks?</td>
+                                <td id="ques-6">What is optimal solutions?</td>
                                 <td>
                                     <div data-percent="80" class="small green accuracy"></div>
                                 </td>
@@ -135,6 +169,8 @@ if(!isset($_SESSION['show_tutorial_scenarios_list'])){
                                                 <p id="user-msg-<?= $details['id'] ?>"><?= $details['user_query'] ?></p>
                                                 <span class="actions actions-add-question"><a href="" class="actions-add-href" data-msg-id="<?= $details['id'] ?>"><i class="fa fa-plus fa-2x"></i></a></span>
                                                 <span class="actions actions-similarity"><a href="" class="actions-similarity-href" data-msg-id="<?= $details['id'] ?>"><i class="fa fa-search-plus fa-2x"></i></a></span>
+                                                <span class="actions assign-icon">
+                                                <a data-msg-id="<?= $details['id'] ?>" class="actions-attach-href" href=""><i class="fa fa-paperclip fa-2x"></i></a></span>
                                                 <span class="actions badge custom-badges"><?= $details['num_of_occurences'] ?></span>
                                                 <span class="time_date"><?= $details['msgdatetime']?></span>
                                             </div>
@@ -375,10 +411,9 @@ if(!isset($_SESSION['show_tutorial_scenarios_list'])){
             });
 
             $('#addRow').on('click', function() {
-                var addRowText = $('#addRow').text();
+                var action = $(this).attr('data-action');
                 var Question_value = $("#question").val().trim();
                 var Answer_value = $("#answer").val().trim();
-                var parent_question = $("#parent_question").val();
                 var suggested_text = $("#suggested_text").val();
                 var checked = $('#default-tree').treeview('getChecked');
                 if (LastNode == null || checked.length == 0) {
@@ -432,6 +467,43 @@ if(!isset($_SESSION['show_tutorial_scenarios_list'])){
                         'error'
                     );
                 }
+            });
+            
+            $('#assignRow').on('click', function() {
+                var checked = $('#default-tree').treeview('getChecked');
+                if (LastNode == null || checked.length == 0) {
+                    Swal.fire(
+                        'Sorry!',
+                        'Please Select a parent question or scenario',
+                        'error'
+                    );
+                    return;
+                }
+                var scenario = LastNode.scenario_id;
+                var to_be_assigned_to = 0;
+                if (LastNode.is_scenario == 0) {
+                    to_be_assigned_to = LastNode.question_id;
+                }
+                $('#assignRow').attr('disabled', true);
+                var assignQuestionId = $("#assignQuestionId").val();
+                $.ajax({
+                    url: "<?= base_url("customer/assignQuestion") ?>",
+                    type: "POST",
+                    data: {
+                        question_id: assignQuestionId,
+                        to_be_assigned_to: to_be_assigned_to,
+                        '<?= $this->security->get_csrf_token_name() ?>': '<?= $this->security->get_csrf_hash() ?>'
+                    },
+                    success: function() {
+                        Swal.fire(
+                            'Success!',
+                            'Assigned Question Successfully!',
+                            'success'
+                        );
+                        $("#assign-question-modal").modal('hide');
+                        $('#assignRow').attr('disabled', false);
+                    }
+                });
             });
 
             // Handling Enter key pressed on tags text area
@@ -508,6 +580,15 @@ if(!isset($_SESSION['show_tutorial_scenarios_list'])){
             theme: "light-border",
             //followCursor: "horizontal",
         });
+        tippy('.assign-icon', {
+            content: "Assign This Question to another question answer",
+            placement: 'bottom',
+            arrow: true,
+            arrowType: 'round',
+            animation: "perspective",
+            theme: "light-border",
+            //followCursor: "horizontal",
+        });
         <?php if ($_SESSION['show_tutorial_scenarios_list']) { ?>
         let tourOptions = {
             options: {
@@ -544,6 +625,39 @@ if(!isset($_SESSION['show_tutorial_scenarios_list'])){
             "scrollX": true,
             "autoWidth": false,
             "ordering": false
+        });
+
+        $(".actions-attach-href").on('click', function(e) {
+            e.preventDefault();
+            var ques_id = $(this).attr('data-msg-id');
+            $("#assignQuestionId").val(ques_id);
+            $('#default-tree').treeview('collapseAll', {
+                silent: true
+            });
+            $('#default-tree').treeview('uncheckAll', {
+                silent: true
+            });
+            $("#default-tree").detach().appendTo('#tree-body-assign');
+            $("#assign-question-modal").modal('show');
+        });
+        // Code For Showing modals on top of each other
+        $(document).on('show.bs.modal', '.modal', function() {
+            var zIndex = 1040 + (10 * $('.modal:visible').length);
+            $(this).css('z-index', zIndex);
+            setTimeout(function() {
+                $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
+            }, 0);
+        });
+        // When assign modal is closed return tree element to its original location (In Add Question Form)
+        // This solution is made to avoid creating and initializing another tree object
+        $('#assign-question-modal').on('hidden.bs.modal', function () {
+            $('#default-tree').treeview('collapseAll', {
+                silent: true
+            });
+            $('#default-tree').treeview('uncheckAll', {
+                silent: true
+            });
+            $("#default-tree").detach().appendTo('#tree-body-add');
         });
 
     </script>

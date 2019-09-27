@@ -6,8 +6,15 @@ if(!isset($_SESSION['show_tutorial_qa'])){
 }
 $scenario_id = 0;
 ?>
+<style>
+    td {
+        text-align: center;
+    }
 
-
+    #default-tree {
+        margin-bottom: 9%;
+    }
+</style>
 <meta name="optimal-bot-verification" content="<?= $token ?>" />
 <link href="<?php echo base_url(); ?>styles/css/qa.css" rel="stylesheet" />
 <link href="<?php echo base_url(); ?>styles/css/bootstrap-treeview.css" rel="stylesheet" />
@@ -48,6 +55,24 @@ $scenario_id = 0;
             <div class="row">
                 <div class="col-lg-8">
                     <div id="default-tree" style="width:75%;"></div>
+                    <div id="attached_questions_cont" style="display:none;margin-bottom:1%;">
+                        <div class="col-lg-12">
+                            <h3 class="page-header">
+                                Attached Questions
+                            </h3>
+                        </div>
+                        <table id="attached_questions" class="table table-responsive table-hover table-bordered" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>SN</th>
+                                    <th>Attached To</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="attached_questions_body">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="col-lg-4">
                     <?php
@@ -88,11 +113,14 @@ $scenario_id = 0;
                             <div class="col-lg-4 text-center">
                                 <button id="addRow" type="button" class="btn btn-default">Add Question</button>
                             </div>
-                            <div class="col-lg-offset-3 col-lg-1 text-center">
+                            <div class="col-lg-1 text-center">
                                 <button type="button" id="delete-question" class="btn btn-danger" style="display:none;">Delete</button>
                             </div>
                             <div class="col-lg-offset-1 col-lg-3 text-center">
                                 <button type="button" id="cancel-adding-row" class="btn btn-warning" style="display:none;">Cancel</button>
+                            </div>
+                            <div class="col-lg-2 text-center">
+                                <button type="button" id="attach-question" class="btn blue" style="display:none;">Attach</button>
                             </div>
                         </div>
                     </form>
@@ -376,6 +404,8 @@ $scenario_id = 0;
                     },
                     success: function(data) {
                         data = JSON.parse(data);
+                        var attached_questions = data.attached_questions;
+                        data = data.ques;
                         $("#question").val(data.question);
                         $("#answer").val(data.answer);
                         $("#suggested_text").val(data.suggested_text);
@@ -387,11 +417,49 @@ $scenario_id = 0;
                         }
                         $("#tags-textarea").html(tags_html);
                         $('#addRow').text("Update Question");
+                        var html = "";
+                        var i = 1;
+                        var table = $('#attached_questions').DataTable();
+                        var rows = [];
+                        attached_questions.forEach(function(question) {
+                            rows.push([i, question.question, `<a href="" data-id="` + question.id + `" title="Delete" class="removeAttachedQuestion"><img src="<?= base_url() ?>styles/icons/action_delete.gif" alt="Delete Question"></a>`]);
+                            i += 1;
+                        });
+                        table.rows.add(rows).draw();
                         $('#cancel-adding-row').css('display', 'block');
                         $('#delete-question').css('display', 'block');
+                        $('#attach-question').css('display', 'block');
+                        $('#attached_questions_cont').css('display', 'block');
                     }
                 });
             }
+        });
+
+        $("body").on('click', ".removeAttachedQuestion", function(e) {
+            e.preventDefault();
+            var id = $(this).attr('data-id');
+            var table = $('#attached_questions').DataTable();
+            $td = $(this);
+            $.ajax({
+                url: "<?= base_url("customer/deleteAttachtedQuestion") ?>",
+                type: "POST",
+                data: {
+                    id: id,
+                    '<?= $this->security->get_csrf_token_name() ?>': '<?= $this->security->get_csrf_hash() ?>'
+                },
+                success: function() {
+                    Swal.fire(
+                        'Success!',
+                        'Attached Question Removed!',
+                        'success'
+                    );
+                    table.row($td.closest('tr')).remove().draw();
+                    /*if (!table.data().any()) {
+                        table.clear();
+                        table.draw();
+                    }*/
+                }
+            });
         });
 
         // On click event to handle cancel updating record
@@ -403,6 +471,8 @@ $scenario_id = 0;
             $("#tags-textarea").html("");
             $('#cancel-adding-row').css('display', 'none');
             $('#delete-question').css('display', 'none');
+            $('#attach-question').css('display', 'none');
+            $('#attached_questions_cont').css('display', 'none');
         });
 
         // On click event to handle cancel updating record
@@ -490,6 +560,45 @@ $scenario_id = 0;
                             trainBot('delete');
                         }
                     });
+                }
+            });
+        });
+
+        // On click event to handle deleting question
+        $("#attach-question").on('click', function() {
+            if (LastNode == null) {
+                Swal.fire(
+                    'Sorry!',
+                    'Please Select a question to attach to',
+                    'error'
+                );
+                return;
+            } else if (LastNode.is_scenario == 1) {
+                Swal.fire(
+                    'Sorry!',
+                    'Please Select a question not a scenario',
+                    'error'
+                );
+                return;
+            }
+            $('#attach-question').attr('disabled', true);
+            var to_be_assigned_to = LastNode.question_id;
+            var assignQuestionId = LastSelectedNode.question_id;
+            $.ajax({
+                url: "<?= base_url("customer/assignQuestion") ?>",
+                type: "POST",
+                data: {
+                    question_id: assignQuestionId,
+                    to_be_assigned_to: to_be_assigned_to,
+                    '<?= $this->security->get_csrf_token_name() ?>': '<?= $this->security->get_csrf_hash() ?>'
+                },
+                success: function() {
+                    Swal.fire(
+                        'Success!',
+                        'Attached Question Successfully!',
+                        'success'
+                    );
+                    $('#attach-question').attr('disabled', false);
                 }
             });
         });
@@ -640,6 +749,8 @@ $scenario_id = 0;
             e.preventDefault();
             $(this).parent('span').remove();
         });
+
+        $('#attached_questions').DataTable();
 
     });
 
