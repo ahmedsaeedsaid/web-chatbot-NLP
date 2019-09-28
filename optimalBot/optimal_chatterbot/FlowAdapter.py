@@ -3,6 +3,7 @@ from chatterbot.logic import BestMatch
 from chatterbot import filters
 from optimalBot.db_manager import *
 from optimalBot.settings import *
+from optimalBot.optimal_chatterbot.Filter_results import FilterResults
 import optimalBot.chatBot_tags as CT
 import math
 from chatterbot.conversation import Statement
@@ -23,8 +24,6 @@ class FlowAdapter(LogicAdapter):
     :type excluded_words: list
     """
 
-
-
     def __init__(self, chatbot, **kwargs):
         super().__init__(chatbot, **kwargs)
 
@@ -40,101 +39,9 @@ class FlowAdapter(LogicAdapter):
         self.client_id = client_id
 
 
-    def __getAllFAQ(self):
-        data = self.DBManager.fetch_query('SELECT optimal_bot_q.question as question , answer FROM `optimal_bot_q` , `optimal_bot_q_a` WHERE optimal_bot_q.answer_id = optimal_bot_q_a.id and optimal_bot_q_a.client_id = '+str(self.client_id))
-
-        return data
-
-    def __select_similar_question(self,statement , threshold_similar = 0.75):
-        # create statement for all FA questions
-
-        questionsAanswers = self.__getAllFAQ()
-
-        all_faq_statements = []
-        for question,answer in questionsAanswers:
-
-            faq_statement = Statement(text=question)
-            faq_statement.in_response_to = answer
-            faq_statement.conversation = 'training'
-            all_faq_statements.append(faq_statement)
-
-        max_statement = Statement(text='')
-        for faq_statement in all_faq_statements:
-
-            faq_statement.confidence = self.search_algorithm.compare_statements(faq_statement, statement)
-            if  faq_statement.confidence > max_statement.confidence and faq_statement.confidence >= threshold_similar:
-                max_statement.confidence = faq_statement.confidence
-                max_statement.text = faq_statement.text
-                max_statement.in_response_to = faq_statement.in_response_to
-
-        return max_statement , all_faq_statements
-
-
-    def __get_tags(self, statement):
-
-        statement_id = self.DBManager.get_value(table_name=FQ_TABLE_NAME, column_name='answer_id',
-                                                conditions={QUESTION_SUBJECT_COLUMN: statement.text })
-        if statement_id:
-            tag_ids = self.DBManager.get_value(table_name=JOIN_TAGS_TABLE_NAME, column_name=JOIN_TAGS_TAG_ID_COLUMN_NAME,
-                                               conditions={JOIN_TAGS_Q_A_ID_COLUMN_NAME: str(statement_id)},multiple_values=True)
-            tags = []
-            for tag_id in tag_ids:
-                tag = self.DBManager.get_value(table_name=TAGS_TABLE_NAME, column_name='tag',
-                                               conditions={'id': str(tag_id[0])})
-                tags.append(tag)
-            return tags
-        else:
-            similarity = CT.Similarity(self.glove,self.tags)
-            tags, keywords = similarity.get_tags(statement.text)
-            tags = list(set(tags + keywords))
-            return tags
-
-    def __filter_results_according_tagging(self,input_statement ,search_results ,threshold_similar):
-        # get tags for all search_results
-        if not search_results:
-            return []
-        tag_results = []
-        for result in search_results:
-            tags = self.__get_tags(result)
-            tag_results.append({'result':result , 'tags':tags , 'vote':0})
-
-        # get tags for input_statement
-        max_input_statement , _ = self.__select_similar_question(input_statement,threshold_similar)
-        tags_input_statement = self.__get_tags(max_input_statement)
-
-
-        # voting results according tags
-        for tag_input_statement in tags_input_statement:
-            for tag_result in tag_results:
-                for tag in tag_result['tags']:
-                    if tag == tag_input_statement:
-                        tag_result['vote']+=1
-                if len(tag_input_statement) == 0 and len(tag_result) == 0 :
-                    tag_result['vote']+=1
-
-        # choose max vote
-        max_vote = max([tag_result['vote'] for tag_result in tag_results])
-        return [tag_result['result']  for tag_result in tag_results if tag_result['vote'] == max_vote and max_vote >=0]
-
-
-
-
-
-    def __getResultsFromFAQ(self,input_statement,threshold_similar = 0.75):
-        max_statement , all_faq_statements = self.__select_similar_question(input_statement,threshold_similar)
-        if max_statement.text:
-            return [max_statement]
-        results = self.__filter_results_according_tagging(input_statement,all_faq_statements,threshold_similar)
-
-        return results
-
-
-
-
-
     def process(self, input_statement, additional_response_selection_parameters=None):
 
-        faq_results = self.__getResultsFromFAQ(input_statement)
+        faq_results = FilterResults.getResultsFromFAQ(self,input_statement)
         search_results_general = self.search_algorithm.search(input_statement,client_id=0)
         search_results = self.search_algorithm.search(input_statement,client_id= self.client_id)
 
@@ -298,9 +205,11 @@ class FlowAdapter(LogicAdapter):
             response = self.get_default_response(input_statement)
 
 
+        FAQ_simarities = FilterResults.getSimlarityForFAQ(self,input_statement)
+
 
         if answer:
             response.text = answer
-            return response, self.Story_ID ,children_questions,means_questions
+            return response, self.Story_ID ,children_questions,means_questions,FAQ_simarities
 
-        return response, self.Story_ID ,children_questions,means_questions
+        return response, self.Story_ID ,children_questions,means_questions,FAQ_simarities

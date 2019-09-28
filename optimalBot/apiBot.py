@@ -67,12 +67,12 @@ class ApiBot(WS.Rest):
                 #escaped_query = re.escape(query)
                 #tokenized_query = " ".join(nltk.word_tokenize(escaped_query))
                 #cleaned_query = re.sub(u"(\u2018|\u2019)", "'", tokenized_query)
-                response, Story_ID, children_questions, means_questions = chatbot.get_response(cleaned_query)
+                response, Story_ID, children_questions, means_questions,FAQ_simarities = chatbot.get_response(cleaned_query)
                 # Get suggested Text for question
                 suggested_text = []
                 for child in children_questions:
                     suggested_text.append(db.get_value(table_name=FAQ_TABLE_NAME, column_name=QUESTION_SUGGESTED_TEXT_COLUMN, conditions={QUESTION_SUBJECT_COLUMN: child[0]}))
-                return WS.Response.returnResponse(HTTP_SUCCESS_RESPONSE, {'bot_reply': str(response), 'story_id': Story_ID, 'suggested_actions': children_questions,'means_questions': means_questions, 'suggested_text': suggested_text})
+                return WS.Response.returnResponse(HTTP_SUCCESS_RESPONSE, {'bot_reply': str(response), 'story_id': Story_ID, 'suggested_actions': children_questions,'means_questions': means_questions, 'suggested_text': suggested_text,'FAQ_simarities':FAQ_simarities})
             else:
                 return WS.Response.throwError(DATABASE_TYPE_ERROR, "Database type is not supported.")
         #except:
