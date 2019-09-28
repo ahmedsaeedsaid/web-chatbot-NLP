@@ -192,3 +192,42 @@ class chatBot(chatterbot.ChatBot):
 
         # Save the input statement
         return self.storage.create(**statement.serialize())
+
+    def getAccuracyOfQuestions(self, statement=None, **kwargs):
+
+        Statement = self.storage.get_object('statement')
+
+        if isinstance(statement, str):
+            kwargs['text'] = statement
+
+        if isinstance(statement, dict):
+            kwargs.update(statement)
+
+        if statement is None and 'text' not in kwargs:
+            raise self.ChatBotException(
+                'Either a statement object or a "text" keyword '
+                'argument is required. Neither was provided.'
+            )
+
+        if hasattr(statement, 'serialize'):
+            kwargs.update(**statement.serialize())
+
+        tags = kwargs.pop('tags', [])
+
+        text = kwargs.pop('text')
+
+        input_statement = Statement(text=text, **kwargs)
+
+        input_statement.add_tags(*tags)
+
+        # Preprocess the input statement
+        for preprocessor in self.preprocessors:
+            input_statement = preprocessor(input_statement)
+
+
+        for adapter in self.logic_adapters:
+            if adapter.can_process(input_statement):
+                FAQ_simarities = adapter.getAccuracyOfQuestions(input_statement)
+
+        return FAQ_simarities
+

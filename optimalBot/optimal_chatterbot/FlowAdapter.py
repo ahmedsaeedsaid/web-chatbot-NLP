@@ -213,3 +213,12 @@ class FlowAdapter(LogicAdapter):
             return response, self.Story_ID ,children_questions,means_questions,FAQ_simarities
 
         return response, self.Story_ID ,children_questions,means_questions,FAQ_simarities
+
+
+
+    def getAccuracyOfQuestions(self, input_statement):
+
+        FAQ_simarities = FilterResults.getSimlarityForFAQ(self,input_statement)
+        return FAQ_simarities
+
+

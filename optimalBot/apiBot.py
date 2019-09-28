@@ -215,3 +215,58 @@ class ApiBot(WS.Rest):
         return WS.Response.returnResponse(HTTP_SUCCESS_RESPONSE, 'success')
         # except:
         # return WS.Response.throwError(JWT_PROCESSING_ERROR, "Sorry, Server is down, please contact the administrators")
+
+    def getAccuracyOfQuestions(self):
+        try:
+            query = WS.Validation.validateParameter('query', self.param['query'], STRING)
+            if query['valid']:
+                query = query['data']
+            else:
+                return query['data']
+
+            bot_name, db_server, db_name, db_username, db_password, db_driver, client_id, domain, db_verified, first_train = self.bot_information
+
+            if not db_verified:
+                return WS.Response.throwError(HTTP_FORBIDDEN_RESPONSE, "Sorry, Database is not verified yet.")
+
+            if not first_train:
+                return WS.Response.throwError(HTTP_FORBIDDEN_RESPONSE, "Please train the bot at least one time using our customer portal.")
+
+            if db_driver == 'mysqli' or db_driver == 'mysql':
+                db = DBManager(user=DB_USERNAME,
+                            password=DB_PASSWORD,
+                            host=DB_SERVER,
+                            database=DB_NAME)
+                # TODO: configure db_port
+
+                uri = "mysql://" + DB_USERNAME + ":" + DB_PASSWORD + "@" + DB_SERVER + ":3306/" + DB_NAME
+                chatbot = optimalbot(name=bot_name,
+                                     storage_adapter="optimal_chatterbot.SQLStorageAdapter",
+                                     database_uri=uri,
+                                     read_only=True,
+                                     logic_adapters=
+                                     [{
+                                         "import_path": "optimal_chatterbot.FlowAdapter.FlowAdapter",
+                                         "statement_comparison_function": comp.SentimentComparison,
+                                         "response_selection_method": resp.get_flow_response,
+                                         "maximum_similarity_threshold":0.45
+                                     }],
+                                     filters=[get_recent_repeated_responsesCustomized],
+                                     Story_ID=0,
+                                     bot_information=self.bot_information,
+                                     glove = self.glove,
+                                     tags = self.tags
+                                     )
+
+                # Filter User Query
+                dt = DataCleaning()
+                cleaned_query = dt.clean(query)
+
+                FAQ_simarities = chatbot.getAccuracyOfQuestions(cleaned_query)
+
+                return WS.Response.returnResponse(HTTP_SUCCESS_RESPONSE, {'FAQ_simarities':FAQ_simarities})
+            else:
+                return WS.Response.throwError(DATABASE_TYPE_ERROR, "Database type is not supported.")
+
+        except:
+             return WS.Response.throwError(JWT_PROCESSING_ERROR, "Sorry, Server is down, please contact the administrators")
