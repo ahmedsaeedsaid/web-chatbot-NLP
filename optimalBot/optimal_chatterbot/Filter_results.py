@@ -11,7 +11,7 @@ class FilterResults():
 
     @staticmethod
     def __getAllFAQ(flowAdapter):
-        data = flowAdapter.DBManager.fetch_query('SELECT optimal_bot_q.question as question , answer FROM `optimal_bot_q` , `optimal_bot_q_a` WHERE optimal_bot_q.answer_id = optimal_bot_q_a.id and optimal_bot_q_a.client_id = '+str(flowAdapter.client_id))
+        data = flowAdapter.DBManager.fetch_query("SELECT p_optimal_bot_q.question , CASE WHEN COUNT(p_optimal_bot_q.question) > 1 THEN (SELECT optimal_bot_q_a.answer from optimal_bot_q_a inner join optimal_bot_q on optimal_bot_q_a.id=optimal_bot_q.answer_id WHERE optimal_bot_q.answer_id = optimal_bot_q_a.id AND optimal_bot_q.question = p_optimal_bot_q.question AND optimal_bot_q_a.question != p_optimal_bot_q.question LIMIT 1 ) ELSE p_optimal_bot_q_a.answer END AS Answer FROM `optimal_bot_q` AS p_optimal_bot_q , `optimal_bot_q_a` AS p_optimal_bot_q_a WHERE p_optimal_bot_q.answer_id = p_optimal_bot_q_a.id and p_optimal_bot_q_a.client_id = "+str(flowAdapter.client_id)+" GROUP BY p_optimal_bot_q.question")
 
         return data
 

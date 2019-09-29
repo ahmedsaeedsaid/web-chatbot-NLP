@@ -212,7 +212,7 @@ class FlowAdapter(LogicAdapter):
             response.text = answer
             return response, self.Story_ID ,children_questions,means_questions
 
-        return response, self.Story_ID ,children_questions,means_questionss
+        return response, self.Story_ID ,children_questions,means_questions
 
 
 
