@@ -98,7 +98,7 @@ class DBManager:
     def saveLog(self, user_query, bot_reply, user_email, user_phone, date, companyId):
         # Get Company User Id
         userId = self.get_value(table_name=COMAPNY_USERS_TABLE_NAME, column_name='id',
-                     conditions={COMAPNY_USERS_EMAIL_COLUMN_NAME: str(user_email)})
+                     conditions={COMAPNY_USERS_EMAIL_COLUMN_NAME: str(user_email), COMAPNY_USERS_COMAPNY_ID_COLUMN_NAME: str(companyId)})
         if userId == 0:
             #Create User and Return newly inserted Id
             user_data = dict()
