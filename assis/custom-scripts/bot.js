@@ -1,6 +1,5 @@
 var html = `
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 <!------ Include the above in your HEAD tag ---------->
 <style>
@@ -446,44 +445,44 @@ var html = `
     margin-bottom: 5%;
 }
 </style>
-<div class="container">
-    <div class="modal fade" id="orangeModalSubscription">
-      <div class="modal-dialog">
-        <!--Content-->
-        <div class="modal-content">
-          <!--Header-->
-          <div class="modal-header">
-            <h4 class="modal-title white-text w-100 font-weight-bold py-2">Chat with the Bot</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true" class="white-text">&times;</span>
-            </button>
-          </div>
+<div class="modal fade" id="orangeModalSubscription">
+  <div class="modal-dialog">
+    <!--Content-->
+    <div class="modal-content">
+      <!--Header-->
+      <div class="modal-header">
+        <h4 class="modal-title white-text w-100 font-weight-bold py-2">Chat with the Bot</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="white-text">&times;</span>
+        </button>
+      </div>
 
-          <!--Body-->
-          <div class="modal-body">
-                <form action="" id="form-submit" method="GET">
-                    <div class="md-form" id="email-div">
-                      <label data-error="wrong" data-success="right" for="email">Your email</label>
-                      <i class="fa fa-envelope prefix grey-text"></i>
-                      <input type="email" id="email" class="form-control validate">
-                    </div>
-                    <div class="md-form">
-                      <label data-error="wrong" data-success="right" for="phone">Your phone number</label>
-                      <i class="fa fa-phone prefix grey-text"></i>
-                      <input type="text" id="phone" class="form-control validate">
-                    </div>
-                </form>
-                <div id="form-errors"></div>
-          </div>
+      <!--Body-->
+      <div class="modal-body">
+            <form action="" id="form-submit" method="GET">
+                <div class="md-form" id="email-div">
+                  <label data-error="wrong" data-success="right" for="email">Your email</label>
+                  <i class="fa fa-envelope prefix grey-text"></i>
+                  <input type="email" id="email" class="form-control validate">
+                </div>
+                <div class="md-form">
+                  <label data-error="wrong" data-success="right" for="phone">Your phone number</label>
+                  <i class="fa fa-phone prefix grey-text"></i>
+                  <input type="text" id="phone" class="form-control validate">
+                </div>
+            </form>
+            <div id="form-errors"></div>
+      </div>
 
-          <!--Footer-->
-          <div class="modal-footer justify-content-center">
-            <button type="submit" form="form-submit" class="btn btn-outline-warning waves-effect">Start Chatting <i class="fa fa-paper-plane-o ml-1"></i></button>
-          </div>
-        </div>
-        <!--/.Content-->
+      <!--Footer-->
+      <div class="modal-footer justify-content-center">
+        <button type="submit" form="form-submit" class="btn btn-outline-warning waves-effect">Start Chatting <i class="fa fa-paper-plane-o ml-1"></i></button>
       </div>
     </div>
+    <!--/.Content-->
+  </div>
+</div>
+<div class="container">
 	<div class="row">
 
     <span id='message'></span>
@@ -543,7 +542,7 @@ var html = `
       </div>
     </div>
     <!--===============CHAT ON BUTTON STRART===============-->
-    <div class="chat_on" data-toggle="modal" data-target="#orangeModalSubscription"> <span class="chat_on_icon"><i class="fa fa-comments" aria-hidden="true"></i></span> </div>
+    <div class="chat_on"> <span class="chat_on_icon"><i class="fa fa-comments" aria-hidden="true"></i></span> </div>
     <!--===============CHAT ON BUTTON END===============-->
   </div>
 	</div>
@@ -587,10 +586,10 @@ function get_bot_reply(user_query, token) {
             var suggested_text = data.response.result.suggested_text;
             var suggested_questions_html = "";
             var answer = '';
-            for(var i = 0 ; i < suggested_answers.length ; i++) {
-                if(suggested_text[i] == 0 || suggested_text[i] == ""){
-                   answer = suggested_answers[i];
-                } else{
+            for (var i = 0; i < suggested_answers.length; i++) {
+                if (suggested_text[i] == 0 || suggested_text[i] == "") {
+                    answer = suggested_answers[i];
+                } else {
                     answer = suggested_text[i];
                 }
                 suggested_questions_html += `
@@ -669,7 +668,7 @@ function addslashes(str) {
 
 /* END CUSTOM FUNCTIONS */
 
-(function () {
+window.onload = function () {
     // Load the script
     var script = document.createElement("SCRIPT");
     script.src = 'https://code.jquery.com/jquery-3.4.1.min.js';
@@ -708,158 +707,180 @@ function addslashes(str) {
                         }, 20);
                     }
                 };
+
                 // Start polling...
                 checkReady(function ($) {
                     $(function () {
-                        $(document).ready(function () {
-                            // unhide Modal
-                            $("#orangeModalSubscription").css('display', 'block');
-                            // Check for Meta Tag
-                            if (document.querySelector("meta[name=optimal-bot-verification]")) {
-                                var content = document.querySelector("meta[name=optimal-bot-verification]").getAttribute("content");
-                                $("body").append(html);
+                        // Load the script
+                        var script = document.createElement("SCRIPT");
+                        script.src = 'https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js';
+                        script.type = 'text/javascript';
+                        document.getElementsByTagName("head")[0].appendChild(script);
 
-                                // Set Default welcome message time now
-                                $("#welcome_msg-time").html(moment().format('h:mm a | MMMM D YYYY'));
-                                /*$(".chat_on").click(function () {
-                                    $(".Layout").toggle();
-                                    $(".chat_on").hide(300);
-                                });*/
+                        // Poll for moment to come into existance
+                        var checkReady = function (callback) {
+                            if (window.moment) {
+                                callback(jQuery);
+                            } else {
+                                window.setTimeout(function () {
+                                    checkReady(callback);
+                                }, 20);
+                            }
+                        };
 
-                                $(".chat_close_icon").click(function () {
-                                    $(".Layout").hide();
-                                    $(".chat_on").show(300);
-                                });
+                        checkReady(function ($) {
+                            $(function () {
 
+                                $(document).ready(function () {
+                                    // Check for Meta Tag
+                                    if (document.querySelector("meta[name=optimal-bot-verification]")) {
+                                        var content = document.querySelector("meta[name=optimal-bot-verification]").getAttribute("content");
+                                        $("body").append(html);
 
-                                $("body").on('click', '.copyAnswer', function () {
-                                    var msg = $(this).attr('true_answer');
-                                    $("#user_query").val('');
-                                    $("#user_query").val(addslashes(msg));
-                                    $("#send").trigger('click');
-                                });
-
-                                $("#send").on('click', function () {
-                                    handleMessage(content);
-                                });
-
-                                // Handling Enter key pressed on user_query text area
-                                $('#user_query').keypress(function (event) {
-                                    var keycode = (event.keyCode ? event.keyCode : event.which);
-                                    // If enter key is pressed
-                                    if (keycode == '13') {
-                                        event.preventDefault();
-                                        handleMessage(content);
-                                    }
-                                });
-                                // handling user name and phone
-                                $("#form-submit").on('submit', function(e){
-                                    e.preventDefault();
-                                    var phone = $("#phone").val();
-                                    var email = $("#email").val();
-                                    phone = phone.trim();
-                                    email = email.trim();
-                                    if(phone != "" && email != ""){
-                                        global_email = email;
-                                        global_phone = phone;
-                                        // Hide Modal & Show Chat
-                                        $(".chat_on").removeAttr('data-toggle');
-                                        $(".chat_on").removeAttr('data-target');
-                                        $(".chat_on").bind( "click", function() {
+                                        // Set Default welcome message time now
+                                        $("#welcome_msg-time").html(moment().format('h:mm a | MMMM D YYYY'));
+                                        /*$(".chat_on").click(function () {
                                             $(".Layout").toggle();
                                             $(".chat_on").hide(300);
+                                        });*/
+
+                                        $(".chat_close_icon").click(function () {
+                                            $(".Layout").hide();
+                                            $(".chat_on").show(300);
                                         });
-                                        $("#orangeModalSubscription").modal('hide');
-                                        $(".chat_on").trigger('click');
+
+
+                                        $("body").on('click', '.copyAnswer', function () {
+                                            var msg = $(this).attr('true_answer');
+                                            $("#user_query").val('');
+                                            $("#user_query").val(addslashes(msg));
+                                            $("#send").trigger('click');
+                                        });
+
+                                        $("#send").on('click', function () {
+                                            handleMessage(content);
+                                        });
+
+                                        // Handling Enter key pressed on user_query text area
+                                        $('#user_query').keypress(function (event) {
+                                            var keycode = (event.keyCode ? event.keyCode : event.which);
+                                            // If enter key is pressed
+                                            if (keycode == '13') {
+                                                event.preventDefault();
+                                                handleMessage(content);
+                                            }
+                                        });
+                                        $(".chat_on").on('click', function(){
+                                            var phone = $("#phone").val().trim();
+                                            var email = $("#email").val().trim();
+                                            if (phone == "" && email == "") {
+                                                $("#orangeModalSubscription").modal('show');
+                                            } else {
+                                                $(".Layout").toggle();
+                                                $(".chat_on").hide(300);
+                                            }
+                                        });
+                                        // handling user name and phone
+                                        $("#form-submit").on('submit', function (e) {
+                                            e.preventDefault();
+                                            var phone = $("#phone").val().trim();
+                                            var email = $("#email").val().trim();
+                                            if (phone != "" && email != "") {
+                                                global_email = email;
+                                                global_phone = phone;
+                                                $("#orangeModalSubscription").modal('hide');
+                                                $(".chat_on").trigger('click');
+                                            } else {
+                                                if (phone == "") {
+                                                    $("#form-errors").append(
+                                                        $('<span>Phone is missing</span><br>')
+                                                        .hide()
+                                                        .fadeIn(2000)
+                                                        .delay(3000)
+                                                        .fadeOut(2000)
+                                                    );
+                                                }
+                                                if (email == "") {
+                                                    $("#form-errors").append(
+                                                        $('<span>Email is missing</span>')
+                                                        .hide()
+                                                        .fadeIn(2000)
+                                                        .delay(3000)
+                                                        .fadeOut(2000)
+                                                    );
+                                                }
+                                            }
+                                        });
                                     } else {
-                                        if(phone == ""){
-                                           $("#form-errors").append(
-                                               $('<span>Phone is missing</span><br>')
-                                                .hide()
-                                                .fadeIn(2000)
-                                                .delay(3000)
-                                                .fadeOut(2000)
-                                            );
-                                        }
-                                        if(email == ""){
-                                           $("#form-errors").append(
-                                               $('<span>Email is missing</span>')
-                                                .hide()
-                                                .fadeIn(2000)
-                                                .delay(3000)
-                                                .fadeOut(2000)
-                                            );
-                                        }
+                                        document.write("Forbidden, Access is denied!");
+                                        return;
                                     }
+                                    //                            var message = document.querySelector('#message');
+                                    //                            /*
+                                    //                                - this webkitSpeechRecognition is for Chrome & SpeechRecognition for Firefox
+                                    //                                - We Must Add those for safari ,Edge, Chromium, internet explorer, and so on
+                                    //                            */
+                                    //                            var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+                                    //                            /*
+                                    //                                - this webkitSpeechGrammarList is for Chrome & SpeechGrammarList for Firefox
+                                    //                                - We Must Add those for safari ,Edge, Chromium, internet explorer, and so on
+                                    //                            */
+                                    //                            var SpeechGrammarList = SpeechGrammarList || webkitSpeechGrammarList;
+                                    //                            /*
+                                    //                                The Following Links May Help:
+                                    //                                - https://medium.com/@seoul_engineer/speech-recognition-in-browsers-2018-f25bf59857bc
+                                    //                                - https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition
+                                    //                            */
+                                    //
+                                    //
+                                    //                            /*
+                                    //                            This speech recognition interface constructor is used to create a new speech recognition object which has a number of event handlers available for detecting when speech is input through the Mic & grammar interface which represents a container for a particular set of grammar that the application should be able to recognize the grammar is defined using the speech and grammar format.
+                                    //
+                                    //                            For More info check : https://www.w3.org/TR/jsgf/
+                                    //                            */
+                                    //
+                                    //
+                                    //                            var grammar = '#JSGF V1.0;' //This is Type of Grammer
+                                    //
+                                    //                            var recognition = new SpeechRecognition();
+                                    //                            var speechRecognitionList = new SpeechGrammarList();
+                                    //
+                                    //                            speechRecognitionList.addFromString(grammar, 1);
+                                    //                            recognition.grammars = speechRecognitionList;
+                                    //
+                                    //                            recognition.lang = 'en-US';
+                                    //                            // 'ar-EG';
+                                    //                            // 'ar-SA';
+                                    //                            // 'ar-LB';
+                                    //                            // 'en-CA';
+                                    //                            // 'fr-FR';
+                                    //                            // 'de-DE';
+                                    //                            // 'it-IT';
+                                    //                            // 'es-ES';
+                                    //                            // 'tr';
+                                    //                            /*
+                                    //                                - we can try more Languages:
+                                    //                                https://stackoverflow.com/questions/14257598/what-are-language-codes-in-chromes-implementation-of-the-html5-speech-recogniti
+                                    //                                https://www.science.co.il/language/Locale-codes.php
+                                    //                            */
+                                    //
+                                    //                            recognition.interimResults = false; // we need only the final result
+                                    //
+                                    //                            recognition.onresult = function (event) {
+                                    //                                var last = event.results.length - 1;
+                                    //                                var command = event.results[last][0].transcript;
+                                    //                                $("#user_query").val(command);
+                                    //                            };
+                                    //                            recognition.onspeechend = function () {
+                                    //                                recognition.stop();
+                                    //                            };
+                                    //                            recognition.onerror = function (event) {
+                                    //                                alert('Error occurred in recognition: ' + event.error);
+                                    //                            }
+                                    //                            document.querySelector('#btnGiveCommand').addEventListener('click', function () {
+                                    //                                recognition.start();
+                                    //                            });
                                 });
-                            } else {
-                                document.write("Forbidden, Access is denied!");
-                                return;
-                            }
-                            var message = document.querySelector('#message');
-                            /*
-                                - this webkitSpeechRecognition is for Chrome & SpeechRecognition for Firefox
-                                - We Must Add those for safari ,Edge, Chromium, internet explorer, and so on
-                            */
-                            var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
-                            /*
-                                - this webkitSpeechGrammarList is for Chrome & SpeechGrammarList for Firefox
-                                - We Must Add those for safari ,Edge, Chromium, internet explorer, and so on
-                            */
-                            var SpeechGrammarList = SpeechGrammarList || webkitSpeechGrammarList;
-                            /*
-                                The Following Links May Help:
-                                - https://medium.com/@seoul_engineer/speech-recognition-in-browsers-2018-f25bf59857bc
-                                - https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition
-                            */
-
-
-                            /*
-                            This speech recognition interface constructor is used to create a new speech recognition object which has a number of event handlers available for detecting when speech is input through the Mic & grammar interface which represents a container for a particular set of grammar that the application should be able to recognize the grammar is defined using the speech and grammar format.
-
-                            For More info check : https://www.w3.org/TR/jsgf/
-                            */
-
-
-                            var grammar = '#JSGF V1.0;' //This is Type of Grammer
-
-                            var recognition = new SpeechRecognition();
-                            var speechRecognitionList = new SpeechGrammarList();
-
-                            speechRecognitionList.addFromString(grammar, 1);
-                            recognition.grammars = speechRecognitionList;
-
-                            recognition.lang = 'en-US';
-                            // 'ar-EG';
-                            // 'ar-SA';
-                            // 'ar-LB';
-                            // 'en-CA';
-                            // 'fr-FR';
-                            // 'de-DE';
-                            // 'it-IT';
-                            // 'es-ES';
-                            // 'tr';
-                            /*
-                                - we can try more Languages:
-                                https://stackoverflow.com/questions/14257598/what-are-language-codes-in-chromes-implementation-of-the-html5-speech-recogniti
-                                https://www.science.co.il/language/Locale-codes.php
-                            */
-
-                            recognition.interimResults = false; // we need only the final result
-
-                            recognition.onresult = function (event) {
-                                var last = event.results.length - 1;
-                                var command = event.results[last][0].transcript;
-                                $("#user_query").val(command);
-                            };
-                            recognition.onspeechend = function () {
-                                recognition.stop();
-                            };
-                            recognition.onerror = function (event) {
-                                alert('Error occurred in recognition: ' + event.error);
-                            }
-                            document.querySelector('#btnGiveCommand').addEventListener('click', function () {
-                                recognition.start();
                             });
                         });
                     });
@@ -867,4 +888,4 @@ function addslashes(str) {
             })();
         });
     });
-})();
+};
