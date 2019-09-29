@@ -205,14 +205,14 @@ class FlowAdapter(LogicAdapter):
             response = self.get_default_response(input_statement)
 
 
-        FAQ_simarities = FilterResults.getSimlarityForFAQ(self,input_statement)
+
 
 
         if answer:
             response.text = answer
-            return response, self.Story_ID ,children_questions,means_questions,FAQ_simarities
+            return response, self.Story_ID ,children_questions,means_questions
 
-        return response, self.Story_ID ,children_questions,means_questions,FAQ_simarities
+        return response, self.Story_ID ,children_questions,means_questionss
 
 
 

@@ -45,6 +45,7 @@ class FilterResults():
 
         statement_id = flowAdapter.DBManager.get_value(table_name=FQ_TABLE_NAME, column_name='answer_id',
                                                 conditions={QUESTION_SUBJECT_COLUMN: statement.text })
+
         if statement_id:
             tag_ids = flowAdapter.DBManager.get_value(table_name=JOIN_TAGS_TABLE_NAME, column_name=JOIN_TAGS_TAG_ID_COLUMN_NAME,
                                                conditions={JOIN_TAGS_Q_A_ID_COLUMN_NAME: str(statement_id)},multiple_values=True)
@@ -53,11 +54,13 @@ class FilterResults():
                 tag = flowAdapter.DBManager.get_value(table_name=TAGS_TABLE_NAME, column_name='tag',
                                                conditions={'id': str(tag_id[0])})
                 tags.append(tag)
+
             return tags
         else:
             similarity = CT.Similarity(flowAdapter.glove,flowAdapter.tags)
             tags, keywords = similarity.get_tags(statement.text)
             tags = list(set(tags + keywords))
+
             return tags
 
     @staticmethod
@@ -99,15 +102,52 @@ class FilterResults():
 
 
     @staticmethod
-    def getSimlarityForFAQ(flowAdapter,input_statement):
+    def getSimlarityForFAQ(flowAdapter,input_statement,threshold_similar = 0.75):
         all_faq_statements = []
         questions = flowAdapter.DBManager.get_value(table_name=FAQ_TABLE_NAME, column_name=QUESTION_SUBJECT_COLUMN,conditions={CLIENT_ID_COLUMN : str(flowAdapter.client_id)},multiple_values=True)
         ids = flowAdapter.DBManager.get_value(table_name=FAQ_TABLE_NAME, column_name='id',conditions={CLIENT_ID_COLUMN : str(flowAdapter.client_id)},multiple_values=True)
+        search_results =[]
+        tag_results = []
+
 
         for question,id in zip(questions,ids):
             faq_statement = Statement(text=question[0])
             faq_statement.confidence = flowAdapter.search_algorithm.compare_statements(faq_statement, input_statement)
+            search_results.append(faq_statement)
             all_faq_statements.append({'id':id[0] , 'question':question[0] , 'confidence':faq_statement.confidence })
+
+        for result in search_results:
+                tags = FilterResults.__get_tags(flowAdapter,result)
+                tag_results.append({'result':result , 'tags':tags , 'vote':1})
+
+        # get tags for input_statement
+        max_statement = Statement(text='')
+        for faq_statement in search_results:
+
+            faq_statement.confidence = flowAdapter.search_algorithm.compare_statements(faq_statement, input_statement)
+            if  faq_statement.confidence > max_statement.confidence and faq_statement.confidence >= threshold_similar:
+                max_statement.confidence = faq_statement.confidence
+                max_statement.text = faq_statement.text
+                max_statement.in_response_to = faq_statement.in_response_to
+
+        tags_input_statement = FilterResults.__get_tags(flowAdapter,max_statement)
+
+
+        # voting results according tags
+        for tag_input_statement in tags_input_statement:
+            for tag_result in tag_results:
+                for tag in tag_result['tags']:
+                    if tag == tag_input_statement:
+                        tag_result['vote']+=1
+                if len(tag_input_statement) == 0 and len(tag_result) == 0 :
+                    tag_result['vote']+=1
+        max_vote = max([tag_result['vote'] for tag_result in tag_results])
+
+        for i in range(len(tag_results)):
+            confidence_vote = tag_results[i]['vote']/max_vote
+            all_faq_statements[i]['confidence'] = (all_faq_statements[i]['confidence'] + confidence_vote)/2
+            all_faq_statements[i]['confidence'] = round(all_faq_statements[i]['confidence'],2)
+
         all_faq_statements = sorted(all_faq_statements, key=lambda k: k['confidence'] , reverse=True)
         return all_faq_statements
 

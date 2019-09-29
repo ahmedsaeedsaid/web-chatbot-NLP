@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7d280b8a-435b-4fb6-bafa-8b6d5d811cdf" name="Default" comment="return confidence">
+    <list default="true" id="7d280b8a-435b-4fb6-bafa-8b6d5d811cdf" name="Default" comment="return confidence separated">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/optimalBot/apiBot.py" beforeDir="false" afterPath="$PROJECT_DIR$/optimalBot/apiBot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/optimalBot/optimal_chatterbot/Filter_results.py" beforeDir="false" afterPath="$PROJECT_DIR$/optimalBot/optimal_chatterbot/Filter_results.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/optimalBot/optimal_chatterbot/FlowAdapter.py" beforeDir="false" afterPath="$PROJECT_DIR$/optimalBot/optimal_chatterbot/FlowAdapter.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/optimalBot/optimal_chatterbot/chatbot.py" beforeDir="false" afterPath="$PROJECT_DIR$/optimalBot/optimal_chatterbot/chatbot.py" afterDir="false" />
     </list>
@@ -18,8 +19,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/optimalBot/optimal_chatterbot/FlowAdapter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="137">
-              <caret line="218" column="52" selection-start-line="218" selection-start-column="52" selection-end-line="218" selection-end-column="52" />
+            <state relative-caret-position="226">
+              <caret line="214" column="75" selection-start-line="214" selection-start-column="75" selection-end-line="214" selection-end-column="75" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
               </folding>
@@ -30,24 +31,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/optimalBot/optimal_chatterbot/chatbot.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="268">
-              <caret line="195" column="30" selection-start-line="195" selection-start-column="8" selection-end-line="195" selection-end-column="30" />
+            <state relative-caret-position="62">
+              <caret line="90" column="21" selection-start-line="90" selection-start-column="21" selection-end-line="90" selection-end-column="21" />
               <folding>
-                <element signature="e#320#3543#0" />
                 <element signature="e#3650#6360#0" />
-                <element signature="e#6376#7296#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/optimalBot/optimal_chatterbot/__init__.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
-              <caret line="7" column="29" lean-forward="true" selection-start-line="7" selection-start-column="29" selection-end-line="7" selection-end-column="29" />
-              <folding>
-                <element signature="e#0#22#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -56,44 +43,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/optimalBot/optimal_chatterbot/Filter_results.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="87">
-              <caret line="110" column="26" selection-start-line="110" selection-start-column="8" selection-end-line="110" selection-end-column="26" />
+            <state relative-caret-position="93">
+              <caret line="53" column="48" lean-forward="true" selection-start-line="53" selection-start-column="48" selection-end-line="53" selection-end-column="48" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
-                <element signature="e#341#594#0" />
-                <element signature="e#1679#2649#0" />
-                <element signature="e#2760#3861#0" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/optimalBot/optimal_chatterbot/trainer.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="54">
-              <caret line="3" selection-start-line="3" selection-end-line="3" selection-end-column="65" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/optimalBot/api.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
-              <caret line="7" column="9" lean-forward="true" selection-start-line="7" selection-start-column="9" selection-end-line="7" selection-end-column="9" />
-              <folding>
-                <element signature="e#0#23#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/optimalBot/db_manager.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="234">
-              <caret line="93" column="19" selection-start-line="93" selection-start-column="8" selection-end-line="93" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -101,24 +55,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/optimalBot/apiBot.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="122">
-              <caret line="218" column="30" selection-start-line="218" selection-start-column="8" selection-end-line="218" selection-end-column="30" />
+            <state relative-caret-position="80">
+              <caret line="64" column="47" lean-forward="true" selection-start-line="64" selection-start-column="47" selection-end-line="64" selection-end-column="47" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
-                <element signature="e#4355#6686#0" />
-                <element signature="e#6872#7390#0" />
-                <element signature="e#8183#8841#0" />
-                <element signature="e#8874#10516#0" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/optimalBot/optimal_chatterbot/sentence_classification.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="148">
-              <caret line="30" column="38" selection-start-line="30" selection-start-column="24" selection-end-line="30" selection-end-column="38" />
             </state>
           </provider>
         </entry>
@@ -134,8 +75,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>update_</find>
-      <find>.settings</find>
       <find>This Domain has been used, restricted access.</find>
       <find>_use_unicode</find>
       <find>charset</find>
@@ -164,6 +103,8 @@
       <find>story</find>
       <find>FAQ_simarities</find>
       <find>input_statement</find>
+      <find>can i see</find>
+      <find>story_id</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -204,8 +145,8 @@
         <option value="$PROJECT_DIR$/optimalBot/api.py" />
         <option value="$PROJECT_DIR$/optimalBot/optimal_chatterbot/__init__.py" />
         <option value="$PROJECT_DIR$/optimalBot/optimal_chatterbot/Filter_results.py" />
-        <option value="$PROJECT_DIR$/optimalBot/optimal_chatterbot/FlowAdapter.py" />
         <option value="$PROJECT_DIR$/optimalBot/optimal_chatterbot/chatbot.py" />
+        <option value="$PROJECT_DIR$/optimalBot/optimal_chatterbot/FlowAdapter.py" />
         <option value="$PROJECT_DIR$/optimalBot/apiBot.py" />
       </list>
     </option>
@@ -367,12 +308,12 @@
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18377976" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18377976" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49925596" visible="true" weight="0.29591838" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49925596" visible="true" weight="0.27210885" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -438,7 +379,8 @@
     <MESSAGE value="generalize chatterbot Tables" />
     <MESSAGE value="handel multiple training" />
     <MESSAGE value="return confidence" />
-    <option name="LAST_COMMIT_MESSAGE" value="return confidence" />
+    <MESSAGE value="return confidence separated" />
+    <option name="LAST_COMMIT_MESSAGE" value="return confidence separated" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -580,20 +522,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/optimalBot/optimal_chatterbot/sentence_classification.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="148">
-          <caret line="30" column="38" selection-start-line="30" selection-start-column="24" selection-end-line="30" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/optimalBot/db_manager.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="93" column="19" selection-start-line="93" selection-start-column="8" selection-end-line="93" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/optimalBot/optimal_chatterbot/trainer.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="54">
@@ -625,19 +553,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/optimalBot/optimal_chatterbot/Filter_results.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="87">
-          <caret line="110" column="26" selection-start-line="110" selection-start-column="8" selection-end-line="110" selection-end-column="26" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-            <element signature="e#341#594#0" />
-            <element signature="e#1679#2649#0" />
-            <element signature="e#2760#3861#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/optimalBot/api.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="126">
@@ -648,38 +563,56 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/optimalBot/db_manager.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="93" column="19" selection-start-line="93" selection-start-column="8" selection-end-line="93" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/optimalBot/optimal_chatterbot/sentence_classification.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="148">
+          <caret line="30" column="38" selection-start-line="30" selection-start-column="24" selection-end-line="30" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/optimalBot/optimal_chatterbot/chatbot.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="62">
+          <caret line="90" column="21" selection-start-line="90" selection-start-column="21" selection-end-line="90" selection-end-column="21" />
+          <folding>
+            <element signature="e#3650#6360#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/optimalBot/optimal_chatterbot/FlowAdapter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="137">
-          <caret line="218" column="52" selection-start-line="218" selection-start-column="52" selection-end-line="218" selection-end-column="52" />
+        <state relative-caret-position="226">
+          <caret line="214" column="75" selection-start-line="214" selection-start-column="75" selection-end-line="214" selection-end-column="75" />
           <folding>
             <element signature="e#0#41#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/optimalBot/optimal_chatterbot/chatbot.py">
+    <entry file="file://$PROJECT_DIR$/optimalBot/optimal_chatterbot/Filter_results.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="268">
-          <caret line="195" column="30" selection-start-line="195" selection-start-column="8" selection-end-line="195" selection-end-column="30" />
+        <state relative-caret-position="93">
+          <caret line="53" column="48" lean-forward="true" selection-start-line="53" selection-start-column="48" selection-end-line="53" selection-end-column="48" />
           <folding>
-            <element signature="e#320#3543#0" />
-            <element signature="e#3650#6360#0" />
-            <element signature="e#6376#7296#0" />
+            <element signature="e#0#41#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/optimalBot/apiBot.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="122">
-          <caret line="218" column="30" selection-start-line="218" selection-start-column="8" selection-end-line="218" selection-end-column="30" />
+        <state relative-caret-position="80">
+          <caret line="64" column="47" lean-forward="true" selection-start-line="64" selection-start-column="47" selection-end-line="64" selection-end-column="47" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
-            <element signature="e#4355#6686#0" />
-            <element signature="e#6872#7390#0" />
-            <element signature="e#8183#8841#0" />
-            <element signature="e#8874#10516#0" />
           </folding>
         </state>
       </provider>

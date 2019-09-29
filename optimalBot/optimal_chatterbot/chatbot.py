@@ -68,7 +68,7 @@ class chatBot(chatterbot.ChatBot):
         if not input_statement.search_in_response_to and input_statement.in_response_to:
             input_statement.search_in_response_to = self.storage.tagger.get_bigram_pair_string(input_statement.in_response_to)
 
-        response, Story_ID ,children_questions,means_questions,FAQ_simarities = self.generate_response(input_statement, additional_response_selection_parameters)
+        response, Story_ID ,children_questions,means_questions = self.generate_response(input_statement, additional_response_selection_parameters)
 
         # Update any response data that needs to be changed
         if persist_values_to_response:
@@ -91,7 +91,7 @@ class chatBot(chatterbot.ChatBot):
             res['text'] = dt.clean(res['text'])
             self.storage.create(**res)
 
-        return response, Story_ID ,children_questions,means_questions,FAQ_simarities
+        return response, Story_ID ,children_questions,means_questions
 
     def generate_response(self, input_statement, additional_response_selection_parameters=None):
         """
@@ -108,7 +108,7 @@ class chatBot(chatterbot.ChatBot):
         for adapter in self.logic_adapters:
             if adapter.can_process(input_statement):
 
-                output, Story_ID ,children_questions,means_questions,FAQ_simarities = adapter.process(input_statement, additional_response_selection_parameters)
+                output, Story_ID ,children_questions,means_questions = adapter.process(input_statement, additional_response_selection_parameters)
                 results.append(output)
 
                 self.logger.info(
@@ -164,7 +164,7 @@ class chatBot(chatterbot.ChatBot):
 
         response.confidence = result.confidence
 
-        return response, Story_ID ,children_questions,means_questions,FAQ_simarities
+        return response, Story_ID ,children_questions,means_questions
 
     def learn_response(self, statement, previous_statement=None):
         """
