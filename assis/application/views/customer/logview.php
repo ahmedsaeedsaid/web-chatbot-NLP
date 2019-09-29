@@ -21,7 +21,7 @@ if(!isset($_SESSION['show_tutorial_scenarios_list'])){
                 <div class="modal-body">
                     <form method="POST" id="add-question-form">
                         <input type="hidden" id="question" value="" />
-                        <div class="row">
+                        <div class="row" id="search-field">
                             <div class="col-sm-6">
                                 <p><b>Search:</b></p>
                                 <div class="form-group">
@@ -34,7 +34,7 @@ if(!isset($_SESSION['show_tutorial_scenarios_list'])){
                             <div class="col-sm-6" id="tree-body-add">
                                 <div id="default-tree"></div>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-6" id="question-form">
                                 <div class="form-group">
                                     <label for="answer">Bot Answer:</label>
                                     <textarea required name="answer" id="answer" class="form-control" style="resize: none;height: 90px;" placeholder="Add what a bot should answer with"></textarea>
@@ -112,21 +112,10 @@ if(!isset($_SESSION['show_tutorial_scenarios_list'])){
                             <tr>
                                 <th>Question</th>
                                 <th>Accuracy</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td id="ques-6">What is optimal solutions?</td>
-                                <td>
-                                    <div data-percent="80" class="small green accuracy"></div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>What is Da7i7a?</td>
-                                <td>
-                                    <div data-percent="43" class="small red accuracy"></div>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -170,7 +159,7 @@ if(!isset($_SESSION['show_tutorial_scenarios_list'])){
                                                 <span class="actions actions-add-question"><a href="" class="actions-add-href" data-msg-id="<?= $details['id'] ?>"><i class="fa fa-plus fa-2x"></i></a></span>
                                                 <span class="actions actions-similarity"><a href="" class="actions-similarity-href" data-msg-id="<?= $details['id'] ?>"><i class="fa fa-search-plus fa-2x"></i></a></span>
                                                 <span class="actions assign-icon">
-                                                <a data-msg-id="<?= $details['id'] ?>" class="actions-attach-href" href=""><i class="fa fa-paperclip fa-2x"></i></a></span>
+                                                    <a data-msg-id="<?= $details['id'] ?>" class="actions-attach-href" href=""><i class="fa fa-paperclip fa-2x"></i></a></span>
                                                 <span class="actions badge custom-badges"><?= $details['num_of_occurences'] ?></span>
                                                 <span class="time_date"><?= $details['msgdatetime']?></span>
                                             </div>
@@ -236,6 +225,46 @@ if(!isset($_SESSION['show_tutorial_scenarios_list'])){
             });
         }
 
+        function getSimilarQuestions(query) {
+            var param = JSON.stringify({
+                name: 'getAccuracyOfQuestions',
+                param: {
+                    query: query
+                }
+            });
+            $.ajax({
+                type: "POST",
+                url: "https://localhost:5002/",
+                data: param,
+                headers: {
+                    'Authorization': "Bearer " + "<?= $token ?>",
+                    'Content-Type': 'application/json',
+                },
+                success: function(data) {
+                    if ('error' in data) {
+                        document.write(data.error.message);
+                        return;
+                    }
+                    var FAQ_simarities = data.response.result.FAQ_simarities;
+                    var table = $('#similarity-table').DataTable();
+                    table.clear();
+                    var rows = [];
+                    var top_questions = 3;
+                    var array_len = FAQ_simarities.length;
+                    for (var i = 0; i < top_questions; i++) {
+                        if (i == array_len) {
+                            break;
+                        } else {
+                            rows.push([FAQ_simarities[i].question, `<div data-percent="` + FAQ_simarities[i].confidence * 100 + `" class="small green accuracy"></div>`, `<a data-ques-id="` + FAQ_simarities[i].id + `" href="<?= base_url(); ?>customer/logview" title="Edit" class="actions-edit-href"><img src="<?= base_url() ?>styles/icons/action_edit.gif" alt="Edit Question"></a>`]);
+                        }
+                    }
+                    table.rows.add(rows).draw();
+                    $(".accuracy").percircle();
+                    $("#similarity").modal('show');
+                }
+            });
+        }
+
         function getAllNodeChilds(mainNode, childs_question_ids) {
             mainNode.nodes.forEach(function(node) {
                 childs_question_ids.push(node.question_id);
@@ -274,7 +303,11 @@ if(!isset($_SESSION['show_tutorial_scenarios_list'])){
         }).ajaxStop($.unblockUI);
 
         $(document).ready(function() {
-
+            $('#similarity-table').DataTable({
+                "scrollX": true,
+                "autoWidth": false,
+                "ordering": false
+            });
             /* START TREEVIEW SECTION */
             var LastNode = null;
             var LastSelectedNode = null;
@@ -413,17 +446,25 @@ if(!isset($_SESSION['show_tutorial_scenarios_list'])){
             $('#addRow').on('click', function() {
                 var action = $(this).attr('data-action');
                 var Question_value = $("#question").val().trim();
+                var question_id = 0;
                 var Answer_value = $("#answer").val().trim();
                 var suggested_text = $("#suggested_text").val();
                 var checked = $('#default-tree').treeview('getChecked');
-                if (LastNode == null || checked.length == 0) {
-                    Swal.fire(
-                        'Sorry!',
-                        'Please Select a parent question or scenario',
-                        'error'
-                    );
-                    return;
+                if (action == 'update') {
+                    Question_value = $("#questionTextArea").val().trim();
+                    question_id = $("#questionTextArea").attr('data-ques-id');
+                } else {
+                    if (LastNode == null || checked.length == 0) {
+                        Swal.fire(
+                            'Sorry!',
+                            'Please Select a parent question or scenario',
+                            'error'
+                        );
+                        return;
+                    }
                 }
+                console.log(Question_value);
+                console.log(Answer_value);
                 if (Question_value && Answer_value) {
                     // Get tags
                     var tags = $("#tags-textarea").children();
@@ -436,23 +477,28 @@ if(!isset($_SESSION['show_tutorial_scenarios_list'])){
                         $(tags[i]).children('.remove-tag').remove();
                         Tags_final_array.push($(tags[i]).text());
                     }
-                    var scenario = LastNode.scenario_id;
-                    var parent = 0;
-                    if (LastNode.is_scenario == 0) {
-                        parent = LastNode.question_id;
+                    if (action == 'update') {
+                        scenario = $("#questionTextArea").attr('data-ques-scenario');
+                        parent = $("#questionTextArea").attr('data-ques-parent');
+                    } else {
+                        var scenario = LastNode.scenario_id;
+                        var parent = 0;
+                        if (LastNode.is_scenario == 0) {
+                            parent = LastNode.question_id;
+                        }
                     }
                     $('#addRow').attr('disabled', true);
                     $.ajax({
                         url: "<?= base_url("customer/saveQASC") ?>",
                         type: "POST",
                         data: {
-                            action: 'insert',
+                            action: action,
                             Question: Question_value,
                             Tags: Tags_final_array,
                             Answer: Answer_value,
                             parent: parent,
                             scenario: scenario,
-                            question_id: 0,
+                            question_id: question_id,
                             suggested_text: suggested_text,
                             '<?= $this->security->get_csrf_token_name() ?>': '<?= $this->security->get_csrf_hash() ?>'
                         },
@@ -468,7 +514,7 @@ if(!isset($_SESSION['show_tutorial_scenarios_list'])){
                     );
                 }
             });
-            
+
             $('#assignRow').on('click', function() {
                 var checked = $('#default-tree').treeview('getChecked');
                 if (LastNode == null || checked.length == 0) {
@@ -530,12 +576,11 @@ if(!isset($_SESSION['show_tutorial_scenarios_list'])){
             });
 
         });
-        $(".accuracy").percircle();
         $(".actions-similarity-href").on('click', function(e) {
             e.preventDefault();
             var ms_id = $(this).attr('data-msg-id');
             var msg = $("#user-msg-" + ms_id).html();
-            $("#similarity").modal('show');
+            getSimilarQuestions(msg);
         });
         $(".actions-add-href").on('click', function(e) {
             e.preventDefault();
@@ -543,6 +588,58 @@ if(!isset($_SESSION['show_tutorial_scenarios_list'])){
             var msg = $("#user-msg-" + ms_id).html();
             $("#question").val(msg);
             $("#add-question-modal").modal('show');
+        });
+        $("body").on('click', ".actions-edit-href", function(e) {
+            e.preventDefault();
+            var id = $(this).attr('data-ques-id');
+            $.ajax({
+                type: "POST",
+                url: "<?= base_url('customer/getQA') ?>",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    id: id
+                },
+                success: function(data) {
+                    data = JSON.parse(data);
+                    data = data.ques;
+                    $("#answer").val(data.answer);
+                    $("#suggested_text").val(data.suggested_text);
+                    var tags = data.tags;
+                    var length = tags.length;
+                    var tags_html = "";
+                    for (var i = 0; i < length; i++) {
+                        tags_html += "<span class='tag-span badge badge-info'>" + tags[i] + "<a class='remove-tag' href=''>&nbsp;&nbsp;×</a></span>";
+                    }
+                    var html = `
+                        <div class="form-group" id="edit-question-field">
+                            <label for="question">User Query:</label>
+                            <textarea required name="question" data-ques-id="` + data.id + `" data-ques-scenario="` + data.scenario + `" data-ques-parent="` + data.parent + `" id="questionTextArea" class="form-control" style="resize: none;height: 90px;" placeholder="Add what a user might ask">` + data.question + `</textarea>
+                        </div>`;
+                    $("#question-form").prepend(html);
+                    $("#tags-textarea").html(tags_html);
+                    $('#addRow').text("Update Question");
+                    $("#search-field").css('display', 'none');
+                    $("#question-form").removeClass('col-sm-6');
+                    $("#question-form").addClass('col-sm-12');
+                    $("#addRow").attr('data-action', 'update');
+                    $("#default-tree").detach().appendTo('#tree-body-assign');
+                    $("#add-question-modal").modal('show');
+                }
+            });
+            $("#add-question-modal").modal('show');
+        });
+        $('#add-question-modal').on('hidden.bs.modal', function() {
+            $("#tags-textarea").html("");
+            $("#question").val("");
+            $("#answer").val("");
+            $("#suggested_text").val("");
+            $("#edit-question-field").remove();
+            $("#default-tree").detach().appendTo('#tree-body-add');
+            $("#search-field").css('display', 'block');
+            $("#addRow").attr('data-action', 'add');
+            $("#question-form").removeClass('col-sm-12');
+            $("#question-form").addClass('col-sm-6');
+            $('#addRow').text("Add Question");
         });
         $("#similarity").on('shown.bs.modal', function() {
             $($.fn.dataTable.tables(true)).DataTable()
@@ -621,11 +718,6 @@ if(!isset($_SESSION['show_tutorial_scenarios_list'])){
         tour.init(tourOptions);
         tour.start();
         <?php } ?>
-        $('#similarity-table').DataTable({
-            "scrollX": true,
-            "autoWidth": false,
-            "ordering": false
-        });
 
         $(".actions-attach-href").on('click', function(e) {
             e.preventDefault();
@@ -650,7 +742,7 @@ if(!isset($_SESSION['show_tutorial_scenarios_list'])){
         });
         // When assign modal is closed return tree element to its original location (In Add Question Form)
         // This solution is made to avoid creating and initializing another tree object
-        $('#assign-question-modal').on('hidden.bs.modal', function () {
+        $('#assign-question-modal').on('hidden.bs.modal', function() {
             $('#default-tree').treeview('collapseAll', {
                 silent: true
             });

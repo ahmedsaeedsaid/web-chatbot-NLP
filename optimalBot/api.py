@@ -20,4 +20,4 @@ def root():
 
 if __name__ == '__main__':
     #context = ('C:\wamp\www\web-assistant\optimalBot\key\certificate.crt', 'C:\wamp\www\web-assistant\optimalBot\key\private.key') # certificate and key files
-    app.run(host=HOST, port=PORT)
+    app.run(host=HOST, port=PORT, ssl_context="adhoc")

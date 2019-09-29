@@ -88,7 +88,6 @@ $scenario_id = 0;
                         <div class="form-group">
                             <label for="question">User Query:</label>
                             <textarea required name="question" id="question" class="form-control" style="resize: none;    height: 90px;" placeholder="Add what a user might ask"></textarea>
-                            <!--<input type="question" class="form-control" id="question">-->
                         </div>
 
                         <div class="form-group">
